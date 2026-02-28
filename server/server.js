@@ -8,10 +8,15 @@ const apiRoutes = require('./routes/api');
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
 const app = express();
-const PORT = process.env.BACKEND_PORT || 5001;
+// Railway provides a PORT environment variable, we must use it if present
+const PORT = process.env.PORT || process.env.BACKEND_PORT || 5001;
 
-// Middleware
-app.use(cors());
+// Middleware - allow all to avoid CORS, or specify Vercel explicitly
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 app.use(express.json());
 
 // Routes
