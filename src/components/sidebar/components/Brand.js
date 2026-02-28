@@ -1,7 +1,7 @@
 import React from "react";
 
 // Chakra imports
-import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Text } from "@chakra-ui/react";
 
 // Custom components
 import { HSeparator } from "components/separator/Separator";

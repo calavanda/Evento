@@ -66,9 +66,7 @@ export default function StandManagement() {
   const inputBg = useColorModeValue('secondaryGray.300', 'navy.900');
   const toast = useToast();
 
-  useEffect(() => {
-    fetchStands();
-  }, []);
+
 
   const getApiUrl = () => {
     return process.env.REACT_APP_API_URL 
