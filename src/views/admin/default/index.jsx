@@ -45,9 +45,10 @@ export default function UserReports() {
 
   const fetchData = async () => {
     try {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
       const [statsRes, visitsRes] = await Promise.all([
-        fetch("http://localhost:5001/api/reports/stats"),
-        fetch("http://localhost:5001/api/reports/stand-visits")
+        fetch(`${API_URL}/api/reports/stats`),
+        fetch(`${API_URL}/api/reports/stand-visits`)
       ]);
       
       if (!statsRes.ok || !visitsRes.ok) {

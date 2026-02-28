@@ -48,7 +48,8 @@ export default function StandManagement() {
 
   const fetchStands = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/stands');
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/stands`);
       const contentType = response.headers.get("content-type");
       if (!response.ok || !contentType || !contentType.includes("application/json")) {
         throw new Error("Servidor no responde correctamente");
@@ -68,7 +69,8 @@ export default function StandManagement() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/stands', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/stands`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

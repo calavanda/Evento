@@ -61,7 +61,8 @@ export default function ParticipantManagement() {
 
   const fetchParticipants = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/participants');
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/participants`);
       const contentType = response.headers.get("content-type");
       if (!response.ok || !contentType || !contentType.includes("application/json")) {
         throw new Error("Servidor no responde correctamente");
@@ -88,7 +89,8 @@ export default function ParticipantManagement() {
   const handleDelete = async (id) => {
     if (!window.confirm('¿Estás seguro de eliminar este participante?')) return;
     try {
-      const response = await fetch(`http://localhost:5001/api/participants/${id}`, {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/participants/${id}`, {
         method: 'DELETE',
       });
       if (response.ok) {
@@ -103,7 +105,8 @@ export default function ParticipantManagement() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:5001/api/participants/${editUser._id}`, {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/participants/${editUser._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

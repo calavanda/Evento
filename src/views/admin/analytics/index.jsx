@@ -29,7 +29,8 @@ export default function Analytics() {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/reports/stand-analytics');
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/reports/stand-analytics`);
       if (!response.ok) throw new Error("Servidor no responde");
       const result = await response.json();
       setData(result);

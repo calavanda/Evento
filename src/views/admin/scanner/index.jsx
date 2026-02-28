@@ -75,7 +75,8 @@ export default function VisitScanner() {
 
   const fetchStands = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/stands');
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/stands`);
       const contentType = response.headers.get("content-type");
       if (!response.ok || !contentType?.includes("application/json")) {
         throw new Error("Servidor no responde correctamente");
@@ -201,7 +202,8 @@ export default function VisitScanner() {
   // ── Visit registration (shared by both methods) ──
   const handleScan = async (qrCode) => {
     try {
-      const response = await fetch('http://localhost:5001/api/visits/scan', {
+      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/visits/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ qrCode, standId: selectedStand }),
