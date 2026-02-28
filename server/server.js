@@ -5,8 +5,11 @@ const path = require('path');
 const dotenv = require('dotenv');
 const apiRoutes = require('./routes/api');
 
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
-
+try {
+  dotenv.config({ path: path.join(__dirname, '..', '.env') });
+} catch (error) {
+  console.log('No .env file found or accessible, relying on environment variables');
+}
 const app = express();
 // Railway provides a PORT environment variable, we must use it if present
 const PORT = process.env.PORT || process.env.BACKEND_PORT || 5001;
@@ -22,10 +25,17 @@ app.use(express.json());
 // Routes
 app.use('/api', apiRoutes);
 
-// Database Connection
-mongoose.connect(process.env.MONGODB_URI)
+const mongoUri = process.env.MONGODB_URI;
+if (!mongoUri) {
+  console.error('CRITICAL ERROR: MONGODB_URI environment variable is missing.');
+  process.exit(1);
+}
+
+mongoose.connect(mongoUri)
   .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+  .catch(err => {
+    console.error('MongoDB connection error details:', err.message);
+  });
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
