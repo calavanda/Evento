@@ -32,13 +32,12 @@ export default function UserReports() {
   const [standVisits, setStandVisits] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const brandColor = useColorModeValue("brand.500", "white");
-  const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
+
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "secondaryGray.600";
   const cardBg = useColorModeValue("white", "navy.800");
   const hoverBg = useColorModeValue("secondaryGray.100", "whiteAlpha.50");
-  const transition = "all .33s cubic-bezier(0.685, 0.0473, 0.346, 1)";
+
 
   useEffect(() => {
     fetchData();

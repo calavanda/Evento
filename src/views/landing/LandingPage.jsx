@@ -12,7 +12,7 @@ import {
   SimpleGrid,
   Image,
 } from "@chakra-ui/react";
-import { MdLogin, MdEvent, MdRestaurant, MdAnalytics, MdStorefront } from "react-icons/md";
+import { MdLogin, MdEvent, MdAnalytics, MdStorefront } from "react-icons/md";
 import { Link as RouterLink } from "react-router-dom";
 
 const Feature = ({ title, text, icon }) => {
@@ -50,7 +50,7 @@ const Feature = ({ title, text, icon }) => {
 };
 
 export default function LandingPage() {
-  const brandColor = "#4318FF";
+
   
   return (
     <Box 

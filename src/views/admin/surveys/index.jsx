@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
-  FormControl,
   FormLabel,
   RadioGroup,
   Radio,
@@ -16,7 +15,6 @@ import {
   Icon,
   Flex,
   Textarea,
-  Progress,
 } from '@chakra-ui/react';
 import { MdFactCheck, MdStorefront, MdComment } from 'react-icons/md';
 

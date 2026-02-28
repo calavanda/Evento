@@ -16,10 +16,9 @@ import StandManagement from 'views/admin/stands';
 import VisitScanner from 'views/admin/scanner';
 import SurveySatisfaction from 'views/admin/surveys';
 import Analytics from 'views/admin/analytics';
-import Profile from 'views/admin/profile';
 
-// Auth Imports
-import SignInCentered from 'views/auth/signIn';
+
+
 
 const routes = [
   {
