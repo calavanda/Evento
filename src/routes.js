@@ -6,6 +6,8 @@ import {
   MdPerson,
   MdHome,
   MdLock,
+  MdPeople,
+  MdTableChart,
 } from 'react-icons/md';
 
 // Admin Imports
@@ -32,7 +34,7 @@ const routes = [
     name: 'Registro de Participantes',
     layout: '/admin',
     path: '/participants',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+    icon: <Icon as={MdPeople} width="20px" height="20px" color="inherit" />,
     component: <ParticipantRegister />,
   },
   {
@@ -53,14 +55,14 @@ const routes = [
     name: 'Gestión de Estands',
     layout: '/admin',
     path: '/stands',
-    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
+    icon: <Icon as={MdTableChart} width="20px" height="20px" color="inherit" />,
     component: <StandManagement />,
   },
   {
     name: 'Escanear QR',
     layout: '/admin',
     path: '/scanner',
-    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+    icon: <Icon as={MdQrCode} width="20px" height="20px" color="inherit" />,
     component: <VisitScanner />,
   },
   {
