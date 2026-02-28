@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import AdminNavbarLinks from 'components/navbar/NavbarLinksAdmin';
 import { useUser } from '@clerk/clerk-react';
-import { useLocation } from 'react-router-dom';
 
 export default function AdminNavbar(props) {
 	const { user } = useUser();
-	const location = useLocation();
 	const [ scrolled, setScrolled ] = useState(false);
 
 	useEffect(() => {
