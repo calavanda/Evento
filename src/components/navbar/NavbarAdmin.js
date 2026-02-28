@@ -3,8 +3,10 @@ import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Link, Text, useC
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import AdminNavbarLinks from 'components/navbar/NavbarLinksAdmin';
+import { useUser } from '@clerk/clerk-react';
 
 export default function AdminNavbar(props) {
+	const { user } = useUser();
 	const [ scrolled, setScrolled ] = useState(false);
 
 	useEffect(() => {
@@ -118,7 +120,7 @@ export default function AdminNavbar(props) {
 						_focus={{
 							boxShadow: 'none'
 						}}>
-						{brandText}
+						Bienvenido {user?.firstName || 'Admin'} 🙀
 					</Link>
 				</Box>
 				<Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
