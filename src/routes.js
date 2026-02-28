@@ -8,6 +8,7 @@ import {
   MdLock,
   MdPeople,
   MdTableChart,
+  MdQrCode2,
 } from 'react-icons/md';
 
 // Admin Imports
@@ -62,7 +63,7 @@ const routes = [
     name: 'Escanear QR',
     layout: '/admin',
     path: '/scanner',
-    icon: <Icon as={MdQrCode} width="20px" height="20px" color="inherit" />,
+    icon: <Icon as={MdQrCode2} width="20px" height="20px" color="inherit" />,
     component: <VisitScanner />,
   },
   {
