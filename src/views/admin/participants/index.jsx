@@ -30,13 +30,13 @@ import {
 
 export default function ParticipantRegister() {
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastNamePaternal: '',
-    lastNameMaternal: '',
-    city: '',
-    municipality: '',
-    gender: 'M',
-    email: '',
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    ciudad: '',
+    municipio: '',
+    genero: 'M',
+    correo: '',
   });
   const [qrBase64, setQrBase64] = useState('');
   const [loading, setLoading] = useState(false);
@@ -81,12 +81,12 @@ export default function ParticipantRegister() {
       }
 
       // Using goQR.me API instead of local library
-      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(participant.qrCode)}&size=200x200&color=4318FF`;
+      const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(participant.codigoQR)}&size=200x200&color=4318FF`;
       setQrBase64(qrUrl);
 
       toast({
         title: '¡Registro Exitoso!',
-        description: `${participant.firstName} ha sido registrado.`,
+        description: `${participant.nombre} ha sido registrado.`,
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -133,12 +133,12 @@ export default function ParticipantRegister() {
         <body onload="window.print()">
           <div class="badge">
             <div class="header">EVENTO FRANCOPHONIE</div>
-            <div class="name">${formData.firstName}<br>${formData.lastNamePaternal}</div>
-            <div class="location">${formData.city}, ${formData.municipality}</div>
+            <div class="name">${formData.nombre}<br>${formData.apellidoPaterno}</div>
+            <div class="location">${formData.ciudad}, ${formData.municipio}</div>
             <div class="qr-container">
                 <img src="${qrBase64}" />
             </div>
-            <div class="footer">${formData.email}</div>
+            <div class="footer">${formData.correo}</div>
           </div>
         </body>
       </html>
@@ -167,10 +167,10 @@ export default function ParticipantRegister() {
                 <InputGroup>
                   <InputLeftElement children={<Icon as={MdPerson} color={brandColor} />} />
                   <Input 
-                    name="firstName" 
+                    name="nombre" 
                     variant="auth"
                     bg={inputBg}
-                    value={formData.firstName} 
+                    value={formData.nombre} 
                     onChange={handleChange} 
                     placeholder="Escriba el nombre..." 
                   />
@@ -181,10 +181,10 @@ export default function ParticipantRegister() {
                 <FormControl isRequired>
                   <FormLabel color={textColor} fontWeight="bold">Apellido Paterno</FormLabel>
                   <Input 
-                    name="lastNamePaternal" 
+                    name="apellidoPaterno" 
                     variant="auth"
                     bg={inputBg}
-                    value={formData.lastNamePaternal} 
+                    value={formData.apellidoPaterno} 
                     onChange={handleChange} 
                     placeholder="Paterno" 
                   />
@@ -192,7 +192,7 @@ export default function ParticipantRegister() {
                 <FormControl isRequired>
                   <FormLabel color={textColor} fontWeight="bold">Apellido Materno</FormLabel>
                   <Input 
-                    name="lastNameMaternal" 
+                    name="apellidoMaterno" 
                     variant="auth"
                     bg={inputBg}
                     value={formData.lastNameMaternal} 
@@ -208,10 +208,10 @@ export default function ParticipantRegister() {
                   <InputGroup>
                     <InputLeftElement children={<Icon as={MdLocationCity} color={brandColor} />} />
                     <Input 
-                      name="city" 
+                      name="ciudad" 
                       variant="auth"
                       bg={inputBg}
-                      value={formData.city} 
+                      value={formData.ciudad} 
                       onChange={handleChange} 
                       placeholder="Ej: CDMX" 
                     />
@@ -220,10 +220,10 @@ export default function ParticipantRegister() {
                 <FormControl isRequired>
                   <FormLabel color={textColor} fontWeight="bold">Municipio</FormLabel>
                   <Input 
-                    name="municipality" 
+                    name="municipio" 
                     variant="auth"
                     bg={inputBg}
-                    value={formData.municipality} 
+                    value={formData.municipio} 
                     onChange={handleChange} 
                     placeholder="Municipio" 
                   />
@@ -236,10 +236,10 @@ export default function ParticipantRegister() {
                   <InputGroup>
                     <InputLeftElement children={<Icon as={MdWc} color={brandColor} />} />
                     <Select 
-                      name="gender" 
+                      name="genero" 
                       variant="auth"
                       bg={inputBg}
-                      value={formData.gender} 
+                      value={formData.genero} 
                       onChange={handleChange}
                       ps="40px"
                     >
@@ -254,11 +254,11 @@ export default function ParticipantRegister() {
                   <InputGroup>
                     <InputLeftElement children={<Icon as={MdEmail} color={brandColor} />} />
                     <Input 
-                      name="email" 
+                      name="correo" 
                       type="email" 
                       variant="auth"
                       bg={inputBg}
-                      value={formData.email} 
+                      value={formData.correo} 
                       onChange={handleChange} 
                       placeholder="usuario@correo.com" 
                     />
@@ -300,10 +300,10 @@ export default function ParticipantRegister() {
               
               <VStack spacing="5px" mt="30px" mb="20px">
                 <Text color={textColor} fontSize="28px" fontWeight="800" textAlign="center" lineHeight="1.1">
-                  {formData.firstName}<br/>{formData.lastNamePaternal}
+                  {formData.nombre}<br/>{formData.apellidoPaterno}
                 </Text>
                 <Text color={textColorSecondary} fontSize="md" fontWeight="500">
-                  {formData.city}, {formData.municipality}
+                  {formData.ciudad}, {formData.municipio}
                 </Text>
               </VStack>
 
@@ -312,7 +312,7 @@ export default function ParticipantRegister() {
               </Box>
 
               <Text color={textColorSecondary} fontSize="xs" mb="25px" borderTop="1px dashed" borderColor="gray.200" pt="15px" w="100%" textAlign="center">
-                {formData.email}
+                {formData.correo}
               </Text>
 
               <Button 

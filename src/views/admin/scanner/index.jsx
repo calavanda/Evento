@@ -214,7 +214,7 @@ export default function VisitScanner() {
       const response = await fetch(`${API_URL}/api/visits/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ qrCode, standId: selectedStand }),
+        body: JSON.stringify({ codigoQR: qrCode, estandId: selectedStand }),
       });
       
       const data = await response.json();
@@ -259,7 +259,7 @@ export default function VisitScanner() {
               h="55px" borderRadius="15px"
             >
               {stands.map(s => (
-                <option key={s._id} value={s._id} style={{color: 'black'}}>{s.name} - {s.responsible}</option>
+                <option key={s._id} value={s._id} style={{color: 'black'}}>{s.nombre} - {s.responsable}</option>
               ))}
             </Select>
           </FormControl>
@@ -414,9 +414,9 @@ export default function VisitScanner() {
                 <Box mt="20px" pt="20px" borderTop="1px solid" borderColor="green.200">
                   <Text fontSize="sm" color="green.700" fontWeight="bold" mb="5px">PARTICIPANTE:</Text>
                   <Text fontSize="xl" fontWeight="800" color="green.900">
-                    {scanResult.data.participant.firstName} {scanResult.data.participant.lastNamePaternal}
+                    {scanResult.data.participant.nombre} {scanResult.data.participant.apellidoPaterno}
                   </Text>
-                  <Badge colorScheme="green" mt="10px">Visita #{scanResult.data.participant.currentVisitCount}</Badge>
+                  <Badge colorScheme="green" mt="10px">Visita #{scanResult.data.participant.conteoVisitas}</Badge>
                 </Box>
               )}
             </Card>

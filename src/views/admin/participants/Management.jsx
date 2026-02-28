@@ -38,13 +38,13 @@ export default function ParticipantManagement() {
   const [loading, setLoading] = useState(true);
   const [editUser, setEditUser] = useState(null);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastNamePaternal: '',
-    lastNameMaternal: '',
-    city: '',
-    municipality: '',
-    gender: 'M',
-    email: '',
+    nombre: '',
+    apellidoPaterno: '',
+    apellidoMaterno: '',
+    ciudad: '',
+    municipio: '',
+    genero: 'M',
+    correo: '',
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -80,8 +80,8 @@ export default function ParticipantManagement() {
   };
 
   const filteredParticipants = participants.filter(p => 
-    `${p.firstName} ${p.lastNamePaternal}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    p.email.toLowerCase().includes(searchTerm.toLowerCase())
+    `${p.nombre} ${p.apellidoPaterno}`.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    p.correo.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleEdit = (user) => {
@@ -179,18 +179,18 @@ export default function ParticipantManagement() {
                 {filteredParticipants.map((user) => (
                   <Tr key={user._id} _hover={{ bg: inputBg }}>
                     <Td>
-                      <Text fontWeight="700" color={textColor}>{user.firstName} {user.lastNamePaternal} {user.lastNameMaternal}</Text>
+                      <Text fontWeight="700" color={textColor}>{user.nombre} {user.apellidoPaterno} {user.apellidoMaterno}</Text>
                     </Td>
                     <Td>
-                      <Text fontWeight="500">{user.email}</Text>
+                      <Text fontWeight="500">{user.correo}</Text>
                     </Td>
                     <Td>
                       <Badge variant="subtle" colorScheme="brand" borderRadius="5px">
-                        {user.city}, {user.municipality}
+                        {user.ciudad}, {user.municipio}
                       </Badge>
                     </Td>
                     <Td>
-                        <Text fontWeight="500">{user.gender === 'M' ? 'Masc' : user.gender === 'F' ? 'Fem' : 'Otro'}</Text>
+                        <Text fontWeight="500">{user.genero === 'M' ? 'Masc' : user.genero === 'F' ? 'Fem' : 'Otro'}</Text>
                     </Td>
                     <Td textAlign="center">
                       <IconButton
@@ -230,27 +230,27 @@ export default function ParticipantManagement() {
               <SimpleGrid columns={2} spacing="20px">
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Nombre</FormLabel>
-                  <Input name="firstName" bg={inputBg} variant="auth" value={formData.firstName} onChange={handleChange} />
+                  <Input name="nombre" bg={inputBg} variant="auth" value={formData.nombre} onChange={handleChange} />
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Paterno</FormLabel>
-                  <Input name="lastNamePaternal" bg={inputBg} variant="auth" value={formData.lastNamePaternal} onChange={handleChange} />
+                  <Input name="apellidoPaterno" bg={inputBg} variant="auth" value={formData.apellidoPaterno} onChange={handleChange} />
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Materno</FormLabel>
-                  <Input name="lastNameMaternal" bg={inputBg} variant="auth" value={formData.lastNameMaternal} onChange={handleChange} />
+                  <Input name="apellidoMaterno" bg={inputBg} variant="auth" value={formData.apellidoMaterno} onChange={handleChange} />
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Correo</FormLabel>
-                  <Input name="email" type="email" bg={inputBg} variant="auth" value={formData.email} onChange={handleChange} />
+                  <Input name="correo" type="email" bg={inputBg} variant="auth" value={formData.correo} onChange={handleChange} />
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Ciudad</FormLabel>
-                  <Input name="city" bg={inputBg} variant="auth" value={formData.city} onChange={handleChange} />
+                  <Input name="ciudad" bg={inputBg} variant="auth" value={formData.ciudad} onChange={handleChange} />
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Municipio</FormLabel>
-                  <Input name="municipality" bg={inputBg} variant="auth" value={formData.municipality} onChange={handleChange} />
+                  <Input name="municipio" bg={inputBg} variant="auth" value={formData.municipio} onChange={handleChange} />
                 </FormControl>
               </SimpleGrid>
             </ModalBody>

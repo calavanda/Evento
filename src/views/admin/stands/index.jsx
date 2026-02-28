@@ -27,10 +27,10 @@ import { MdStorefront, MdPerson, MdPlace, MdDescription, MdAddCircle } from 'rea
 
 export default function StandManagement() {
   const [formData, setFormData] = useState({
-    name: '',
-    responsible: '',
-    location: '',
-    description: '',
+    nombre: '',
+    responsable: '',
+    ubicacion: '',
+    descripcion: '',
   });
   const [loading, setLoading] = useState(false);
   const [standList, setStandList] = useState([]);
@@ -93,7 +93,7 @@ export default function StandManagement() {
         duration: 3000,
         isClosable: true,
       });
-      setFormData({ name: '', responsible: '', location: '', description: '' });
+      setFormData({ nombre: '', responsable: '', ubicacion: '', descripcion: '' });
       fetchStands();
     } catch (error) {
       toast({
@@ -126,10 +126,10 @@ export default function StandManagement() {
                 <InputGroup>
                   <InputLeftElement children={<Icon as={MdStorefront} color={brandColor} />} />
                   <Input 
-                    name="name" 
+                    name="nombre" 
                     variant="auth"
                     bg={inputBg}
-                    value={formData.name} 
+                    value={formData.nombre} 
                     onChange={handleChange} 
                     placeholder="Ej: Gastronomía Francesa I" 
                   />
@@ -141,10 +141,10 @@ export default function StandManagement() {
                 <InputGroup>
                   <InputLeftElement children={<Icon as={MdPerson} color={brandColor} />} />
                   <Input 
-                    name="responsible" 
+                    name="responsable" 
                     variant="auth"
                     bg={inputBg}
-                    value={formData.responsible} 
+                    value={formData.responsable} 
                     onChange={handleChange} 
                     placeholder="Nombre del responsable..." 
                   />
@@ -157,10 +157,10 @@ export default function StandManagement() {
                   <InputGroup>
                     <InputLeftElement children={<Icon as={MdPlace} color={brandColor} />} />
                     <Input 
-                      name="location" 
+                      name="ubicacion" 
                       variant="auth"
                       bg={inputBg}
-                      value={formData.location} 
+                      value={formData.ubicacion} 
                       onChange={handleChange} 
                       placeholder="Ej: Mesa 5" 
                     />
@@ -171,10 +171,10 @@ export default function StandManagement() {
                     <InputGroup>
                       <InputLeftElement children={<Icon as={MdDescription} color={brandColor} />} />
                       <Input 
-                        name="description" 
+                        name="descripcion" 
                         variant="auth"
                         bg={inputBg}
-                        value={formData.description} 
+                        value={formData.descripcion} 
                         onChange={handleChange} 
                         placeholder="Platillo o tema..." 
                       />
@@ -223,13 +223,13 @@ export default function StandManagement() {
               {standList.map((stand) => (
                 <Tr key={stand._id} _hover={{ bg: inputBg }}>
                   <Td>
-                    <Text fontWeight="700" color={textColor}>{stand.name}</Text>
-                    <Text fontSize="xs" color={textColorSecondary}>{stand.description}</Text>
+                    <Text fontWeight="700" color={textColor}>{stand.nombre}</Text>
+                    <Text fontSize="xs" color={textColorSecondary}>{stand.descripcion}</Text>
                   </Td>
-                  <Td fontWeight="500">{stand.responsible}</Td>
+                  <Td fontWeight="500">{stand.responsable}</Td>
                   <Td>
                     <Badge variant="soft" colorScheme="brand" borderRadius="5px">
-                        {stand.location || 'N/A'}
+                        {stand.ubicacion || 'N/A'}
                     </Badge>
                   </Td>
                   <Td>

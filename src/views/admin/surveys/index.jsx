@@ -20,13 +20,13 @@ import { MdFactCheck, MdStorefront, MdComment } from 'react-icons/md';
 
 export default function SurveySatisfaction() {
   const [formData, setFormData] = useState({
-    stand: '',
-    q1: '5',
-    q2: '5',
-    q3: '5',
-    q4: '5',
-    q5: '5',
-    comments: '',
+    estand: '',
+    p1: '5',
+    p2: '5',
+    p3: '5',
+    p4: '5',
+    p5: '5',
+    comentarios: '',
   });
   const [stands, setStands] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -56,18 +56,18 @@ export default function SurveySatisfaction() {
       }
       const data = await response.json();
       setStands(data);
-      if (data.length > 0) setFormData(prev => ({ ...prev, stand: data[0]._id }));
+      if (data.length > 0) setFormData(prev => ({ ...prev, estand: data[0]._id }));
     } catch (error) {
       console.error('Error fetching stands', error);
     }
   };
 
   const questions = [
-    { id: 'q1', text: '¿Qué tan satisfecho está con la organización del evento?' },
-    { id: 'q2', text: '¿Cómo calificaría la calidad de los platillos evaluados?' },
-    { id: 'q3', text: '¿Qué tan fácil fue realizar el registro y escaneo?' },
-    { id: 'q4', text: '¿La atención en los estands fue adecuada?' },
-    { id: 'q5', text: '¿Recomendaría este evento a otras personas?' },
+    { id: 'p1', text: '¿Qué tan satisfecho está con la organización del evento?' },
+    { id: 'p2', text: '¿Cómo calificaría la calidad de los platillos evaluados?' },
+    { id: 'p3', text: '¿Qué tan fácil fue realizar el registro y escaneo?' },
+    { id: 'p4', text: '¿La atención en los estands fue adecuada?' },
+    { id: 'p5', text: '¿Recomendaría este evento a otras personas?' },
   ];
 
   const handleChange = (id, value) => {
@@ -76,7 +76,7 @@ export default function SurveySatisfaction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.stand) {
+    if (!formData.estand) {
       toast({ title: 'Error', description: 'Selecciona un estand', status: 'error' });
       return;
     }
@@ -91,13 +91,13 @@ export default function SurveySatisfaction() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          stand: formData.stand,
-          q1: parseInt(formData.q1),
-          q2: parseInt(formData.q2),
-          q3: parseInt(formData.q3),
-          q4: parseInt(formData.q4),
-          q5: parseInt(formData.q5),
-          comments: formData.comments,
+          estand: formData.estand,
+          p1: parseInt(formData.p1),
+          p2: parseInt(formData.p2),
+          p3: parseInt(formData.p3),
+          p4: parseInt(formData.p4),
+          p5: parseInt(formData.p5),
+          comentarios: formData.comentarios,
         }),
       });
 
@@ -110,7 +110,7 @@ export default function SurveySatisfaction() {
         duration: 5000,
         isClosable: true,
       });
-      setFormData({ ...formData, q1: '5', q2: '5', q3: '5', q4: '5', q5: '5', comments: '' });
+      setFormData({ ...formData, p1: '5', p2: '5', p3: '5', p4: '5', p5: '5', comentarios: '' });
     } catch (error) {
       toast({
         title: 'Error',
@@ -147,11 +147,11 @@ export default function SurveySatisfaction() {
                     bg={inputBg}
                     h="60px"
                     borderRadius="15px"
-                    value={formData.stand} 
-                    onChange={(e) => setFormData({...formData, stand: e.target.value})}
+                    value={formData.estand} 
+                    onChange={(e) => setFormData({...formData, estand: e.target.value})}
                 >
                   {stands.map(s => (
-                    <option key={s._id} value={s._id} style={{color: 'black'}}>{s.name} - {s.responsible}</option>
+                    <option key={s._id} value={s._id} style={{color: 'black'}}>{s.nombre} - {s.responsable}</option>
                   ))}
                 </Select>
               </Box>
@@ -184,8 +184,8 @@ export default function SurveySatisfaction() {
                   borderRadius="20px"
                   p="20px"
                   h="120px"
-                  value={formData.comments}
-                  onChange={(e) => setFormData({...formData, comments: e.target.value})}
+                  value={formData.comentarios}
+                  onChange={(e) => setFormData({...formData, comentarios: e.target.value})}
                 />
               </Box>
 
