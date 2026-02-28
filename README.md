@@ -1,114 +1,101 @@
-# [Horizon UI ⚡️](https://horizon-ui.com/horizon-ui-chakra) [![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social&logo=twitter)](https://twitter.com/intent/tweet?url=https://horizon-ui.com/&text=Check%20Horizon%20UI,%20the%20trendiest%20open-source%20admin%20template%20for%20Chakra%20UI%20&%20React!)
+# 🇫🇷 Francophonie — Sistema de Gestión de Eventos Gastronómicos
 
-![version](https://img.shields.io/badge/version-3.0.0-brightgreen.svg)
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
-[![GitHub issues open](https://img.shields.io/github/issues/horizon-ui/horizon-ui-chakra.svg?maxAge=2592000)](https://github.com/horizon-ui/horizon-ui-chakra/issues?q=is%3Aopen+is%3Aissue)
-
-<p>&nbsp;</p>
-
-[<img alt="Horizon UI" src="https://i.ibb.co/fdyTwz1/introduction-image-2.png" /> ](https://github.com/horizon-ui/horizon-ui-chakra)
-
-<p>&nbsp;</p>
-
-Get started and build your dream web app with Horizon UI, the most trendiest &
-innovative Open Source Admin Template for Chakra UI & React!
+![version](https://img.shields.io/badge/versión-2.0.0-brightgreen.svg)
+![license](https://img.shields.io/badge/licencia-MIT-blue.svg)
+![react](https://img.shields.io/badge/React-18-61DAFB.svg?logo=react)
+![node](https://img.shields.io/badge/Node.js-Express-339933.svg?logo=node.js)
 
 ---
 
-### Introduction
+## 📋 Descripción
 
-Designed for those who like modern UI elements and beautiful websites. Made of
-hundred of elements, designed blocks and fully coded pages, Horizon UI is ready
-to help you create stunning websites and webapps.
+Ésta es una plataforma web integral diseñada para la gestión del evento gastronómico de la Francofonía. El sistema permite administrar de forma eficiente todo el ciclo del evento: desde el registro de participantes y la generación de gafetes QR, hasta el seguimiento de visitas a estands y la recolección de encuestas de satisfacción.
 
-Save hundreds of hours trying to create and develop a dashboard from scratch.
-The fastest, most responsive & trendiest dashboard is here. Seriously.
-
-With Horizon UI you will find many examples for pages like NFTs Pages,
-Authentication Pages, Profile and so on. Just choose between a Basic Design or a
-cover and you are good to go!
-
-### 🎉 [NEW] Horizon UI Components
-
-All the main components from both versions, this will help you to see and interact with all & the latest added components of Horizon (also, new components are on the way, stay tuned)! ⚡️
-<a href="https://horizon-ui.com/components/?ref=readme-horizon" target="_blank">See all components</a>
-
-### Documentation
-
-Each element is well presented in a very complex documentation. You can read
-more about the <a href="https://horizon-ui.com/documentation/docs/introduction?ref=readme-horizon" target="_blank">documentation
-here.</a>
-
-### Quick Start
-
-Install Horizon UI by running either of the following:
-
-- Install NodeJS LTS from
-  [NodeJs Official Page](https://nodejs.org/en/?ref=horizon-documentation)
-  (NOTE: Product only works with LTS version)
-
-Clone the repository with the following command:
-
-```bash
-git clone https://github.com/horizon-ui/horizon-ui-chakra.git
-```
-
-Run in terminal this command:
-
-```bash
-npm install
-```
-
-Then run this command to start your local server
-
-```bash
-npm start
-```
-
-### Example Pages
-
-If you want to get inspiration or just show something directly to your clients,
-you can jump start your development with our pre-built example pages. You will
-be able to quickly set up the basic structure for your web project. View
-<a href="https://horizon-ui.com/horizon-ui-chakra/?ref=readme-horizon" target="_blank">example
-pages here.</a>
-
-### Versions
-
-| Free Version                                                                                                       | PRO Version                                                                                                               |
-| ------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| [![Horizon UI](https://i.ibb.co/fdyTwz1/introduction-image-2.png)](https://www.horizon-ui.com/?ref=readme-horizon) | [![Horizon UI PRO](https://i.ibb.co/R6jFKRM/introduction-image-1.png)](https://www.horizon-ui.com/pro?ref=readme-horizon) |
-
-### Figma Version
-
-Horizon UI is available in Figma format as well! Check it out on Figma
-Community! 🎨
-[See the Horizon UI Figma design files](https://bit.ly/horizon-figma)
-
-### Reporting Issues
-
-We use GitHub Issues as the official bug tracker for the Horizon UI. Here are
-some advices for our users that want to report an issue:
-
-1. Make sure that you are using the latest version of the Horizon UI Dashbaord.
-   Check the CHANGELOG from your dashboard on our
-   [CHANGE LOG File](https://github.com/horizon-ui/horizon-ui-chakra/blob/main/CHANGELOG.md?ref=readme-horizon).
-2. Providing us reproducible steps for the issue will shorten the time it takes
-   for it to be fixed.
-3. Some issues may be browser specific, so specifying in what browser you
-   encountered the issue might help.
+El proyecto fue desarrollado por estudiantes del área de **Ingeniería en Gestión y Desarrollo de Software** de la **Universidad Tecnológica de Gutiérrez Zamora (UTGZ)**.
 
 ---
 
-### Community
+## ✨ Características Principales
 
-Connect with the community! Feel free to ask questions, report issues, and meet
-new people that already use Horizon UI!
+| Módulo                        | Descripción                                                                       |
+| ----------------------------- | --------------------------------------------------------------------------------- |
+| **Panel Principal**           | Dashboard con métricas del evento en tiempo real.                                 |
+| **Registro de Participantes** | Alta de asistentes con generación automática de código QR para gafete.            |
+| **Gestión de Usuarios**       | Administración y consulta de todos los participantes registrados.                 |
+| **Gestión de Estands**        | Creación y control de estands (mesas) con responsables asignados.                 |
+| **Escáner QR**                | Escaneo de códigos QR por cámara o imagen para registrar visitas a estands.       |
+| **Encuesta de Satisfacción**  | Recolección de opiniones de los participantes sobre el evento.                    |
+| **Gráficas de Información**   | Analíticas interactivas con gráficas sobre participación, visitas y satisfacción. |
 
-💬 [Join the #HorizonUI Discord Community!](https://discord.gg/f6tEKFBd4m)
+---
 
-### Copyright and license
+## 🛠️ Tecnologías Utilizadas
 
-⭐️ [Copyright 2023 Simmmple ](https://www.simmmple.com/?ref=readme-horizon)
+- **Frontend:** React 18, Chakra UI, Framer Motion, ApexCharts
+- **Backend:** Node.js, Express
+- **Base de Datos:** MongoDB (Mongoose)
+- **Otras:** html5-qrcode, qrcode, react-router-dom, axios
 
-📄 [Horizon UI License](https://www.simmmple.com/licenses?ref=readme-horizon)
+---
+
+## 🚀 Instalación y Ejecución
+
+### Prerrequisitos
+
+- [Node.js](https://nodejs.org/) (versión LTS recomendada)
+- [MongoDB](https://www.mongodb.com/) (local o en la nube)
+
+### Pasos
+
+1. **Clonar el repositorio:**
+
+   ```bash
+   git clone https://github.com/tu-usuario/francophonie.git
+   cd francophonie
+   ```
+
+2. **Instalar dependencias:**
+
+   ```bash
+   npm install
+   ```
+
+3. **Configurar variables de entorno:**
+
+   Crear un archivo `.env` en la raíz del proyecto con las variables necesarias (conexión a MongoDB, puerto del servidor, etc.).
+
+4. **Iniciar el servidor backend:**
+
+   ```bash
+   node server/server.js
+   ```
+
+5. **Iniciar la aplicación frontend:**
+
+   ```bash
+   npm start
+   ```
+
+   La aplicación estará disponible en `http://localhost:3000`.
+
+---
+
+## 👥 Integrantes del Equipo
+
+| Nombre                        | Institución | Área                                           |
+| ----------------------------- | ----------- | ---------------------------------------------- |
+| **Alfredo Castillo Gerónimo** | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
+| **Luis Sosa Vega**            | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
+| **Andrey Emilio**             | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la **Licencia MIT**. Consulta el archivo [LICENSE](./LICENSE) para más detalles.
+
+---
+
+<p align="center">
+  Desarrollado con ❤️ en la <strong>Universidad Tecnológica de Gutiérrez Zamora</strong>
+</p>
