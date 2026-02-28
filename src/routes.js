@@ -5,7 +5,6 @@ import {
   MdBarChart,
   MdPerson,
   MdHome,
-  MdLock,
   MdPeople,
   MdTableChart,
   MdQrCode2,
