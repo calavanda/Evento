@@ -41,6 +41,7 @@ import {
   MdDelete,
   MdUpdate
 } from 'react-icons/md';
+import { getApiUrl } from 'utils/api';
 
 export default function StandManagement() {
   const [formData, setFormData] = useState({
@@ -68,13 +69,6 @@ export default function StandManagement() {
 
 
 
-  const getApiUrl = () => {
-    return process.env.REACT_APP_API_URL 
-      ? (process.env.REACT_APP_API_URL.startsWith('http') 
-          ? process.env.REACT_APP_API_URL 
-          : `https://${process.env.REACT_APP_API_URL}`) 
-      : 'http://localhost:5001';
-  };
 
   const fetchStands = React.useCallback(async () => {
     try {
