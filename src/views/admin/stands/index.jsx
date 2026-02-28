@@ -78,7 +78,7 @@ export default function StandManagement() {
       : 'http://localhost:5001';
   };
 
-  const fetchStands = async () => {
+  const fetchStands = React.useCallback(async () => {
     try {
       const API_URL = getApiUrl();
       const response = await fetch(`${API_URL}/api/stands`);
@@ -91,7 +91,11 @@ export default function StandManagement() {
     } catch (error) {
       console.error('Error fetching stands', error);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchStands();
+  }, [fetchStands]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
