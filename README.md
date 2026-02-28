@@ -1,4 +1,4 @@
-# 🇫🇷 Francophonie — Sistema de Gestión de Eventos Gastronómicos
+# Sistema de Gestión de Eventos Gastronómicos
 
 ![version](https://img.shields.io/badge/versión-2.0.0-brightgreen.svg)
 ![license](https://img.shields.io/badge/licencia-MIT-blue.svg)
