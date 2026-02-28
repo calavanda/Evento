@@ -61,7 +61,11 @@ export default function ParticipantManagement() {
 
   const fetchParticipants = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/participants`);
       const contentType = response.headers.get("content-type");
       if (!response.ok || !contentType || !contentType.includes("application/json")) {
@@ -89,7 +93,11 @@ export default function ParticipantManagement() {
   const handleDelete = async (id) => {
     if (!window.confirm('¿Estás seguro de eliminar este participante?')) return;
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/participants/${id}`, {
         method: 'DELETE',
       });
@@ -105,7 +113,11 @@ export default function ParticipantManagement() {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/participants/${editUser._id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

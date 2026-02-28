@@ -58,7 +58,11 @@ export default function ParticipantRegister() {
     setLoading(true);
     setQrBase64(''); // Clear previous QR
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/participants`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

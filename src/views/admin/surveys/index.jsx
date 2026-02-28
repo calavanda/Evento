@@ -44,7 +44,11 @@ export default function SurveySatisfaction() {
 
   const fetchStands = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/stands`);
       const contentType = response.headers.get("content-type");
       if (!response.ok || !contentType?.includes("application/json")) {
@@ -78,7 +82,11 @@ export default function SurveySatisfaction() {
     }
     setLoading(true);
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/surveys`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

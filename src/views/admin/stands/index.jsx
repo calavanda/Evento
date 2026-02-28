@@ -48,7 +48,11 @@ export default function StandManagement() {
 
   const fetchStands = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/stands`);
       const contentType = response.headers.get("content-type");
       if (!response.ok || !contentType || !contentType.includes("application/json")) {
@@ -69,7 +73,11 @@ export default function StandManagement() {
     e.preventDefault();
     setLoading(true);
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/stands`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -75,7 +75,11 @@ export default function VisitScanner() {
 
   const fetchStands = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/stands`);
       const contentType = response.headers.get("content-type");
       if (!response.ok || !contentType?.includes("application/json")) {
@@ -202,7 +206,11 @@ export default function VisitScanner() {
   // ── Visit registration (shared by both methods) ──
   const handleScan = async (qrCode) => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
       const response = await fetch(`${API_URL}/api/visits/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
