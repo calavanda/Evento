@@ -8,4 +8,4 @@ const StandSchema = new mongoose.Schema({
   active: { type: Boolean, default: true }
 });
 
-module.exports = mongoose.model('Stand', StandSchema);
+module.exports = mongoose.model('Estand', StandSchema);

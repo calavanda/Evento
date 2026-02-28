@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const Participant = require('../models/Participant');
-const Stand = require('../models/Stand');
-const Visit = require('../models/Visit');
-const Survey = require('../models/Survey');
+const Participant = require('../models/Participante');
+const Stand = require('../models/Estand');
+const Visit = require('../models/Visita');
+const Survey = require('../models/Encuesta');
 const moment = require('moment');
 
 // --- Participant Routes ---
@@ -169,7 +169,7 @@ router.get('/reports/stand-analytics', async (req, res) => {
     // Visits per stand
     const visitStats = await Visit.aggregate([
       { $group: { _id: '$stand', count: { $sum: 1 } } },
-      { $lookup: { from: 'stands', localField: '_id', foreignField: '_id', as: 'standDetails' } },
+      { $lookup: { from: 'estands', localField: '_id', foreignField: '_id', as: 'standDetails' } },
       { $unwind: '$standDetails' },
       { $project: { name: '$standDetails.name', count: 1 } }
     ]);
@@ -180,7 +180,7 @@ router.get('/reports/stand-analytics', async (req, res) => {
           _id: '$stand', 
           avgRating: { $avg: { $add: ['$q1', '$q2', '$q3', '$q4', '$q5'] } } 
       } },
-      { $lookup: { from: 'stands', localField: '_id', foreignField: '_id', as: 'standDetails' } },
+      { $lookup: { from: 'estands', localField: '_id', foreignField: '_id', as: 'standDetails' } },
       { $unwind: '$standDetails' },
       { $project: { name: '$standDetails.name', avgRating: { $divide: ['$avgRating', 5] } } }
     ]);
@@ -195,7 +195,7 @@ router.get('/reports/stand-visits', async (req, res) => {
   try {
     const stats = await Visit.aggregate([
       { $group: { _id: '$stand', count: { $sum: 1 } } },
-      { $lookup: { from: 'stands', localField: '_id', foreignField: '_id', as: 'standDetails' } },
+      { $lookup: { from: 'estands', localField: '_id', foreignField: '_id', as: 'standDetails' } },
       { $unwind: '$standDetails' },
       { $project: { name: '$standDetails.name', count: 1 } },
       { $sort: { count: -1 } }

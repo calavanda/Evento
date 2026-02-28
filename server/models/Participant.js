@@ -14,4 +14,4 @@ const ParticipantSchema = new mongoose.Schema({
   lastVisitReset: { type: Date, default: Date.now }
 });
 
-module.exports = mongoose.model('Participant', ParticipantSchema);
+module.exports = mongoose.model('Participante', ParticipantSchema);
