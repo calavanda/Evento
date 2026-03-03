@@ -58,7 +58,7 @@ export default function SurveySatisfaction() {
       setStands(data);
       if (data.length > 0) setFormData(prev => ({ ...prev, estand: data[0]._id }));
     } catch (error) {
-      console.error('Error fetching stands', error);
+      console.error('Error al obtener los estands', error);
     }
   };
 

@@ -89,11 +89,11 @@ export default function VisitScanner() {
       setStands(data);
       if (data.length > 0) setSelectedStand(data[0]._id);
     } catch (error) {
-      console.error('Error fetching stands', error);
+      console.error('Error al obtener los estands', error);
     }
   };
 
-  // ── Camera scanning ──
+  // ── Escaneo con cámara ──
   const startScanner = async () => {
     if (!selectedStand) {
       toast({ title: 'Selecciona un estand primero', status: 'warning' });
@@ -110,7 +110,7 @@ export default function VisitScanner() {
         const config = { 
           fps: 10, 
           qrbox: function(viewfinderWidth, viewfinderHeight) {
-            // Make qrbox 70% of the smallest dimension
+            // Hace que qrbox sea el 70% de la dimensión más pequeña
             const minEdge = Math.min(viewfinderWidth, viewfinderHeight);
             const qrboxSize = Math.floor(minEdge * 0.7);
             return { width: qrboxSize, height: qrboxSize };
@@ -119,7 +119,7 @@ export default function VisitScanner() {
           disableFlip: false,
         };
 
-        // Use selected camera ID, or fallback to environment (back camera)
+        // Usa el ID de la cámara seleccionada o recurre al entorno (cámara trasera)
         const cameraId = selectedCamera || { facingMode: "environment" };
 
         await html5Qrcode.start(cameraId, config,
@@ -129,16 +129,16 @@ export default function VisitScanner() {
               scannerRef.current = null;
               setScanning(false);
               handleScan(decodedText);
-            }).catch(err => console.error('Error stopping scanner:', err));
+            }).catch(err => console.error('Error al detener el escáner:', err));
           },
           (errorMessage) => {
-            // This fires continuously when no QR is found — ignore silently
+            // Esto se dispara continuamente cuando no se encuentra un QR; se ignora silenciosamente
           }
         );
         console.log('📷 Cámara activada correctamente');
       } catch (err) {
         setScanning(false);
-        console.error('Camera error:', err);
+        console.error('Error de cámara:', err);
         toast({
           title: 'Error al acceder a la cámara',
           description: String(err),
@@ -156,7 +156,7 @@ export default function VisitScanner() {
     setScanning(false);
   };
 
-  // ── Image upload scanning via goQR.me API ──
+  // ── Subir imagen mediante la API de goQR.me ──
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -166,14 +166,14 @@ export default function VisitScanner() {
       return;
     }
 
-    // Show preview
+    // Muestra la vista previa
     const previewUrl = URL.createObjectURL(file);
     setUploadPreview(previewUrl);
     setUploadLoading(true);
     setScanResult(null);
 
     try {
-      // Send image to goQR.me read API
+      // Envía la imagen a la API de lectura de goQR.me
       const formData = new FormData();
       formData.append('file', file);
 
@@ -190,7 +190,7 @@ export default function VisitScanner() {
         throw new Error(qrError || 'No se pudo leer el código QR de la imagen.');
       }
 
-      // QR decoded successfully, now register the visit
+      // QR decodificado correctamente, ahora registra la visita
       handleScan(qrData);
     } catch (error) {
       setScanResult({ success: false, error: error.message });
@@ -203,7 +203,7 @@ export default function VisitScanner() {
     setUploadLoading(false);
   };
 
-  // ── Visit registration (shared by both methods) ──
+  // ── Registro de visita (compartido por ambos métodos) ──
   const handleScan = async (qrCode) => {
     try {
       const API_URL = process.env.REACT_APP_API_URL 
@@ -247,7 +247,7 @@ export default function VisitScanner() {
             <Text color={textColorSecondary} fontSize="md">Escanee o suba una imagen del código QR del participante.</Text>
           </VStack>
 
-          {/* Stand selector */}
+          {/* Selector de estand */}
           <FormControl mb="20px">
             <FormLabel fontWeight="bold" display="flex" alignItems="center">
               <Icon as={MdStorefront} mr="10px" color={brandColor} /> Tu Estand Actual
@@ -264,7 +264,7 @@ export default function VisitScanner() {
             </Select>
           </FormControl>
 
-          {/* Tabs: Camera vs Upload */}
+          {/* Tabs: Cámara vs Subir Imagen */}
           <Tabs variant="soft-rounded" colorScheme="brand" isFitted>
             <TabList mb="20px" bg={inputBg} p="5px" borderRadius="15px">
               <Tab borderRadius="12px" fontWeight="700" _selected={{ bg: brandColor, color: 'white' }}>
@@ -276,9 +276,9 @@ export default function VisitScanner() {
             </TabList>
 
             <TabPanels>
-              {/* ── Tab 1: Camera ── */}
+              {/* ── Tab 1: Cámara ── */}
               <TabPanel p="0">
-                {/* Camera selector */}
+                {/* Selector de cámara */}
                 {cameras.length > 1 && (
                   <FormControl mb="20px">
                     <FormLabel fontWeight="bold" display="flex" alignItems="center" fontSize="sm">
@@ -299,7 +299,7 @@ export default function VisitScanner() {
                   </FormControl>
                 )}
 
-                {/* Camera viewport */}
+                {/* Visor de cámara */}
                 {scanning && (
                   <Box 
                     id="reader" w="100%" minH="350px" borderRadius="20px" overflow="hidden" 
@@ -333,10 +333,10 @@ export default function VisitScanner() {
                 )}
               </TabPanel>
 
-              {/* ── Tab 2: Upload Image ── */}
+              {/* ── Tab 2: Subir imagen ── */}
               <TabPanel p="0">
                 <VStack spacing="20px" w="100%">
-                  {/* Upload area */}
+                  {/* Área de carga */}
                   <Flex
                     direction="column" align="center" justify="center"
                     w="100%" minH="200px" p="30px"
@@ -389,7 +389,7 @@ export default function VisitScanner() {
             </TabPanels>
           </Tabs>
 
-          {/* ── Scan Result (shared by both tabs) ── */}
+          {/* ── Resultado del escaneo (compartido por ambas pestañas) ── */}
           {scanResult && (
             <Card 
               w="100%" p="25px" mt="20px" borderRadius="20px" 
@@ -422,7 +422,7 @@ export default function VisitScanner() {
             </Card>
           )}
 
-          {/* Scan again button */}
+          {/* Escanear de nuevo */}
           {scanResult && !scanning && (
             <Button 
               variant="outline" colorScheme="brand" w="100%" h="55px" mt="15px"

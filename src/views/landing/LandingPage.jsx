@@ -59,7 +59,7 @@ export default function LandingPage() {
         overflow="hidden"
         position="relative"
     >
-      {/* Decorative Blobs */}
+      {/* Decorativos */}
       <Box
         position="absolute"
         top="-10%"
@@ -103,7 +103,7 @@ export default function LandingPage() {
           </Button>
         </Flex>
 
-        {/* Hero Section */}
+        {/* Sección Hero */}
         <Stack
           align={"center"}
           spacing={{ base: 8, md: 10 }}
@@ -175,7 +175,7 @@ export default function LandingPage() {
           </Flex>
         </Stack>
 
-        {/* Features Table */}
+        {/* Tabla de características */}
         <Box py={20}>
           <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
             <Feature
@@ -199,7 +199,7 @@ export default function LandingPage() {
         {/* Footer */}
         <Box py={10} borderTop="1px solid" borderColor={useColorModeValue("gray.200", "whiteAlpha.100")} textAlign="center">
           <Text color="gray.500" fontSize="sm">
-            © 2026 Sistema Francophonie. Todos los derechos reservados.
+            © 2026 Sistema del Evento Le Saveurs de la Francophonie. Todos los derechos reservados.
           </Text>
         </Box>
       </Container>

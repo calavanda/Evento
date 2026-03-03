@@ -56,7 +56,7 @@ export default function ParticipantRegister() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setQrBase64(''); // Clear previous QR
+    setQrBase64(''); // Limpia el QR anterior
     try {
       const API_URL = process.env.REACT_APP_API_URL 
         ? (process.env.REACT_APP_API_URL.startsWith('http') 
@@ -80,7 +80,7 @@ export default function ParticipantRegister() {
         throw new Error(participant.error || 'Error en el registro');
       }
 
-      // Using goQR.me API instead of local library
+      // Usando la API de goQR.me en lugar de la biblioteca local
       const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(participant.codigoQR)}&size=200x200&color=4318FF`;
       setQrBase64(qrUrl);
 
@@ -149,7 +149,7 @@ export default function ParticipantRegister() {
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <SimpleGrid columns={{ base: 1, lg: 2 }} spacing="20px">
-        {/* Form Card */}
+        {/* Formulario */}
         <Card p="30px" bg={cardBg} boxShadow={cardShadow} borderRadius="20px">
           <VStack align="start" spacing="5px" mb="30px">
             <Text color={textColor} fontSize="24px" fontWeight="700">
@@ -283,7 +283,7 @@ export default function ParticipantRegister() {
           </form>
         </Card>
 
-        {/* Badge Preview Card */}
+        {/* Vista previa de la identificación */}
         <Flex direction="column" align="center" justify="center">
           {qrBase64 ? (
             <Card p="40px" bg={cardBg} boxShadow={cardShadow} borderRadius="20px" align="center" w="100%" maxW="400px">

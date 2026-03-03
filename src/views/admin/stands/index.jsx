@@ -81,7 +81,7 @@ export default function StandManagement() {
       const data = await response.json();
       setStandList(data);
     } catch (error) {
-      console.error('Error fetching stands', error);
+      console.error('Error al obtener los estands', error);
     }
   }, []);
 
@@ -183,7 +183,7 @@ export default function StandManagement() {
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing="20px">
-        {/* Registration/Edit Form */}
+        {/* Registro/Edición de Estand */}
         <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
           <VStack align="start" spacing="5px" mb="30px">
             <Text color={textColor} fontSize="24px" fontWeight="700">
@@ -289,7 +289,7 @@ export default function StandManagement() {
           </form>
         </Card>
 
-        {/* Stand List Table */}
+        {/* Tabla de estands */}
         <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)" overflowX="auto">
           <Flex direction="column" mb="30px">
             <Text color={textColor} fontSize="22px" fontWeight="700">
@@ -354,7 +354,7 @@ export default function StandManagement() {
         </Card>
       </SimpleGrid>
 
-      {/* Delete Confirmation Dialog */}
+      {/* Diálogo de confirmación de eliminación */}
       <AlertDialog
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
