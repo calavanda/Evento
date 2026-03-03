@@ -128,17 +128,21 @@ export default function Analytics() {
     legend: { show: true, position: 'top', labels: { colors: '#A3AED0' } }
   };
 
-  const standUniqueNames = [...new Set(data?.peakVisits?.map(v => v.standName) || [])];
+  const standUniqueNames = [...new Set(data?.peakVisits?.map(v => v.standName).filter(n => typeof n === 'string') || [])];
   
   const totalPeakData = Array(24).fill(0);
   data?.peakVisits?.forEach(v => {
-    totalPeakData[v.hour] += v.count;
+    if (v.hour !== undefined && v.hour !== null) {
+        totalPeakData[v.hour] += v.count;
+    }
   });
 
   const standSeries = standUniqueNames.map(name => {
     const standData = Array(24).fill(0);
     data?.peakVisits?.filter(v => v.standName === name).forEach(v => {
-      standData[v.hour] = v.count;
+      if (v.hour !== undefined && v.hour !== null) {
+          standData[v.hour] = v.count;
+      }
     });
     return { name, data: standData };
   });
