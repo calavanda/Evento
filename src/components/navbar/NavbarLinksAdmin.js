@@ -6,13 +6,10 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 
-import { SearchBar } from 'components/navbar/searchBar/SearchBar';
-import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import PropTypes from 'prop-types';
 import React from 'react';
 // Assets
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
-import routes from 'routes';
 import { UserButton } from '@clerk/clerk-react';
 
 export default function HeaderLinks(props) {
