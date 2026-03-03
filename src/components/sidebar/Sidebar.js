@@ -6,10 +6,8 @@ import {
   Flex,
   Drawer,
   DrawerBody,
-  Icon,
   useColorModeValue,
   DrawerOverlay,
-  useDisclosure,
   DrawerContent,
   DrawerCloseButton,
 } from "@chakra-ui/react";
@@ -22,8 +20,7 @@ import {
 import { Scrollbars } from "react-custom-scrollbars-2";
 import PropTypes from "prop-types";
 
-// Assets
-import { IoMenuOutline } from "react-icons/io5";
+// Custom scrollbars
 
 function Sidebar(props) {
   const { routes } = props;
@@ -64,9 +61,8 @@ function Sidebar(props) {
 // FUNCTIONS
 export function SidebarResponsive(props) {
   let sidebarBackgroundColor = useColorModeValue("white", "navy.800");
-  let menuColor = useColorModeValue("gray.400", "white");
   // // SIDEBAR
-  const { isOpen, onOpen, onClose } = props;
+  const { isOpen, onClose } = props;
   const btnRef = React.useRef();
 
   const { routes } = props;
