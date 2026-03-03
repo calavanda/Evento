@@ -17,6 +17,7 @@ export default function HeaderLinks(props) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   const navbarIcon = useColorModeValue('gray.400', 'white');
+  const mainText = useColorModeValue('navy.700', 'white');
   let menuBg = useColorModeValue('white', 'navy.800');
   const shadow = useColorModeValue(
     '14px 17px 40px 4px rgba(112, 144, 176, 0.18)',
