@@ -134,19 +134,6 @@ export default function AdminNavbar(props) {
 						)}
 					</Flex>
 				</Box>
-				<Box display={{ base: 'flex', xl: 'none' }} ms="10px">
-					<Button
-						onClick={props.onOpen}
-						colorScheme="brand"
-						variant="ghost"
-						p="0px"
-						borderRadius="inherit"
-						_active={{ bg: 'inherit' }}
-						_hover={{ bg: 'inherit' }}
-					>
-						<Icon as={MdMenu} color={mainText} w="20px" h="20px" />
-					</Button>
-				</Box>
 				<Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
 					<AdminNavbarLinks
 						onOpen={props.onOpen}

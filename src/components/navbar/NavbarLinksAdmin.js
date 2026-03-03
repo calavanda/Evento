@@ -50,7 +50,17 @@ export default function HeaderLinks(props) {
           as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
         />
       </Button>
-      
+			<Button
+				onClick={props.onOpen}
+				colorScheme="brand"
+				variant="ghost"
+				p="0px"
+				borderRadius="inherit"
+				_active={{ bg: 'inherit' }}
+				_hover={{ bg: 'inherit' }}
+			>
+				<Icon as={MdMenu} color={mainText} w="20px" h="20px" />
+			</Button>
       <Flex ms="10px">
         <UserButton afterSignOutUrl="/" />
       </Flex>
