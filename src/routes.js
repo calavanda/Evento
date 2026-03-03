@@ -72,6 +72,13 @@ const routes = [
     icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     component: <SurveySatisfaction />,
   },
+    {
+    name: 'Escanear QR',
+    layout: '/admin',
+    path: '/scanner',
+    icon: <Icon as={MdQrCode2} width="20px" height="20px" color="inherit" />,
+    component: <VisitScanner />,
+  },
 ];
 
 export default routes;

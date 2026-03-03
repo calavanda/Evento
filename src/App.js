@@ -1,8 +1,6 @@
 import './assets/css/App.css';
 import { Routes, Route } from 'react-router-dom';
-import AuthLayout from './layouts/auth';
 import AdminLayout from './layouts/admin';
-import PollLayout from './layouts/poll';
 import LandingPage from './views/landing/LandingPage';
 import {
   ChakraProvider,
@@ -20,26 +18,12 @@ export default function Main() {
   return (
     <ChakraProvider theme={currentTheme}>
       <Routes>
-        <Route path="auth/*" element={<AuthLayout />} />
         <Route
           path="admin/*"
           element={
             <>
               <SignedIn>
                 <AdminLayout theme={currentTheme} setTheme={setCurrentTheme} />
-              </SignedIn>
-              <SignedOut>
-                <RedirectToSignIn />
-              </SignedOut>
-            </>
-          }
-        />
-        <Route
-          path="poll/*"
-          element={
-            <>
-              <SignedIn>
-                <PollLayout theme={currentTheme} setTheme={setCurrentTheme} />
               </SignedIn>
               <SignedOut>
                 <RedirectToSignIn />
