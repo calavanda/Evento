@@ -1,5 +1,5 @@
-// Chakra Imports
-import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Link, Text, useColorModeValue, Badge } from '@chakra-ui/react';
+import { Box, Breadcrumb, BreadcrumbItem, BreadcrumbLink, Flex, Link, Text, useColorModeValue, Badge, Button, Icon } from '@chakra-ui/react';
+import { MdMenu } from "react-icons/md";
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import AdminNavbarLinks from 'components/navbar/NavbarLinksAdmin';
@@ -133,6 +133,19 @@ export default function AdminNavbar(props) {
 							</Badge>
 						)}
 					</Flex>
+				</Box>
+				<Box display={{ base: 'flex', xl: 'none' }} ms="10px">
+					<Button
+						onClick={props.onOpen}
+						colorScheme="brand"
+						variant="ghost"
+						p="0px"
+						borderRadius="inherit"
+						_active={{ bg: 'inherit' }}
+						_hover={{ bg: 'inherit' }}
+					>
+						<Icon as={MdMenu} color={mainText} w="20px" h="20px" />
+					</Button>
 				</Box>
 				<Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
 					<AdminNavbarLinks

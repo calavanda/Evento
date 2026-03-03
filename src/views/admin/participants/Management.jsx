@@ -30,7 +30,8 @@ import {
   Spinner,
   Icon,
 } from '@chakra-ui/react';
-import { MdEdit, MdDelete, MdPersonSearch } from 'react-icons/md';
+import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline } from 'react-icons/md';
+import Chart from 'react-apexcharts';
 
 export default function ParticipantManagement() {
   const [participants, setParticipants] = useState([]);
@@ -48,6 +49,15 @@ export default function ParticipantManagement() {
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { 
+    isOpen: isHistoryOpen, 
+    onOpen: onHistoryOpen, 
+    onClose: onHistoryClose 
+  } = useDisclosure();
+  
+  const [historyData, setHistoryData] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = 'secondaryGray.600';
   const cardBg = useColorModeValue('white', 'navy.800');
@@ -133,8 +143,46 @@ export default function ParticipantManagement() {
     }
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleHistory = async (user) => {
+    setSelectedUser(user);
+    setHistoryLoading(true);
+    onHistoryOpen();
+    try {
+      const API_URL = process.env.REACT_APP_API_URL 
+        ? (process.env.REACT_APP_API_URL.startsWith('http') 
+            ? process.env.REACT_APP_API_URL 
+            : `https://${process.env.REACT_APP_API_URL}`) 
+        : 'http://localhost:5001';
+      const response = await fetch(`${API_URL}/api/reports/participant-history/${user._id}`);
+      if (response.ok) {
+        const data = await response.json();
+        setHistoryData(data);
+      }
+    } catch (error) {
+      toast({ title: 'Error al obtener historial', status: 'error' });
+    }
+    setHistoryLoading(false);
+  };
+
+  const historyChartOptions = {
+    chart: { type: 'line', toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+    xaxis: { 
+      categories: historyData.map(h => new Date(h.escaneadoEn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
+      labels: { style: { colors: '#A3AED0' } }
+    },
+    stroke: { curve: 'stepline', width: 3 },
+    markers: { size: 6, colors: ['#4318FF'], strokeWidth: 2, hover: { size: 8 } },
+    colors: ['#4318FF'],
+    tooltip: {
+      custom: function({ series, seriesIndex, dataPointIndex, w }) {
+        const item = historyData[dataPointIndex];
+        return '<div class="chart-tooltip">' +
+          '<span>' + item.estand.nombre + '</span><br>' +
+          '<span>' + new Date(item.escaneadoEn).toLocaleTimeString() + '</span>' +
+          '</div>';
+      }
+    },
+    grid: { borderColor: '#E0E5F2', strokeDashArray: 5 }
   };
 
   return (
@@ -194,12 +242,22 @@ export default function ParticipantManagement() {
                     </Td>
                     <Td textAlign="center">
                       <IconButton
+                        icon={<MdHistory />}
+                        variant="soft"
+                        colorScheme="blue"
+                        mr="10px"
+                        borderRadius="10px"
+                        onClick={() => handleHistory(user)}
+                        title="Ver Historial"
+                      />
+                      <IconButton
                         icon={<MdEdit />}
                         variant="soft"
                         colorScheme="brand"
                         mr="10px"
                         borderRadius="10px"
                         onClick={() => handleEdit(user)}
+                        title="Editar"
                       />
                       <IconButton
                         icon={<MdDelete />}
@@ -207,6 +265,7 @@ export default function ParticipantManagement() {
                         colorScheme="red"
                         borderRadius="10px"
                         onClick={() => handleDelete(user._id)}
+                        title="Eliminar"
                       />
                     </Td>
                   </Tr>
@@ -261,6 +320,59 @@ export default function ParticipantManagement() {
               <Button onClick={onClose} variant="ghost" borderRadius="15px">Cancelar</Button>
             </ModalFooter>
           </form>
+        </ModalContent>
+      </Modal>
+
+      {/* Modal de Historial */}
+      <Modal isOpen={isHistoryOpen} onClose={onHistoryClose} size="3xl">
+        <ModalOverlay />
+        <ModalContent bg={cardBg} borderRadius="20px">
+          <ModalHeader color={textColor} fontWeight="800">Recorrido de {selectedUser?.nombre}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb="30px">
+            {historyLoading ? (
+              <Flex justify="center" p="50px"><Spinner size="xl" color="brand.500" /></Flex>
+            ) : historyData.length > 0 ? (
+              <VStack spacing="30px" align="stretch">
+                <Box p="20px" bg={inputBg} borderRadius="15px">
+                   <Flex align="center" mb="20px">
+                    <Icon as={MdTimeline} color={brandColor} mr="10px" />
+                    <Text fontWeight="700">Cronología de Visitas</Text>
+                  </Flex>
+                  <Chart
+                    options={historyChartOptions}
+                    series={[{ name: 'Estand', data: historyData.map((_, i) => i + 1) }]}
+                    type="line"
+                    height="250px"
+                  />
+                </Box>
+                
+                <Box>
+                  <Text fontWeight="700" mb="15px">Detalle de Visitas</Text>
+                  <VStack spacing="10px" align="stretch">
+                    {historyData.map((visit, index) => (
+                      <Flex key={index} justify="space-between" p="15px" bg={inputBg} borderRadius="12px">
+                        <HStack spacing="15px">
+                          <Badge colorScheme="brand" boxSize="24px" display="flex" alignItems="center" justifyContent="center" borderRadius="full">
+                            {index + 1}
+                          </Badge>
+                          <Text fontWeight="700">{visit.estand.nombre}</Text>
+                        </HStack>
+                        <Text color={textColorSecondary} fontSize="sm">
+                          {new Date(visit.escaneadoEn).toLocaleTimeString()}
+                        </Text>
+                      </Flex>
+                    ))}
+                  </VStack>
+                </Box>
+              </VStack>
+            ) : (
+              <Flex direction="column" align="center" p="40px">
+                <Icon as={MdHistory} w="50px" h="50px" color="gray.300" mb="20px" />
+                <Text color="gray.500">Este participante aún no tiene visitas registradas.</Text>
+              </Flex>
+            )}
+          </ModalBody>
         </ModalContent>
       </Modal>
     </Box>

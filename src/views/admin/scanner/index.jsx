@@ -27,7 +27,8 @@ import {
 import { Html5Qrcode } from 'html5-qrcode';
 import { 
   MdQrCodeScanner, MdStorefront, MdCheckCircle, MdError, 
-  MdCameraAlt, MdStop, MdCameraswitch, MdUploadFile, MdRefresh 
+  MdCameraAlt, MdStop, MdCameraswitch, MdUploadFile, MdRefresh,
+  MdWarning
 } from 'react-icons/md';
 
 export default function VisitScanner() {
@@ -416,7 +417,31 @@ export default function VisitScanner() {
                   <Text fontSize="xl" fontWeight="800" color="green.900">
                     {scanResult.data.participant.nombre} {scanResult.data.participant.apellidoPaterno}
                   </Text>
-                  <Badge colorScheme="green" mt="10px">Visita #{scanResult.data.participant.conteoVisitas}</Badge>
+                  <HStack spacing="10px" mt="10px">
+                    <Badge colorScheme="green">Visita #{scanResult.data.participant.conteoVisitas}</Badge>
+                    {scanResult.data.participant.conteoVisitas >= 5 && (
+                      <Badge colorScheme="orange" variant="solid" px="10px" borderRadius="5px">
+                        <HStack spacing="5px">
+                          <Icon as={MdWarning} />
+                          <Text>+5 VISITAS</Text>
+                        </HStack>
+                      </Badge>
+                    )}
+                  </HStack>
+                  
+                  {scanResult.data.participant.conteoVisitas >= 5 && (
+                    <Box 
+                      mt="15px" p="15px" bg="orange.100" borderRadius="12px" 
+                      border="1px solid" borderColor="orange.300"
+                    >
+                      <HStack spacing="10px">
+                        <Icon as={MdWarning} color="orange.600" boxSize="5" />
+                        <Text color="orange.800" fontWeight="800" fontSize="sm">
+                          ADVERTENCIA: Este participante ya ha visitado {scanResult.data.participant.conteoVisitas} estands.
+                        </Text>
+                      </HStack>
+                    </Box>
+                  )}
                 </Box>
               )}
             </Card>
