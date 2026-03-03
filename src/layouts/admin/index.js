@@ -1,5 +1,5 @@
 // Chakra imports
-import { Portal, Box, useDisclosure, Flex, Text, Spinner, Icon, Button } from '@chakra-ui/react';
+import { Portal, Box, useDisclosure, Flex, Text, Spinner, Icon, Button, useColorModeValue } from '@chakra-ui/react';
 import Footer from 'components/footer/FooterAdmin.js';
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin.js';
@@ -17,6 +17,9 @@ export default function Dashboard(props) {
   const { ...rest } = props;
   const { user, isLoaded: isClerkLoaded } = useUser();
   const location = useLocation();
+  
+  // Chakra hooks - always call at the top level
+  const bg = useColorModeValue('gray.50', 'navy.900');
   
   // states and functions
   const [fixed] = useState(false);
@@ -98,7 +101,7 @@ export default function Dashboard(props) {
 
   if (authStatus === 'loading' || !isClerkLoaded) {
     return (
-      <Flex h="100vh" w="100vw" align="center" justify="center" bg={useColorModeValue('gray.50', 'navy.900')}>
+      <Flex h="100vh" w="100vw" align="center" justify="center" bg={bg}>
         <Spinner size="xl" color="brand.500" thickness="4px" />
       </Flex>
     );
@@ -106,7 +109,7 @@ export default function Dashboard(props) {
 
   if (authStatus === 'unauthorized') {
     return (
-      <Flex h="100vh" w="100vw" align="center" justify="center" bg={useColorModeValue('gray.50', 'navy.900')} direction="column" p="20px">
+      <Flex h="100vh" w="100vw" align="center" justify="center" bg={bg} direction="column" p="20px">
         <Icon as={MdLock} w="60px" h="60px" color="red.500" mb="20px" />
         <Text fontSize="24px" fontWeight="800" mb="10px" textAlign="center">Acceso Denegado</Text>
         <Text fontSize="md" color="secondaryGray.600" mb="30px" textAlign="center">

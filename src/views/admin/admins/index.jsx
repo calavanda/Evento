@@ -29,6 +29,7 @@ import {
   useDisclosure,
   Badge,
   Spinner,
+  VStack,
 } from '@chakra-ui/react';
 import { MdEdit, MdDelete, MdAdd } from 'react-icons/md';
 import { getApiUrl } from 'utils/api';
