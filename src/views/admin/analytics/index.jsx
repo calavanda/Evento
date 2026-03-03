@@ -11,7 +11,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import Chart from 'react-apexcharts';
-import { MdBarChart, MdStar, MdTimeline, MdPeople } from 'react-icons/md';
+import { MdStar, MdTimeline, MdPeople } from 'react-icons/md';
 import IconBox from 'components/icons/IconBox';
 
 export default function Analytics() {
