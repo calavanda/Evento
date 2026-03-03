@@ -32,7 +32,7 @@ import {
   VStack,
   HStack,
 } from '@chakra-ui/react';
-import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline } from 'react-icons/md';
+import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline, MdRefresh } from 'react-icons/md';
 import Chart from 'react-apexcharts';
 
 export default function ParticipantManagement() {
@@ -145,6 +145,12 @@ export default function ParticipantManagement() {
     }
   };
 
+  const resetZoom = (id) => {
+    if (window.ApexCharts) {
+        window.ApexCharts.exec(id, 'resetZoom');
+    }
+  };
+
   const handleHistory = async (user) => {
     setSelectedUser(user);
     setHistoryLoading(true);
@@ -167,7 +173,23 @@ export default function ParticipantManagement() {
   };
 
   const historyChartOptions = {
-    chart: { type: 'line', toolbar: { show: false }, fontFamily: 'Inter, sans-serif' },
+    chart: { 
+        id: 'history-chart',
+        type: 'line', 
+        toolbar: { 
+            show: true,
+            tools: {
+                download: true,
+                selection: true,
+                zoom: true,
+                zoomin: true,
+                zoomout: true,
+                pan: true,
+                reset: true
+            }
+        }, 
+        fontFamily: 'Inter, sans-serif' 
+    },
     xaxis: { 
       categories: historyData.map(h => new Date(h.escaneadoEn).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })),
       labels: { style: { colors: '#A3AED0' } }
@@ -341,9 +363,20 @@ export default function ParticipantManagement() {
             ) : historyData.length > 0 ? (
               <VStack spacing="30px" align="stretch">
                 <Box p="20px" bg={inputBg} borderRadius="15px">
-                   <Flex align="center" mb="20px">
-                    <Icon as={MdTimeline} color={brandColor} mr="10px" />
-                    <Text fontWeight="700">Cronología de Visitas</Text>
+                   <Flex justify="space-between" align="center" mb="20px">
+                    <Flex align="center">
+                        <Icon as={MdTimeline} color={brandColor} mr="10px" />
+                        <Text fontWeight="700">Cronología de Visitas</Text>
+                    </Flex>
+                    <Button 
+                        onClick={() => resetZoom('history-chart')}
+                        leftIcon={<MdRefresh />}
+                        variant="soft" 
+                        size="sm"
+                        colorScheme="brand"
+                    >
+                        Reiniciar
+                    </Button>
                   </Flex>
                   <Chart
                     options={historyChartOptions}

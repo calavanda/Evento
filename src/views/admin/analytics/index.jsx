@@ -9,9 +9,11 @@ import {
   Spinner,
   Icon,
   VStack,
+  IconButton,
 } from '@chakra-ui/react';
 import Chart from 'react-apexcharts';
-import { MdStar, MdTimeline, MdPeople } from 'react-icons/md';
+import { MdStar, MdTimeline, MdPeople, MdRefresh } from 'react-icons/md';
+import { Button } from '@chakra-ui/react';
 import IconBox from 'components/icons/IconBox';
 
 export default function Analytics() {
@@ -89,34 +91,63 @@ export default function Analytics() {
 
   const peakChartOptions = {
     chart: {
+      id: 'peak-chart-total',
       type: 'area',
-      toolbar: { show: false },
+      toolbar: { 
+        show: true,
+        tools: {
+          download: true,
+          selection: true,
+          zoom: true,
+          zoomin: true,
+          zoomout: true,
+          pan: true,
+          reset: true
+        }
+      },
       fontFamily: 'Inter, sans-serif',
     },
     xaxis: {
       categories: Array.from({ length: 24 }, (_, i) => `${i}:00`),
       labels: { style: { colors: '#A3AED0', fontWeight: '500' } },
     },
-    colors: ['#4318FF'],
+    colors: ['#4318FF', '#6AD2FF', '#01B574', '#FFB547', '#E31A1A', '#A1E31A'],
     stroke: { curve: 'smooth', width: 3 },
     fill: {
       type: 'gradient',
       gradient: {
         shadeIntensity: 1,
-        opacityFrom: 0.7,
-        opacityTo: 0.3,
+        opacityFrom: 0.5,
+        opacityTo: 0.1,
         stops: [0, 90, 100]
       }
     },
     dataLabels: { enabled: false },
     tooltip: { theme: 'dark' },
-    grid: { borderColor: '#E0E5F2', strokeDashArray: 5 }
+    grid: { borderColor: '#E0E5F2', strokeDashArray: 5 },
+    legend: { show: true, position: 'top', labels: { colors: '#A3AED0' } }
   };
 
-  const peakChartData = Array(24).fill(0);
+  const standUniqueNames = [...new Set(data?.peakVisits?.map(v => v.standName) || [])];
+  
+  const totalPeakData = Array(24).fill(0);
   data?.peakVisits?.forEach(v => {
-    peakChartData[v._id] = v.count;
+    totalPeakData[v.hour] += v.count;
   });
+
+  const standSeries = standUniqueNames.map(name => {
+    const standData = Array(24).fill(0);
+    data?.peakVisits?.filter(v => v.standName === name).forEach(v => {
+      standData[v.hour] = v.count;
+    });
+    return { name, data: standData };
+  });
+
+  const resetZoom = (id) => {
+    if (window.ApexCharts) {
+        window.ApexCharts.exec(id, 'resetZoom');
+    }
+  };
 
   const surveyChartOptions = {
     chart: { 
@@ -177,24 +208,70 @@ export default function Analytics() {
           />
         </Card>
 
-        {/* Peak Visits Chart Card */}
+        {/* Peak Visits Chart Card (All in one) */}
         <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
-          <Flex align="center" mb="20px">
-            <IconBox
-              w='46px'
-              h='46px'
-              bg={boxBg}
-              icon={<Icon w='24px' h='24px' as={MdTimeline} color="brand.200" />}
-              me="15px"
-            />
-            <VStack align="start" spacing="0">
-                <Text color={textColor} fontSize="lg" fontWeight="700">Picos de Visitas</Text>
-                <Text color={textColorSecondary} fontSize="sm">Distribución por hora del día</Text>
-            </VStack>
+          <Flex justify="space-between" align="center" mb="20px">
+            <Flex align="center">
+                <IconBox
+                w='46px'
+                h='46px'
+                bg={boxBg}
+                icon={<Icon w='24px' h='24px' as={MdTimeline} color="brand.200" />}
+                me="15px"
+                />
+                <VStack align="start" spacing="0">
+                    <Text color={textColor} fontSize="lg" fontWeight="700">Picos de Visitas por Estand</Text>
+                    <Text color={textColorSecondary} fontSize="sm">Comparativa por hora</Text>
+                </VStack>
+            </Flex>
+            <Button 
+                onClick={() => resetZoom('peak-chart-total')}
+                leftIcon={<MdRefresh />}
+                variant="soft" 
+                size="sm"
+                colorScheme="brand"
+            >
+                Reiniciar
+            </Button>
           </Flex>
           <Chart
             options={peakChartOptions}
-            series={[{ name: 'Visitas', data: peakChartData }]}
+            series={standSeries}
+            type="area"
+            width="100%"
+            height="350px"
+          />
+        </Card>
+
+        {/* Total Peak Chart Card */}
+         <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
+          <Flex justify="space-between" align="center" mb="20px">
+            <Flex align="center">
+                <IconBox
+                w='46px'
+                h='46px'
+                bg={boxBg}
+                icon={<Icon w='24px' h='24px' as={MdTimeline} color="blue.400" />}
+                me="15px"
+                />
+                <VStack align="start" spacing="0">
+                    <Text color={textColor} fontSize="lg" fontWeight="700">Picos Generales</Text>
+                    <Text color={textColorSecondary} fontSize="sm">Suma total de visitas</Text>
+                </VStack>
+            </Flex>
+             <Button 
+                onClick={() => resetZoom('peak-chart-general')}
+                leftIcon={<MdRefresh />}
+                variant="soft" 
+                size="sm"
+                colorScheme="blue"
+            >
+                Reiniciar
+            </Button>
+          </Flex>
+          <Chart
+            options={{...peakChartOptions, chart: { ...peakChartOptions.chart, id: 'peak-chart-general' }, colors: ['#4318FF']}}
+            series={[{ name: 'Visitas Totales', data: totalPeakData }]}
             type="area"
             width="100%"
             height="350px"
@@ -221,6 +298,50 @@ export default function Analytics() {
             height="350px"
           />
         </Card>
+      </SimpleGrid>
+
+      {/* Detalle Individual por Estand */}
+      <Text color={textColor} fontSize="24px" fontWeight="700" mt="50px" mb="20px">
+        Detalle de Picos por Estand
+      </Text>
+      <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing="20px" pb="50px">
+        {standUniqueNames.map((name, index) => {
+          const standData = Array(24).fill(0);
+          data?.peakVisits?.filter(v => v.standName === name).forEach(v => {
+            standData[v.hour] = v.count;
+          });
+          
+          const chartId = `peak-chart-${name.replace(/\s+/g, '-').toLowerCase()}`;
+          const colors = ['#4318FF', '#6AD2FF', '#01B574', '#FFB547', '#E31A1A', '#A1E31A'];
+          const color = colors[index % colors.length];
+
+          return (
+            <Card key={index} p="20px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
+              <Flex justify="space-between" align="center" mb="15px">
+                <Text color={textColor} fontSize="md" fontWeight="700">{name}</Text>
+                <IconButton
+                  size="xs"
+                  icon={<MdRefresh />}
+                  onClick={() => resetZoom(chartId)}
+                  variant="ghost"
+                  aria-label="Reset zoom"
+                />
+              </Flex>
+              <Chart
+                options={{
+                    ...peakChartOptions, 
+                    chart: { ...peakChartOptions.chart, id: chartId, toolbar: { show: false } }, 
+                    colors: [color],
+                    xaxis: { ...peakChartOptions.xaxis, labels: { show: false } },
+                    yaxis: { labels: { show: true, style: { colors: '#A3AED0' } } }
+                }}
+                series={[{ name: 'Visitas', data: standData }]}
+                type="area"
+                height="150px"
+              />
+            </Card>
+          );
+        })}
       </SimpleGrid>
     </Box>
   );
