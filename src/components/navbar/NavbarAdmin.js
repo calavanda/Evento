@@ -136,10 +136,14 @@ export default function AdminNavbar(props) {
 				<Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
 					<AdminNavbarLinks
 						onOpen={props.onOpen}
+						isOpen={props.isOpen}
+						onClose={props.onClose}
+						onToggle={props.onToggle}
 						logoText={props.logoText}
 						secondary={props.secondary}
 						fixed={props.fixed}
 						scrolled={scrolled}
+						routes={props.routes}
 					/>
 				</Box>
 			</Flex>

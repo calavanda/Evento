@@ -3,7 +3,7 @@ import { Portal, Box, useDisclosure, Flex, Text, Spinner, Icon, Button, useColor
 import Footer from 'components/footer/FooterAdmin.js';
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin.js';
-import Sidebar from 'components/sidebar/Sidebar.js';
+import Sidebar, { SidebarResponsive } from 'components/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
@@ -98,7 +98,7 @@ export default function Dashboard(props) {
   };
 
   document.documentElement.dir = 'ltr';
-  const { onOpen } = useDisclosure();
+  const { isOpen, onOpen, onClose, onToggle } = useDisclosure();
 
   if (authStatus === 'loading' || !isClerkLoaded) {
     return (
@@ -134,6 +134,13 @@ export default function Dashboard(props) {
           }}
         >
           <Sidebar routes={filteredRoutes} display="none" {...rest} />
+          <SidebarResponsive
+            routes={filteredRoutes}
+            isOpen={isOpen}
+            onOpen={onOpen}
+            onClose={onClose}
+            {...rest}
+          />
           <Box
             float="right"
             minHeight="100vh"
@@ -152,11 +159,15 @@ export default function Dashboard(props) {
               <Box>
                 <Navbar
                   onOpen={onOpen}
+                  isOpen={isOpen}
+                  onClose={onClose}
+                  onToggle={onToggle}
                   logoText={'Francophonie'}
                   brandText={getActiveRoute(filteredRoutes)}
                   userRole={userRole}
                   secondary={false}
                   fixed={fixed}
+                  routes={filteredRoutes}
                   {...rest}
                 />
               </Box>

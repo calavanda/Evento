@@ -53,7 +53,8 @@ export default function HeaderLinks(props) {
         />
       </Button>
 			<Button
-				onClick={props.onOpen}
+				display={{ base: 'flex', xl: 'none' }}
+				onClick={props.onToggle}
 				colorScheme="brand"
 				variant="ghost"
 				p="0px"
@@ -75,4 +76,8 @@ HeaderLinks.propTypes = {
   fixed: PropTypes.bool,
   secondary: PropTypes.bool,
   onOpen: PropTypes.func,
+  onToggle: PropTypes.func,
+  isOpen: PropTypes.bool,
+  onClose: PropTypes.func,
+  routes: PropTypes.arrayOf(PropTypes.object),
 };
