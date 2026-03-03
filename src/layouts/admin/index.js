@@ -61,7 +61,7 @@ export default function Dashboard(props) {
       console.error("Auth check failed", error);
       setAuthStatus('unauthorized');
     }
-  }, [user, routes]);
+  }, [user]);
 
   useEffect(() => {
     if (isClerkLoaded && user) {
