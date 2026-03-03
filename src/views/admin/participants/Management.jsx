@@ -179,12 +179,12 @@ export default function ParticipantManagement() {
         toolbar: { 
             show: true,
             tools: {
-                download: true,
-                selection: true,
+                download: false,
+                selection: false,
                 zoom: true,
                 zoomin: true,
                 zoomout: true,
-                pan: true,
+                pan: false,
                 reset: true
             }
         }, 

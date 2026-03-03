@@ -96,12 +96,12 @@ export default function Analytics() {
       toolbar: { 
         show: true,
         tools: {
-          download: true,
-          selection: true,
+          download: false,
+          selection: false,
           zoom: true,
           zoomin: true,
           zoomout: true,
-          pan: true,
+          pan: false,
           reset: true
         }
       },
@@ -110,6 +110,8 @@ export default function Analytics() {
     xaxis: {
       categories: Array.from({ length: 24 }, (_, i) => `${i}:00`),
       labels: { style: { colors: '#A3AED0', fontWeight: '500' } },
+      min: 0,
+      max: 23
     },
     colors: ['#4318FF', '#6AD2FF', '#01B574', '#FFB547', '#E31A1A', '#A1E31A'],
     stroke: { curve: 'smooth', width: 3 },
@@ -128,7 +130,7 @@ export default function Analytics() {
     legend: { show: true, position: 'top', labels: { colors: '#A3AED0' } }
   };
 
-  const standUniqueNames = [...new Set(data?.peakVisits?.map(v => v.standName).filter(n => typeof n === 'string') || [])];
+  const standUniqueNames = [...new Set((data?.peakVisits || []).map(v => v.standName).filter(n => typeof n === 'string'))];
   
   const totalPeakData = Array(24).fill(0);
   data?.peakVisits?.forEach(v => {
