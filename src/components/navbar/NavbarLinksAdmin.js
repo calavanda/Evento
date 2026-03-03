@@ -6,6 +6,7 @@ import {
   useColorMode,
 } from '@chakra-ui/react';
 
+import { MdMenu } from "react-icons/md";
 import PropTypes from 'prop-types';
 import React from 'react';
 // Assets
