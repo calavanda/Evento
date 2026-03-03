@@ -91,7 +91,6 @@ export default function Analytics() {
 
   const peakChartOptions = {
     chart: {
-      id: 'peak-chart-total',
       type: 'area',
       toolbar: { 
         show: true,
@@ -108,10 +107,11 @@ export default function Analytics() {
       fontFamily: 'Inter, sans-serif',
     },
     xaxis: {
+      type: 'category',
       categories: Array.from({ length: 24 }, (_, i) => `${i}:00`),
       labels: { style: { colors: '#A3AED0', fontWeight: '500' } },
-      min: 0,
-      max: 23
+      axisBorder: { show: false },
+      axisTicks: { show: false }
     },
     colors: ['#4318FF', '#6AD2FF', '#01B574', '#FFB547', '#E31A1A', '#A1E31A'],
     stroke: { curve: 'smooth', width: 3 },
@@ -139,15 +139,16 @@ export default function Analytics() {
     }
   });
 
-  const standSeries = standUniqueNames.map(name => {
+  const standSeries = standUniqueNames.length > 0 ? standUniqueNames.map(name => {
     const standData = Array(24).fill(0);
-    data?.peakVisits?.filter(v => v.standName === name).forEach(v => {
-      if (v.hour !== undefined && v.hour !== null) {
+    const standVisits = (data?.peakVisits || []).filter(v => v.standName === name);
+    standVisits.forEach(v => {
+      if (v.hour !== undefined && v.hour !== null && v.hour >= 0 && v.hour < 24) {
           standData[v.hour] = v.count;
       }
     });
     return { name, data: standData };
-  });
+  }) : [{ name: 'Sin datos', data: Array(24).fill(0) }];
 
   const resetZoom = (id) => {
     if (window.ApexCharts) {
@@ -241,7 +242,7 @@ export default function Analytics() {
             </Button>
           </Flex>
           <Chart
-            options={peakChartOptions}
+            options={{...peakChartOptions, chart: { ...peakChartOptions.chart, id: 'peak-chart-total' }}}
             series={standSeries}
             type="area"
             width="100%"
