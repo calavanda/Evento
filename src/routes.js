@@ -32,6 +32,14 @@ const routes = [
     roles: ['admin', 'moderador', 'escaneador'],
   },
   {
+    name: 'Administradores',
+    layout: '/admin',
+    path: '/admins',
+    icon: <Icon as={MdAdminPanelSettings} width="20px" height="20px" color="inherit" />,
+    component: <AdminManagement />,
+    roles: ['admin'],
+  },
+  {
     name: 'Registro de Participantes',
     layout: '/admin',
     path: '/participants',
@@ -78,14 +86,6 @@ const routes = [
     icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
     component: <SurveySatisfaction />,
     roles: ['admin', 'escaneador'],
-  },
-  {
-    name: 'Administradores',
-    layout: '/admin',
-    path: '/admins',
-    icon: <Icon as={MdAdminPanelSettings} width="20px" height="20px" color="inherit" />,
-    component: <AdminManagement />,
-    roles: ['admin'],
   },
 ];
 
