@@ -28,6 +28,7 @@ export default function Dashboard(props) {
   const [userRole, setUserRole] = useState(null);
   const [filteredRoutes, setFilteredRoutes] = useState([]);
 
+  // Función para verificar si el usuario logueado en Clerk está autorizado en nuestra base de datos
   const checkAuthorization = useCallback(async () => {
     try {
       const email = user.primaryEmailAddress?.emailAddress;
@@ -43,15 +44,15 @@ export default function Dashboard(props) {
         setUserRole(data.role);
         setAuthStatus('authorized');
         
-        // Filter routes based on role
+        // Filtrar las rutas permitidas según el rol obtenido del backend
         const filtered = routes.filter(route => 
           route.roles && route.roles.includes(data.role)
         );
         setFilteredRoutes(filtered);
       } else {
-        // Not in the admin list -> Public mode
+        // Si no está en la lista de admins, se le asigna el rol 'public' con acceso limitado
         setUserRole('public');
-        setAuthStatus('authorized'); // We allow them but with limited routes
+        setAuthStatus('authorized');
         const filtered = routes.filter(route => 
           route.roles && route.roles.includes('public')
         );
@@ -107,6 +108,7 @@ export default function Dashboard(props) {
     );
   }
 
+  // Pantalla de "Acceso Denegado" si el correo no está registrado en la base de datos
   if (authStatus === 'unauthorized') {
     return (
       <Flex h="100vh" w="100vw" align="center" justify="center" bg={bg} direction="column" p="20px">

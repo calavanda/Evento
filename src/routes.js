@@ -22,6 +22,11 @@ import Analytics from 'views/admin/analytics';
 import AdminManagement from 'views/admin/admins';
 
 
+/**
+ * Configuración de rutas del panel.
+ * Cada ruta incluye una propiedad 'roles' que define qué niveles de acceso
+ * pueden visualizar y entrar a dicha sección (admin, moderador, escaneador, public).
+ */
 const routes = [
   {
     name: 'Panel Principal',
