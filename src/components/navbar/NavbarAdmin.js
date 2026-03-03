@@ -17,7 +17,7 @@ export default function AdminNavbar(props) {
 		};
 	});
 
-	const { secondary, message, brandText } = props;
+	const { secondary, message, brandText, userRole } = props;
 
 	let mainText = useColorModeValue('navy.700', 'white');
 	let secondaryText = useColorModeValue('gray.700', 'white');
@@ -102,24 +102,37 @@ export default function AdminNavbar(props) {
 							</BreadcrumbLink>
 						</BreadcrumbItem>
 					</Breadcrumb>
-					<Link
-						color={mainText}
-						href='#'
-						bg='inherit'
-						borderRadius='inherit'
-						fontWeight='bold'
-						fontSize='34px'
-						_hover={{ color: { mainText } }}
-						_active={{
-							bg: 'inherit',
-							transform: 'none',
-							borderColor: 'transparent'
-						}}
-						_focus={{
-							boxShadow: 'none'
-						}}>
-						Bienvenido {user?.firstName || 'Admin'} 🙀
-					</Link>
+					<Flex align="center">
+						<Link
+							color={mainText}
+							href='#'
+							bg='inherit'
+							borderRadius='inherit'
+							fontWeight='bold'
+							fontSize='34px'
+							_hover={{ color: { mainText } }}
+							_active={{
+								bg: 'inherit',
+								transform: 'none',
+								borderColor: 'transparent'
+							}}
+							_focus={{
+								boxShadow: 'none'
+							}}>
+							Bienvenido {user?.firstName || 'Admin'} 🙀
+						</Link>
+						{userRole && (
+							<Badge
+								ml="15px"
+								colorScheme={userRole === 'admin' ? 'purple' : userRole === 'moderador' ? 'blue' : userRole === 'escaneador' ? 'orange' : 'gray'}
+								borderRadius="10px"
+								px="10px"
+								height="max-content"
+							>
+								{userRole.toUpperCase()}
+							</Badge>
+						)}
+					</Flex>
 				</Box>
 				<Box ms='auto' w={{ sm: '100%', md: 'unset' }}>
 					<AdminNavbarLinks

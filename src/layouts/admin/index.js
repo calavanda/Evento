@@ -1,111 +1,124 @@
 // Chakra imports
-import { Portal, Box, useDisclosure } from '@chakra-ui/react';
+import { Portal, Box, useDisclosure, Flex, Text, Spinner, Icon, Button } from '@chakra-ui/react';
 import Footer from 'components/footer/FooterAdmin.js';
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin.js';
 import Sidebar from 'components/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import routes from 'routes.js';
+import { useUser, SignOutButton } from "@clerk/clerk-react";
+import { getApiUrl } from 'utils/api';
+import { MdLock } from 'react-icons/md';
 
 // Custom Chakra theme
 export default function Dashboard(props) {
   const { ...rest } = props;
+  const { user, isLoaded: isClerkLoaded } = useUser();
   const location = useLocation();
+  
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  // functions for changing the states from components
+  const [authStatus, setAuthStatus] = useState('loading'); // loading, authorized, unauthorized
+  const [userRole, setUserRole] = useState(null);
+  const [filteredRoutes, setFilteredRoutes] = useState([]);
+
+  useEffect(() => {
+    if (isClerkLoaded && user) {
+      checkAuthorization();
+    } else if (isClerkLoaded && !user) {
+      setAuthStatus('unauthorized');
+    }
+  }, [isClerkLoaded, user]);
+
+  const checkAuthorization = async () => {
+    try {
+      const email = user.primaryEmailAddress?.emailAddress;
+      const API_URL = getApiUrl();
+      const response = await fetch(`${API_URL}/api/admins/check-auth`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUserRole(data.role);
+        setAuthStatus('authorized');
+        
+        // Filter routes based on role
+        const filtered = routes.filter(route => 
+          route.roles && route.roles.includes(data.role)
+        );
+        setFilteredRoutes(filtered);
+      } else {
+        // Not in the admin list -> Public mode
+        setUserRole('public');
+        setAuthStatus('authorized'); // We allow them but with limited routes
+        const filtered = routes.filter(route => 
+          route.roles && route.roles.includes('public')
+        );
+        setFilteredRoutes(filtered);
+      }
+    } catch (error) {
+      console.error("Auth check failed", error);
+      setAuthStatus('unauthorized');
+    }
+  };
+
   const getRoute = () => {
     return location.pathname !== '/admin/full-screen-maps';
   };
-  const getActiveRoute = (routes) => {
-    let activeRoute = 'Default Brand Text';
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveRoute = getActiveRoute(routes[i].items);
-        if (collapseActiveRoute !== activeRoute) {
-          return collapseActiveRoute;
+  
+  const getActiveRoute = (routesList) => {
+    let activeRoute = 'Dashboard';
+    for (let i = 0; i < routesList.length; i++) {
+        if (location.pathname.indexOf(routesList[i].layout + routesList[i].path) !== -1) {
+          return routesList[i].name;
         }
-      } else if (routes[i].category) {
-        let categoryActiveRoute = getActiveRoute(routes[i].items);
-        if (categoryActiveRoute !== activeRoute) {
-          return categoryActiveRoute;
-        }
-      } else {
-        if (
-          location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          return routes[i].name;
-        }
-      }
     }
     return activeRoute;
   };
-  const getActiveNavbar = (routes) => {
-    let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveNavbar = getActiveNavbar(routes[i].items);
-        if (collapseActiveNavbar !== activeNavbar) {
-          return collapseActiveNavbar;
-        }
-      } else if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbar(routes[i].items);
-        if (categoryActiveNavbar !== activeNavbar) {
-          return categoryActiveNavbar;
-        }
-      } else {
-        if (
-          location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          return routes[i].secondary;
-        }
-      }
-    }
-    return activeNavbar;
-  };
-  const getActiveNavbarText = (routes) => {
-    let activeNavbar = false;
-    for (let i = 0; i < routes.length; i++) {
-      if (routes[i].collapse) {
-        let collapseActiveNavbar = getActiveNavbarText(routes[i].items);
-        if (collapseActiveNavbar !== activeNavbar) {
-          return collapseActiveNavbar;
-        }
-      } else if (routes[i].category) {
-        let categoryActiveNavbar = getActiveNavbarText(routes[i].items);
-        if (categoryActiveNavbar !== activeNavbar) {
-          return categoryActiveNavbar;
-        }
-      } else {
-        if (
-          location.pathname.indexOf(routes[i].layout + routes[i].path) !== -1
-        ) {
-          return routes[i].messageNavbar;
-        }
-      }
-    }
-    return activeNavbar;
-  };
-  const getRoutes = (routes) => {
-    return routes.map((route, key) => {
+
+  const getRoutes = (routesList) => {
+    return routesList.map((route, key) => {
       if (route.layout === '/admin') {
         return (
           <Route path={`${route.path}`} element={route.component} key={key} />
         );
       }
-      if (route.collapse) {
-        return getRoutes(route.items);
-      } else {
-        return null;
-      }
+      return null;
     });
   };
+
   document.documentElement.dir = 'ltr';
   const { onOpen } = useDisclosure();
-  document.documentElement.dir = 'ltr';
+
+  if (authStatus === 'loading' || !isClerkLoaded) {
+    return (
+      <Flex h="100vh" w="100vw" align="center" justify="center" bg={useColorModeValue('gray.50', 'navy.900')}>
+        <Spinner size="xl" color="brand.500" thickness="4px" />
+      </Flex>
+    );
+  }
+
+  if (authStatus === 'unauthorized') {
+    return (
+      <Flex h="100vh" w="100vw" align="center" justify="center" bg={useColorModeValue('gray.50', 'navy.900')} direction="column" p="20px">
+        <Icon as={MdLock} w="60px" h="60px" color="red.500" mb="20px" />
+        <Text fontSize="24px" fontWeight="800" mb="10px" textAlign="center">Acceso Denegado</Text>
+        <Text fontSize="md" color="secondaryGray.600" mb="30px" textAlign="center">
+          Lo sentimos, tu correo ({user?.primaryEmailAddress?.emailAddress}) no está autorizado para acceder al panel de administración.
+        </Text>
+        <SignOutButton>
+          <Button colorScheme="brand" borderRadius="15px" px="40px">Cerrar Sesión</Button>
+        </SignOutButton>
+      </Flex>
+    );
+  }
+
   return (
     <Box>
       <Box>
@@ -115,7 +128,7 @@ export default function Dashboard(props) {
             setToggleSidebar,
           }}
         >
-          <Sidebar routes={routes} display="none" {...rest} />
+          <Sidebar routes={filteredRoutes} display="none" {...rest} />
           <Box
             float="right"
             minHeight="100vh"
@@ -135,9 +148,9 @@ export default function Dashboard(props) {
                 <Navbar
                   onOpen={onOpen}
                   logoText={'Francophonie'}
-                  brandText={getActiveRoute(routes)}
-                  secondary={getActiveNavbar(routes)}
-                  message={getActiveNavbarText(routes)}
+                  brandText={getActiveRoute(filteredRoutes)}
+                  userRole={userRole}
+                  secondary={false}
                   fixed={fixed}
                   {...rest}
                 />
@@ -153,11 +166,13 @@ export default function Dashboard(props) {
                 pt="50px"
               >
                 <Routes>
-                  {getRoutes(routes)}
+                  {getRoutes(filteredRoutes)}
                   <Route
                     path="/"
                     element={<Navigate to="/admin/default" replace />}
                   />
+                  {/* Catch-all route to redirect back to default if unauthorized for specific route */}
+                  <Route path="*" element={<Navigate to="/admin/default" replace />} />
                 </Routes>
               </Box>
             ) : null}
