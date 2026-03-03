@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -9,7 +9,6 @@ import {
   Select,
   Text,
   useColorModeValue,
-  SimpleGrid,
   useToast,
   Card,
   Table,
@@ -51,11 +50,7 @@ export default function AdminManagement() {
   const inputBg = useColorModeValue('secondaryGray.300', 'navy.900');
   const toast = useToast();
 
-  useEffect(() => {
-    fetchAdmins();
-  }, []);
-
-  const fetchAdmins = async () => {
+  const fetchAdmins = useCallback(async () => {
     try {
       const API_URL = getApiUrl();
       const response = await fetch(`${API_URL}/api/admins`);
@@ -66,7 +61,11 @@ export default function AdminManagement() {
       toast({ title: 'Error al obtener administradores', status: 'error' });
     }
     setLoading(false);
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchAdmins();
+  }, [fetchAdmins]);
 
   const handleOpenModal = (admin = null) => {
     if (admin) {

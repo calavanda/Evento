@@ -5,7 +5,7 @@ import Footer from 'components/footer/FooterAdmin.js';
 import Navbar from 'components/navbar/NavbarAdmin.js';
 import Sidebar from 'components/sidebar/Sidebar.js';
 import { SidebarContext } from 'contexts/SidebarContext';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import routes from 'routes.js';
 import { useUser, SignOutButton } from "@clerk/clerk-react";
@@ -28,15 +28,7 @@ export default function Dashboard(props) {
   const [userRole, setUserRole] = useState(null);
   const [filteredRoutes, setFilteredRoutes] = useState([]);
 
-  useEffect(() => {
-    if (isClerkLoaded && user) {
-      checkAuthorization();
-    } else if (isClerkLoaded && !user) {
-      setAuthStatus('unauthorized');
-    }
-  }, [isClerkLoaded, user]);
-
-  const checkAuthorization = async () => {
+  const checkAuthorization = useCallback(async () => {
     try {
       const email = user.primaryEmailAddress?.emailAddress;
       const API_URL = getApiUrl();
@@ -69,7 +61,15 @@ export default function Dashboard(props) {
       console.error("Auth check failed", error);
       setAuthStatus('unauthorized');
     }
-  };
+  }, [user, routes]);
+
+  useEffect(() => {
+    if (isClerkLoaded && user) {
+      checkAuthorization();
+    } else if (isClerkLoaded && !user) {
+      setAuthStatus('unauthorized');
+    }
+  }, [isClerkLoaded, user, checkAuthorization]);
 
   const getRoute = () => {
     return location.pathname !== '/admin/full-screen-maps';
