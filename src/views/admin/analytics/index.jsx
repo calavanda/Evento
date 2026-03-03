@@ -114,15 +114,10 @@ export default function Analytics() {
       axisTicks: { show: false }
     },
     colors: ['#4318FF', '#6AD2FF', '#01B574', '#FFB547', '#E31A1A', '#A1E31A'],
-    stroke: { curve: 'smooth', width: 3 },
+    stroke: { curve: 'smooth', width: 4 },
     fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.5,
-        opacityTo: 0.1,
-        stops: [0, 90, 100]
-      }
+      type: 'solid',
+      opacity: 0.1
     },
     dataLabels: { enabled: false },
     tooltip: { theme: 'dark' },
@@ -139,12 +134,16 @@ export default function Analytics() {
     }
   });
 
+  console.log('Stand Unique Names:', standUniqueNames);
+  console.log('Peak Visits Data:', data?.peakVisits);
+
   const standSeries = standUniqueNames.length > 0 ? standUniqueNames.map(name => {
     const standData = Array(24).fill(0);
     const standVisits = (data?.peakVisits || []).filter(v => v.standName === name);
     standVisits.forEach(v => {
-      if (v.hour !== undefined && v.hour !== null && v.hour >= 0 && v.hour < 24) {
-          standData[v.hour] = v.count;
+      const h = Number(v.hour);
+      if (!isNaN(h) && h >= 0 && h < 24) {
+          standData[h] = v.count;
       }
     });
     return { name, data: standData };
