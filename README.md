@@ -1,6 +1,6 @@
 # Dashboard del Evento: "Sabores de la Francofonía"
 
-![version](https://img.shields.io/badge/versión-2.1.0-brightgreen.svg)
+![version](https://img.shields.io/badge/versión-3.0.0-brightgreen.svg)
 ![license](https://img.shields.io/badge/licencia-MIT-blue.svg)
 ![react](https://img.shields.io/badge/React-18-61DAFB.svg?logo=react)
 ![node](https://img.shields.io/badge/Node.js-Express-339933.svg?logo=node.js)
@@ -12,100 +12,90 @@
 
 Ésta es una plataforma web integral diseñada para la gestión del evento gastronómico "Sabores de la Francofonía". El sistema permite administrar de forma eficiente todo el ciclo del evento: desde el registro de participantes y la generación de gafetes QR, hasta la gestión de estands y el seguimiento de analíticas en tiempo real.
 
-Esta versión ha sido actualizada con una interfaz más moderna, autenticación segura mediante **Clerk** y capacidades completas de administración (CRUD) para todos los módulos.
+Esta versión **3.0.0** introduce un sistema robusto de **Control de Acceso Basado en Roles (RBAC)**, autenticación segura mediante **Clerk**, y una estructura de código optimizada y limpia (sin componentes redundantes).
 
-El proyecto fue desarrollado por estudiantes del área de **Ingeniería en Gestión y Desarrollo de Software** de la **Universidad Tecnológica de Gutiérrez Zamora (UTGZ)**.
+El proyecto fue desarrollado por estudiantes de la **Universidad Tecnológica de Gutiérrez Zamora (UTGZ)**.
 
 ---
 
 ## ✨ Características Principales
 
-| Módulo                        | Descripción                                                                         |
-| ----------------------------- | ----------------------------------------------------------------------------------- |
-| **Dashboard Rebrandeado**     | Interfaz moderna con branding personalizado ("Dashboard" con gradientes).           |
-| **Autenticación con Clerk**   | Acceso seguro para administradores con bienvenida personalizada.                    |
-| **Registro de Participantes** | Alta de asistentes con generación automática de código QR para gafete.              |
-| **Gestión de Participantes**  | CRUD completo (Ver, Editar, Eliminar) de todos los asistentes.                      |
-| **Gestión de Estands**        | CRUD completo (Alta, Edición, Eliminación) de estands con responsables y ubicación. |
-| **Escáner QR**                | Registro de visitas mediante escaneo de códigos QR (cámara o imagen).               |
-| **Analíticas e Informes**     | Gráficas interactivas y estadísticas generales del evento en tiempo real.           |
+| Módulo                        | Descripción                                                               | Roles con Acceso                      |
+| :---------------------------- | :------------------------------------------------------------------------ | :------------------------------------ |
+| **Control de Acceso (RBAC)**  | Sistema de roles jerárquicos para proteger la información.                | Todos                                 |
+| **Gestión de Admins**         | CRUD para gestionar personal con roles: admin, moderador o escaneador.    | Admin                                 |
+| **Registro de Participantes** | Alta de asistentes con generación automática de código QR (API goQR.me).  | Admin, Moderador                      |
+| **Gestión de Participantes**  | Control total (Ver, Editar, Eliminar) de la base de datos de asistentes.  | Admin, Moderador                      |
+| **Gestión de Estands**        | Administración de los puestos del evento, responsables y ubicación.       | Admin, Moderador                      |
+| **Escáner QR Dual**           | Registro de visitas mediante cámara en vivo o subida de imágenes.         | Admin, Escaneador                     |
+| **Analíticas e Informes**     | Gráficas dinámicas de visitas y satisfacción en tiempo real (ApexCharts). | Admin, Moderador, Escaneador, Público |
+| **Landing Page Premium**      | Página de inicio moderna con diseño Glassmorphism altamente optimizada.   | Todos                                 |
+
+---
+
+## 🔐 Sistema de Roles
+
+- **Admin**: Acceso total a todas las secciones, incluyendo la gestión de otros administradores y configuración del sistema.
+- **Moderador**: Puede gestionar participantes y estands, y ver estadísticas. No tiene acceso a la gestión de otros administradores.
+- **Escaneador**: Acceso exclusivo al escáner de QR y registro de encuestas/visitas.
+- **Público**: Acceso limitado únicamente a la visualización de analíticas generales de forma anónima.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
 - **Frontend:** React 18, Chakra UI, Framer Motion, ApexCharts, Clerk React.
-- **Backend:** Node.js, Express (Repositorio independiente: `EventoBackend`).
-- **Base de Datos:** MongoDB (Mongoose).
-- **Despliegue:** Railway (Backend) y Vercel (Frontend).
+- **Backend:** Node.js, Express, Mongoose.
+- **Base de Datos:** MongoDB.
+- **Despliegue:** Railway (Backend y DB).
 
 ---
 
 ## 🚀 Instalación y Ejecución
 
-El proyecto está dividido en dos repositorios para facilitar el despliegue y escalabilidad.
+El proyecto está optimizado para funcionar en un entorno de dos capas (Frontend/Backend).
 
-### Prerrequisitos
+### Variables de Entorno (.env)
 
-- [Node.js](https://nodejs.org/) (v18 o superior)
-- [MongoDB Atlas](https://www.mongodb.com/cloud/atlas), Railway o local.
-- Cuenta de [Clerk](https://clerk.com/) para la autenticación.
+**Frontend:**
 
-### Configuración del Frontend
+```env
+REACT_APP_API_URL=https://tu-api-en-railway.app
+REACT_APP_API_URL_LOCAL=http://localhost:5001
+REACT_APP_CLERK_PUBLISHABLE_KEY=tu_public_key_clerk
+```
 
-1. **Instalar dependencias:** `npm install`
-2. **Variables de Entorno:** Configura el archivo `.env`:
-   ```env
-   REACT_APP_API_URL=https://tu-backend.railway.app
-   REACT_APP_API_URL_LOCAL=http://localhost:5001
-   REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_...
-   ```
-3. **Ejecutar:** `npm start` (o `npm run dev`)
+**Backend:**
 
-### Configuración del Backend
+```env
+PORT=5001
+MONGODB_URI=tu_url_de_mongodb
+```
 
-1. Navega al repositorio `EventoBackend`. Enlace: https://github.com/calavanda/EventoBackend
-2. **Instalar dependencias:** `npm install`
-3. **Variables de Entorno:** Configura el archivo `.env`:
-   ```env
-   PORT=5001
-   MONGODB_URI=mongodb+srv://...
-   ```
-4. **Ejecutar:** `npm run dev`
+### Ejecución Local
 
-
-## Despliegue del Backend en Railway
-
-1. Ve a [Railway](https://railway.app/) y crea un nuevo proyecto.
-2. Importa el repositorio `EventoBackend`.
-3. Configura las variables de entorno:
-   ```env
-   PORT=8080
-   MONGODB_URI=mongodb+srv://...
-   ```
-4. Agrega una base de datos de MongoDB.
-5. Despliega el proyecto.
-6. Copia MONGODB_URI y pégala en la variable de entorno `MONGODB_URI` del frontend y tambien en el backend.
-7. Copia la URL del despliegue y pégala en la variable de entorno `REACT_APP_API_URL` del frontend.
+1. Instalar dependencias en ambas carpetas: `npm install`
+2. Ejecutar backend: `npm run dev`
+3. Ejecutar frontend: `npm start`
 
 ---
 
-## 👥 Integrantes del Equipo
+## 👥 Integrantes del Equipo (UTGZ)
 
-| Nombre                        | Institución | Área                                           |
-| ----------------------------- | ----------- | ---------------------------------------------- |
-| **Alfredo Castillo Gerónimo** | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
-| **Luis Sosa Vega**            | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
+| Nombre                              | Institución | Área                                           |
+| :---------------------------------- | :---------- | :--------------------------------------------- |
+| **Alfredo Castillo Gerónimo**       | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
+| **Luis Sosa Vega**                  | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
 | **Andrey Emilio Cabriales Ramirez** | UTGZ        | Ingeniería en Gestión y Desarrollo de Software |
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto está bajo la **Licencia MIT**. Consulta el archivo [LICENSE](./LICENSE) para más detalles.
+Este proyecto está bajo la **Licencia MIT**.
 
 ---
 
 <p align="center">
-  Desarrollado con ❤️ en la <strong>Universidad Tecnológica de Gutiérrez Zamora</strong>
+  Optimizado y Refactorizado con ❤️ | 2026
 </p>
