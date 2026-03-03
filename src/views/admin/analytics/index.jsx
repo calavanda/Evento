@@ -8,6 +8,7 @@ import {
   Card,
   Spinner,
   Icon,
+  VStack,
 } from '@chakra-ui/react';
 import Chart from 'react-apexcharts';
 import { MdBarChart, MdStar, MdTimeline, MdPeople } from 'react-icons/md';

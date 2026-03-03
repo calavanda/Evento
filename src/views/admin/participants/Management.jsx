@@ -29,6 +29,8 @@ import {
   Badge,
   Spinner,
   Icon,
+  VStack,
+  HStack,
 } from '@chakra-ui/react';
 import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline } from 'react-icons/md';
 import Chart from 'react-apexcharts';
@@ -183,6 +185,10 @@ export default function ParticipantManagement() {
       }
     },
     grid: { borderColor: '#E0E5F2', strokeDashArray: 5 }
+  };
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
