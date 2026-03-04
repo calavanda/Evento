@@ -34,9 +34,9 @@ import {
 } from '@chakra-ui/react';
 import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline, MdRefresh, MdPrint } from 'react-icons/md';
 import Chart from 'react-apexcharts';
+import { getApiUrl } from 'utils/api';
 const logoFrancophonie = '/logo_francophonie.png';
 const utgzLogo = '/utgz.png';
-import { getApiUrl } from 'utils/api';
 
 export default function ParticipantManagement() {
   const [participants, setParticipants] = useState([]);

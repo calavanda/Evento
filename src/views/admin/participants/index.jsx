@@ -27,10 +27,10 @@ import {
   MdPrint,
   MdQrCode
 } from 'react-icons/md';
+import { getApiUrl } from 'utils/api';
 // Usamos rutas estáticas desde /public para evitar problemas de CSP con el bundle
 const logoFrancophonie = '/logo_francophonie.png';
 const utgzLogo = '/utgz.png';
-import { getApiUrl } from 'utils/api';
 
 export default function ParticipantRegister() {
   const [formData, setFormData] = useState({
