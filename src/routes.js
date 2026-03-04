@@ -9,6 +9,8 @@ import {
   MdTableChart,
   MdQrCode2,
   MdAdminPanelSettings,
+  MdSecurity,
+  MdQuestionMark,
 } from 'react-icons/md';
 
 // Admin Imports
@@ -20,6 +22,7 @@ import VisitScanner from 'views/admin/scanner';
 import SurveySatisfaction from 'views/admin/surveys';
 import Analytics from 'views/admin/analytics';
 import AdminManagement from 'views/admin/admins';
+import SecurityAlerts from 'views/admin/alerts';
 
 
 /**
@@ -88,9 +91,17 @@ const routes = [
     name: 'Encuesta',
     layout: '/admin',
     path: '/survey',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+    icon: <Icon as={MdQuestionMark} width="20px" height="20px" color="inherit" />,
     component: <SurveySatisfaction />,
     roles: ['admin', 'escaneador'],
+  },
+  {
+    name: 'Seguridad',
+    layout: '/admin',
+    path: '/alerts',
+    icon: <Icon as={MdSecurity} width="20px" height="20px" color="inherit" />,
+    component: <SecurityAlerts />,
+    roles: ['admin'],
   },
 ];
 

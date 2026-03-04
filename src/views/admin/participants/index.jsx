@@ -27,8 +27,9 @@ import {
   MdPrint,
   MdQrCode
 } from 'react-icons/md';
-import logoFrancophonie from 'assets/logo_francophonie.png';
-import utgzLogo from 'assets/utgz.png';
+// Usamos rutas estáticas desde /public para evitar problemas de CSP con el bundle
+const logoFrancophonie = '/logo_francophonie.png';
+const utgzLogo = '/utgz.png';
 
 export default function ParticipantRegister() {
   const [formData, setFormData] = useState({
