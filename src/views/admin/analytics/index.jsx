@@ -15,6 +15,7 @@ import Chart from 'react-apexcharts';
 import { MdStar, MdTimeline, MdPeople, MdRefresh } from 'react-icons/md';
 import { Button } from '@chakra-ui/react';
 import IconBox from 'components/icons/IconBox';
+import { getApiUrl } from 'utils/api';
 
 export default function Analytics() {
   const [data, setData] = useState(null);
@@ -32,11 +33,7 @@ export default function Analytics() {
 
   const fetchAnalytics = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL 
-        ? (process.env.REACT_APP_API_URL.startsWith('http') 
-            ? process.env.REACT_APP_API_URL 
-            : `https://${process.env.REACT_APP_API_URL}`) 
-        : 'http://localhost:5001';
+      const API_URL = getApiUrl();
       const [analyticsRes, visitorStatsRes] = await Promise.all([
         fetch(`${API_URL}/api/reports/stand-analytics`),
         fetch(`${API_URL}/api/reports/visitor-stats`)

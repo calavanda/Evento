@@ -26,6 +26,7 @@ import {
 } from "react-icons/md";
 import MiniStatistics from "components/card/MiniStatistics";
 import IconBox from "components/icons/IconBox";
+import { getApiUrl } from "utils/api";
 
 export default function UserReports() {
   const [stats, setStats] = useState(null);
@@ -45,11 +46,7 @@ export default function UserReports() {
 
   const fetchData = async () => {
     try {
-      const API_URL = process.env.REACT_APP_API_URL 
-        ? (process.env.REACT_APP_API_URL.startsWith('http') 
-            ? process.env.REACT_APP_API_URL 
-            : `https://${process.env.REACT_APP_API_URL}`) 
-        : 'http://localhost:5001';
+      const API_URL = getApiUrl();
       const [statsRes, visitsRes] = await Promise.all([
         fetch(`${API_URL}/api/reports/stats`),
         fetch(`${API_URL}/api/reports/stand-visits`)

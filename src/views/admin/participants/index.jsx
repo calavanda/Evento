@@ -30,6 +30,7 @@ import {
 // Usamos rutas estáticas desde /public para evitar problemas de CSP con el bundle
 const logoFrancophonie = '/logo_francophonie.png';
 const utgzLogo = '/utgz.png';
+import { getApiUrl } from 'utils/api';
 
 export default function ParticipantRegister() {
   const [formData, setFormData] = useState({
@@ -61,11 +62,7 @@ export default function ParticipantRegister() {
     setLoading(true);
     setQrBase64(''); // Limpia el QR anterior
     try {
-      const API_URL = process.env.REACT_APP_API_URL 
-        ? (process.env.REACT_APP_API_URL.startsWith('http') 
-            ? process.env.REACT_APP_API_URL 
-            : `https://${process.env.REACT_APP_API_URL}`) 
-        : 'http://localhost:5001';
+      const API_URL = getApiUrl();
       const response = await fetch(`${API_URL}/api/participants`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

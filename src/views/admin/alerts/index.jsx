@@ -18,6 +18,7 @@ import {
 import React, { useEffect, useState } from 'react';
 import { MdSecurity, MdDelete } from 'react-icons/md';
 import Card from 'components/card/Card';
+import { getApiUrl } from 'utils/api';
 
 export default function SecurityAlerts() {
   const [alerts, setAlerts] = useState([]);
@@ -29,9 +30,9 @@ export default function SecurityAlerts() {
 
   const fetchAlerts = async () => {
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/security/alerts`);
+      const response = await fetch(`${getApiUrl()}/api/security/alerts`);
       const data = await response.json();
-      setAlerts(data);
+      setAlerts(Array.isArray(data) ? data : []);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching alerts:', error);
@@ -42,7 +43,7 @@ export default function SecurityAlerts() {
   const clearAlerts = async () => {
     if (!window.confirm('¿Estás seguro de que deseas limpiar todo el historial de seguridad?')) return;
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/security/alerts/clear`, {
+      const response = await fetch(`${getApiUrl()}/api/security/alerts/clear`, {
         method: 'DELETE',
       });
       if (response.ok) {
