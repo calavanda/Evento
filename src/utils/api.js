@@ -5,7 +5,7 @@ export const getApiUrl = () => {
   }
   
   // Fallback to REACT_APP_API_URL or localhost:5001
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+  let apiUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5001').replace(/\/+$/, '');
   
   if (apiUrl.startsWith('http')) {
     return apiUrl;
