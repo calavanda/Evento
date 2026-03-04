@@ -32,7 +32,7 @@ import {
   VStack,
   HStack,
 } from '@chakra-ui/react';
-import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline, MdRefresh } from 'react-icons/md';
+import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline, MdRefresh, MdPrint } from 'react-icons/md';
 import Chart from 'react-apexcharts';
 
 export default function ParticipantManagement() {
@@ -209,6 +209,110 @@ export default function ParticipantManagement() {
     grid: { borderColor: '#E0E5F2', strokeDashArray: 5 }
   };
 
+  const handlePrint = (user) => {
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(user.codigoQR)}&size=200x200&color=4318FF`;
+    
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>Identificación Oficial - ${user.nombre}</title>
+          <style>
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
+            body { 
+              font-family: 'Inter', sans-serif; 
+              text-align: center; 
+              background: #f4f7fe; 
+              padding: 0;
+              margin: 0;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
+            .badge { 
+              background: white;
+              border: 1px solid #e0e5f2; 
+              padding: 40px; 
+              display: inline-block; 
+              border-radius: 20px; 
+              width: 380px; 
+              box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
+              position: relative;
+              overflow: hidden;
+              margin-top: 50px;
+            }
+            .header-strip { 
+              background: #4318FF !important; 
+              color: white; 
+              padding: 12px; 
+              margin: -40px -40px 30px -40px; 
+              font-weight: 800;
+              letter-spacing: 1px;
+              font-size: 14px;
+            }
+            .logos-container {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 25px;
+              padding: 0 10px;
+            }
+            .logo-img {
+              height: 50px;
+              width: auto;
+              object-fit: contain;
+            }
+            .name { 
+              font-size: 28px; 
+              font-weight: 800; 
+              color: #1B254B; 
+              margin: 10px 0; 
+              text-transform: uppercase;
+              line-height: 1.1;
+            }
+            .location { 
+              font-size: 16px; 
+              color: #707EAE; 
+              margin-bottom: 25px;
+              font-weight: 500;
+            }
+            .qr-container { 
+              background: #F4F7FE !important; 
+              padding: 25px; 
+              border-radius: 20px; 
+              display: inline-block;
+              margin-bottom: 25px;
+            }
+            .qr-img { width: 180px; height: 180px; }
+            .footer { 
+              margin-top: 10px; 
+              font-size: 13px; 
+              color: #707EAE; 
+              border-top: 1px dashed #E0E5F2; 
+              padding-top: 15px;
+              font-weight: 500;
+            }
+          </style>
+        </head>
+        <body onload="setTimeout(() => { window.print(); window.close(); }, 500)">
+          <div class="badge">
+            <div class="header-strip">IDENTIFICACIÓN OFICIAL</div>
+            <div class="logos-container">
+              <img src="/logo_froncophonie.png" class="logo-img" />
+              <img src="/utgz.png" class="logo-img" />
+            </div>
+            <div class="name">${user.nombre}<br>${user.apellidoPaterno}</div>
+            <div class="location">${user.ciudad}, ${user.municipio}</div>
+            <div class="qr-container">
+                <img src="${qrUrl}" class="qr-img" />
+            </div>
+            <div class="footer">${user.correo}</div>
+          </div>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -277,6 +381,15 @@ export default function ParticipantManagement() {
                         borderRadius="10px"
                         onClick={() => handleHistory(user)}
                         title="Ver Historial"
+                      />
+                      <IconButton
+                        icon={<MdPrint />}
+                        variant="soft"
+                        colorScheme="brand"
+                        mr="10px"
+                        borderRadius="10px"
+                        onClick={() => handlePrint(user)}
+                        title="Imprimir Gafete"
                       />
                       <IconButton
                         icon={<MdEdit />}

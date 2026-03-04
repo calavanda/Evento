@@ -108,35 +108,94 @@ export default function ParticipantRegister() {
     printWindow.document.write(`
       <html>
         <head>
-          <title>Gafete de Identificación</title>
+          <title>Identificación Oficial - ${formData.nombre}</title>
           <style>
-            body { font-family: 'Inter', sans-serif; text-align: center; background: #f4f7fe; padding: 20px; }
+            @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
+            body { 
+              font-family: 'Inter', sans-serif; 
+              text-align: center; 
+              background: #f4f7fe; 
+              padding: 0;
+              margin: 0;
+              -webkit-print-color-adjust: exact !important;
+              print-color-adjust: exact !important;
+            }
             .badge { 
               background: white;
               border: 1px solid #e0e5f2; 
               padding: 40px; 
               display: inline-block; 
               border-radius: 20px; 
-              width: 350px; 
+              width: 380px; 
               box-shadow: 0px 18px 40px rgba(112, 144, 176, 0.12);
               position: relative;
               overflow: hidden;
+              margin-top: 50px;
             }
-            .header { background: #4318FF; color: white; padding: 10px; margin: -40px -40px 30px -40px; }
-            .name { font-size: 24px; font-weight: 800; color: #1B254B; margin: 10px 0; text-transform: uppercase; }
-            .location { font-size: 14px; color: #707EAE; margin-bottom: 20px; }
-            .qr-container { background: #F4F7FE; padding: 20px; border-radius: 15px; display: inline-block; }
-            img { width: 180px; height: 180px; }
-            .footer { margin-top: 20px; font-size: 12px; color: #A3AED0; border-top: 1px dashed #E0E5F2; pt: 10px; }
+            .header-strip { 
+              background: #4318FF !important; 
+              color: white; 
+              padding: 12px; 
+              margin: -40px -40px 30px -40px; 
+              font-weight: 800;
+              letter-spacing: 1px;
+              font-size: 14px;
+            }
+            .logos-container {
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              margin-bottom: 25px;
+              padding: 0 10px;
+            }
+            .logo-img {
+              height: 50px;
+              width: auto;
+              object-fit: contain;
+            }
+            .name { 
+              font-size: 28px; 
+              font-weight: 800; 
+              color: #1B254B; 
+              margin: 10px 0; 
+              text-transform: uppercase;
+              line-height: 1.1;
+            }
+            .location { 
+              font-size: 16px; 
+              color: #707EAE; 
+              margin-bottom: 25px;
+              font-weight: 500;
+            }
+            .qr-container { 
+              background: #F4F7FE !important; 
+              padding: 25px; 
+              border-radius: 20px; 
+              display: inline-block;
+              margin-bottom: 25px;
+            }
+            .qr-img { width: 180px; height: 180px; }
+            .footer { 
+              margin-top: 10px; 
+              font-size: 13px; 
+              color: #707EAE; 
+              border-top: 1px dashed #E0E5F2; 
+              padding-top: 15px;
+              font-weight: 500;
+            }
           </style>
         </head>
-        <body onload="window.print()">
+        <body onload="setTimeout(() => { window.print(); window.close(); }, 500)">
           <div class="badge">
-            <div class="header">EVENTO FRANCOPHONIE</div>
+            <div class="header-strip">IDENTIFICACIÓN OFICIAL</div>
+            <div class="logos-container">
+              <img src="/logo_froncophonie.png" class="logo-img" />
+              <img src="/utgz.png" class="logo-img" />
+            </div>
             <div class="name">${formData.nombre}<br>${formData.apellidoPaterno}</div>
             <div class="location">${formData.ciudad}, ${formData.municipio}</div>
             <div class="qr-container">
-                <img src="${qrBase64}" />
+                <img src="${qrBase64}" class="qr-img" />
             </div>
             <div class="footer">${formData.correo}</div>
           </div>
@@ -286,7 +345,7 @@ export default function ParticipantRegister() {
         {/* Vista previa de la identificación */}
         <Flex direction="column" align="center" justify="center">
           {qrBase64 ? (
-            <Card p="40px" bg={cardBg} boxShadow={cardShadow} borderRadius="20px" align="center" w="100%" maxW="400px">
+            <Card p="40px" bg={cardBg} boxShadow={cardShadow} borderRadius="20px" align="center" w="100%" maxW="420px">
               <Box 
                 bg={brandColor} 
                 w="110%" 
@@ -298,8 +357,13 @@ export default function ParticipantRegister() {
                 <Text color="white" fontWeight="800" letterSpacing="1px">IDENTIFICACIÓN OFICIAL</Text>
               </Box>
               
-              <VStack spacing="5px" mt="30px" mb="20px">
-                <Text color={textColor} fontSize="28px" fontWeight="800" textAlign="center" lineHeight="1.1">
+              <Flex justify="space-between" align="center" w="100%" mt="25px" mb="15px">
+                <Image src="/logo_froncophonie.png" h="45px" objectFit="contain" />
+                <Image src="/utgz.png" h="45px" objectFit="contain" />
+              </Flex>
+
+              <VStack spacing="5px" mb="20px">
+                <Text color={textColor} fontSize="28px" fontWeight="800" textAlign="center" lineHeight="1.1" textTransform="uppercase">
                   {formData.nombre}<br/>{formData.apellidoPaterno}
                 </Text>
                 <Text color={textColorSecondary} fontSize="md" fontWeight="500">
@@ -311,7 +375,7 @@ export default function ParticipantRegister() {
                 <Image src={qrBase64} alt="QR Code" w="180px" h="180px" />
               </Box>
 
-              <Text color={textColorSecondary} fontSize="xs" mb="25px" borderTop="1px dashed" borderColor="gray.200" pt="15px" w="100%" textAlign="center">
+              <Text color={textColorSecondary} fontSize="sm" mb="25px" borderTop="1px dashed" borderColor="gray.200" pt="15px" w="100%" textAlign="center" fontWeight="500">
                 {formData.correo}
               </Text>
 
