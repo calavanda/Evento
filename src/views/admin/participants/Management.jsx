@@ -34,6 +34,8 @@ import {
 } from '@chakra-ui/react';
 import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline, MdRefresh, MdPrint } from 'react-icons/md';
 import Chart from 'react-apexcharts';
+import logoFrancophonie from 'assets/logo_francophonie.png';
+import utgzLogo from 'assets/utgz.png';
 
 export default function ParticipantManagement() {
   const [participants, setParticipants] = useState([]);
@@ -217,6 +219,7 @@ export default function ParticipantManagement() {
       <html>
         <head>
           <title>Identificación Oficial - ${user.nombre}</title>
+          <base href="${window.location.origin}">
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
             body { 
@@ -297,8 +300,8 @@ export default function ParticipantManagement() {
           <div class="badge">
             <div class="header-strip">IDENTIFICACIÓN OFICIAL</div>
             <div class="logos-container">
-              <img src="/logo_froncophonie.png" class="logo-img" />
-              <img src="/utgz.png" class="logo-img" />
+              <img src="${logoFrancophonie}" class="logo-img" />
+              <img src="${utgzLogo}" class="logo-img" />
             </div>
             <div class="name">${user.nombre}<br>${user.apellidoPaterno}</div>
             <div class="location">${user.ciudad}, ${user.municipio}</div>

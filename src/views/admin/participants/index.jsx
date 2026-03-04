@@ -27,6 +27,8 @@ import {
   MdPrint,
   MdQrCode
 } from 'react-icons/md';
+import logoFrancophonie from 'assets/logo_francophonie.png';
+import utgzLogo from 'assets/utgz.png';
 
 export default function ParticipantRegister() {
   const [formData, setFormData] = useState({
@@ -109,6 +111,7 @@ export default function ParticipantRegister() {
       <html>
         <head>
           <title>Identificación Oficial - ${formData.nombre}</title>
+          <base href="${window.location.origin}">
           <style>
             @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap');
             body { 
@@ -189,8 +192,8 @@ export default function ParticipantRegister() {
           <div class="badge">
             <div class="header-strip">IDENTIFICACIÓN OFICIAL</div>
             <div class="logos-container">
-              <img src="/logo_froncophonie.png" class="logo-img" />
-              <img src="/utgz.png" class="logo-img" />
+              <img src="${logoFrancophonie}" class="logo-img" />
+              <img src="${utgzLogo}" class="logo-img" />
             </div>
             <div class="name">${formData.nombre}<br>${formData.apellidoPaterno}</div>
             <div class="location">${formData.ciudad}, ${formData.municipio}</div>
@@ -358,8 +361,8 @@ export default function ParticipantRegister() {
               </Box>
               
               <Flex justify="space-between" align="center" w="100%" mt="25px" mb="15px">
-                <Image src="/logo_froncophonie.png" h="45px" objectFit="contain" />
-                <Image src="/utgz.png" h="45px" objectFit="contain" />
+                <Image src={logoFrancophonie} h="45px" objectFit="contain" />
+                <Image src={utgzLogo} h="45px" objectFit="contain" />
               </Flex>
 
               <VStack spacing="5px" mb="20px">
