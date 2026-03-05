@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Button,
@@ -47,11 +47,7 @@ export default function EmailSender() {
   const inputBg = useColorModeValue('secondaryGray.300', 'navy.900');
   const toast = useToast();
 
-  useEffect(() => {
-    fetchParticipants();
-  }, []);
-
-  const fetchParticipants = async () => {
+  const fetchParticipants = useCallback(async () => {
     try {
       const API_URL = getApiUrl();
       const response = await fetch(`${API_URL}/api/participants`);
@@ -64,7 +60,11 @@ export default function EmailSender() {
       toast({ title: 'Error al cargar participantes', status: 'error' });
     }
     setLoading(false);
-  };
+  }, [toast]);
+
+  useEffect(() => {
+    fetchParticipants();
+  }, [fetchParticipants]);
 
   const handleSelectAll = (e) => {
     if (e.target.checked) {
