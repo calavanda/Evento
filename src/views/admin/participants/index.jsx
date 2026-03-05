@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import * as XLSX from 'xlsx';
 import {
   Box,
   Button,
@@ -25,7 +26,8 @@ import {
   MdLocationCity, 
   MdWc, 
   MdPrint,
-  MdQrCode
+  MdQrCode,
+  MdFileUpload
 } from 'react-icons/md';
 import { getApiUrl } from 'utils/api';
 // Usamos rutas estáticas desde /public para evitar problemas de CSP con el bundle
@@ -37,14 +39,14 @@ export default function ParticipantRegister() {
     nombre: '',
     apellidoPaterno: '',
     apellidoMaterno: '',
-    ciudad: '',
     municipio: '',
     genero: 'M',
     correo: '',
   });
   const [qrBase64, setQrBase64] = useState('');
   const [loading, setLoading] = useState(false);
-  
+  const fileInputRef = useRef(null);
+    
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = 'secondaryGray.600';
   const cardBg = useColorModeValue('white', 'navy.800');
@@ -55,6 +57,78 @@ export default function ParticipantRegister() {
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleExcelImport = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setLoading(true);
+    const reader = new FileReader();
+    reader.onload = async (evt) => {
+      try {
+        const bstr = evt.target.result;
+        const wb = XLSX.read(bstr, { type: 'binary' });
+        const wsname = wb.SheetNames[0];
+        const ws = wb.Sheets[wsname];
+        const data = XLSX.utils.sheet_to_json(ws);
+
+        if (data.length === 0) {
+          throw new Error("El archivo Excel está vacío.");
+        }
+
+        let successCount = 0;
+        let errorCount = 0;
+        const API_URL = getApiUrl();
+
+        for (const row of data) {
+          // Mapeo flexible de columnas (minúsculas, sin espacios)
+          const guest = {
+            nombre: row.Nombre || row.nombre || '',
+            apellidoPaterno: row['Apellido Paterno'] || row.apellidoPaterno || row.paterno || '',
+            apellidoMaterno: row['Apellido Materno'] || row.apellidoMaterno || row.materno || '',
+            municipio: row.Municipio || row.municipio || '',
+            genero: (row.Genero || row.genero || 'M').charAt(0).toUpperCase(),
+            correo: row.Correo || row.correo || row.Email || row.email || '',
+          };
+
+          if (!guest.nombre || !guest.correo) continue;
+
+          try {
+            const resp = await fetch(`${API_URL}/api/participants`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(guest),
+            });
+            if (resp.ok) successCount++;
+            else errorCount++;
+          } catch (err) {
+            errorCount++;
+          }
+        }
+
+        toast({
+          title: 'Importación Finalizada',
+          description: `Se registraron ${successCount} invitados con éxito. Errores: ${errorCount}`,
+          status: successCount > 0 ? 'success' : 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+
+      } catch (error) {
+        toast({
+          title: 'Error al importar Excel',
+          description: error.message,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      } finally {
+        setLoading(false);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+      }
+    };
+    reader.readAsBinaryString(file);
   };
 
   const handleSubmit = async (e) => {
@@ -194,7 +268,7 @@ export default function ParticipantRegister() {
               <img src="${utgzLogo}" class="logo-img" />
             </div>
             <div class="name">${formData.nombre}<br>${formData.apellidoPaterno}</div>
-            <div class="location">${formData.ciudad}, ${formData.municipio}</div>
+            <div class="location">${formData.municipio}</div>
             <div class="qr-container">
                 <img src="${qrBase64}" class="qr-img" />
             </div>
@@ -218,6 +292,24 @@ export default function ParticipantRegister() {
             <Text color={textColorSecondary} fontSize="md">
               Complete los datos del asistente para generar su identificación.
             </Text>
+            <Button
+              variant="outline"
+              colorScheme="brand"
+              leftIcon={<Icon as={MdFileUpload} />}
+              onClick={() => fileInputRef.current?.click()}
+              size="sm"
+              mt="10px"
+              isLoading={loading}
+            >
+              Importar desde Excel
+            </Button>
+            <input
+              type="file"
+              accept=".xlsx, .xls"
+              ref={fileInputRef}
+              style={{ display: 'none' }}
+              onChange={handleExcelImport}
+            />
           </VStack>
 
           <form onSubmit={handleSubmit}>
@@ -263,20 +355,6 @@ export default function ParticipantRegister() {
               </SimpleGrid>
 
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing="20px" w="100%">
-                <FormControl isRequired>
-                  <FormLabel color={textColor} fontWeight="bold">Ciudad</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement children={<Icon as={MdLocationCity} color={brandColor} />} />
-                    <Input 
-                      name="ciudad" 
-                      variant="auth"
-                      bg={inputBg}
-                      value={formData.ciudad} 
-                      onChange={handleChange} 
-                      placeholder="Ej: CDMX" 
-                    />
-                  </InputGroup>
-                </FormControl>
                 <FormControl isRequired>
                   <FormLabel color={textColor} fontWeight="bold">Municipio</FormLabel>
                   <Input 
@@ -368,7 +446,7 @@ export default function ParticipantRegister() {
                   {formData.nombre}<br/>{formData.apellidoPaterno}
                 </Text>
                 <Text color={textColorSecondary} fontSize="md" fontWeight="500">
-                  {formData.ciudad}, {formData.municipio}
+                  {formData.municipio}
                 </Text>
               </VStack>
 

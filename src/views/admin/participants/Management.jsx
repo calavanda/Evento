@@ -47,7 +47,6 @@ export default function ParticipantManagement() {
     nombre: '',
     apellidoPaterno: '',
     apellidoMaterno: '',
-    ciudad: '',
     municipio: '',
     genero: 'M',
     correo: '',
@@ -289,7 +288,7 @@ export default function ParticipantManagement() {
               <img src="${utgzLogo}" class="logo-img" />
             </div>
             <div class="name">${user.nombre}<br>${user.apellidoPaterno}</div>
-            <div class="location">${user.ciudad}, ${user.municipio}</div>
+            <div class="location">${user.municipio}</div>
             <div class="qr-container">
                 <img src="${qrUrl}" class="qr-img" />
             </div>
@@ -354,7 +353,7 @@ export default function ParticipantManagement() {
                     </Td>
                     <Td>
                       <Badge variant="subtle" colorScheme="brand" borderRadius="5px">
-                        {user.ciudad}, {user.municipio}
+                        {user.municipio}
                       </Badge>
                     </Td>
                     <Td>
@@ -431,10 +430,6 @@ export default function ParticipantManagement() {
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Correo</FormLabel>
                   <Input name="correo" type="email" bg={inputBg} variant="auth" value={formData.correo} onChange={handleChange} />
-                </FormControl>
-                <FormControl isRequired>
-                  <FormLabel fontWeight="bold">Ciudad</FormLabel>
-                  <Input name="ciudad" bg={inputBg} variant="auth" value={formData.ciudad} onChange={handleChange} />
                 </FormControl>
                 <FormControl isRequired>
                   <FormLabel fontWeight="bold">Municipio</FormLabel>
