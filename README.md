@@ -1,72 +1,115 @@
-# Dashboard del Evento: "Sabores de la Francofonía" v4.0.0
+# Dashboard del Evento: "Sabores de la Francofonía" v1.1
 
-![version](https://img.shields.io/badge/versión-4.0.0-brightgreen.svg)
+![version](https://img.shields.io/badge/versión-1.1-brightgreen.svg)
 ![security](https://img.shields.io/badge/Seguridad-Blindada-red.svg)
 ![react](https://img.shields.io/badge/React-18-61DAFB.svg?logo=react)
+![clerk](https://img.shields.io/badge/Auth-Clerk-6C47FF.svg)
+![mongodb](https://img.shields.io/badge/DB-MongoDB_Atlas-47A248.svg?logo=mongodb)
 ![vercel](https://img.shields.io/badge/Despliegue-Vercel-000000.svg?logo=vercel)
 
 ---
 
 ## 📋 Descripción
 
-Plataforma de gestión integral para el evento gastronómico "Sabores de la Francofonía". El sistema centraliza el control de asistentes, estands y analíticas con un fuerte enfoque en la estética **Premium (Glassmorphism)** y la **Seguridad de Datos**.
-
-La versión **4.0.0** marca un hito en la robustez del sistema, implementando un escudo contra ataques de inyección y un panel de monitoreo de seguridad en tiempo real.
+Plataforma de gestión integral para el evento gastronómico "Sabores de la Francofonía". El sistema centraliza el control de participantes, estands, analíticas y comunicación, con un fuerte enfoque en la estética **Premium (Glassmorphism)**, la **Seguridad de Datos** y la **automatización de procesos**.
 
 ---
 
-## ✨ Características Principales
+## ✨ Módulos del Sistema
 
-| Módulo                        | Descripción                                                           | Roles con Acceso     |
-| :---------------------------- | :-------------------------------------------------------------------- | :------------------- |
-| **🛡️ Blindaje de Seguridad**  | Protección activa contra inyecciones SQL/NoSQL en toda la plataforma. | Sistema (Automático) |
-| **🚨 Panel de Alertas**       | Nueva vista exclusiva para monitorear intentos de acceso maliciosos.  | Admin                |
-| **Control de Acceso (RBAC)**  | Sistema de roles jerárquicos (Admin, Moderador, Escaneador).          | Todos                |
-| **Registro de Participantes** | Alta de asistentes con generación automática de código QR.            | Admin, Moderador     |
-| **Escáner QR Dual**           | Registro de visitas mediante cámara en vivo o subida de imágenes.     | Admin, Escaneador    |
-| **Analíticas de Impacto**     | Dashboard dinámico con métricas de afluencia y satisfacción.          | Admin, Moderador     |
+| Módulo                               | Descripción                                                                                                                      | Roles con Acceso  |
+| :----------------------------------- | :------------------------------------------------------------------------------------------------------------------------------- | :---------------- |
+| **🏠 Dashboard Principal**           | Vista general con métricas clave del evento en tiempo real.                                                                      | Admin, Moderador  |
+| **👤 Registro de Participantes**     | Alta individual con generación automática de QR y vista previa del gafete imprimible.                                            | Admin, Moderador  |
+| **📥 Importación desde Excel**       | Carga masiva de participantes desde un archivo `.xlsx` / `.xls` con mapeo flexible de columnas.                                  | Admin, Moderador  |
+| **📧 Envío Masivo de QR por Correo** | Selección de participantes y envío personalizado de su código QR por email (vía Resend API).                                     | Admin             |
+| **🗂️ Gestión de Participantes**      | Tabla de todos los asistentes con búsqueda, filtros y acciones individuales.                                                     | Admin, Moderador  |
+| **🏪 Gestión de Estands**            | CRUD completo de estands: alta, edición en línea, y eliminación con diálogo de confirmación.                                     | Admin, Moderador  |
+| **📊 Analíticas de Impacto**         | Dashboard de 4 gráficas interactivas: visitas únicas vs totales, picos horarios por stand, picos generales y satisfacción media. | Admin, Moderador  |
+| **❔ Encuestas**                      | Recolección de calificaciones de los visitantes por stand.                                                                       | Admin, Escaneador |
+| **📷 Escáner QR Dual**               | Registro de visitas mediante cámara en vivo o subida de imagen.                                                                  | Admin, Escaneador |
+| **🚨 Panel de Alertas**              | Monitoreo de intentos de acceso maliciosos e incidentes de seguridad.                                                            | Admin             |
+| **👥 Gestión de Administradores**    | Control de usuarios con acceso al dashboard.                                                                                     | Admin             |
+
+---
+
+## 🆕 Nuevas Funcionalidades (v1.1)
+
+### 📥 Importación Masiva desde Excel
+
+- Sube un archivo `.xlsx` o `.xls` directamente desde el formulario de registro.
+- El sistema mapea automáticamente columnas con nombres flexibles (ej. `Nombre`, `nombre`, `Apellido Paterno`, `paterno`, `Email`, `correo`...).
+- Muestra un resumen con el número de registros exitosos y errores al finalizar.
+
+### 📧 Envío de QR por Correo Electrónico
+
+- Vista dedicada para la selección individual o masiva de participantes.
+- Composición de correos con **asunto y mensaje personalizado** mediante modal.
+- El código QR de cada participante se **incrusta automáticamente** en el cuerpo del email.
+- Powered by **Resend API**.
+- Los participantes sin correo registrado se muestran deshabilitados automáticamente.
+
+### 🎨 Gafete Imprimible
+
+- Tras cada registro exitoso, se genera una vista previa del gafete oficial del evento.
+- El gafete incluye logos institucionales (Francofonía y UTGZ), nombre completo, municipio y código QR en color.
+- Botón de **Imprimir** genera una ventana de impresión optimizada directamente en el navegador.
+
+### 📊 Analíticas Avanzadas
+
+- **Gráfica de barras**: Visitas totales vs. visitantes únicos por stand.
+- **Gráfica de área por stand**: Picos de visitas hora a hora, comparativa de todos los estands en un solo gráfico.
+- **Gráfica de área general**: Suma total de visitas del evento por hora.
+- **Gráfica de satisfacción**: Calificación media (1-5 estrellas) por stand en gráfica de barras horizontales.
+- Soporte de **zoom interactivo** y botón de reinicio en cada gráfica.
 
 ---
 
 ## 🔐 Medidas de Seguridad Implementadas
 
-1. **Sanitización de Datos**: Limpieza automática de cualquier entrada que contenga caracteres sospechosos (`'`, `--`, `$`, etc.).
-2. **Bloqueo Inteligente**: El sistema detecta patrones de ataque y bloquea la IP del atacante con un error 403 instantly.
-3. **Logging de Incidentes**: Cada intento de ataque se guarda con la IP, fecha, hora y el contenido malicioso para auditoría.
-4. **CSP (Content Security Policy)**: Reglas estrictas para evitar que el navegador ejecute scripts no autorizados.
+1. **Autenticación con Clerk**: Gestión de identidad robusta con soporte para OAuth (Google, etc.) y nonces de seguridad.
+2. **Sanitización de Datos**: Limpieza automática de entradas que contengan caracteres sospechosos (`'`, `--`, `$`, etc.).
+3. **Bloqueo Inteligente**: Detección de patrones de ataque con respuesta de error 403.
+4. **Logging de Incidentes**: Cada intento de ataque se registra con IP, fecha, hora y payload para auditoría.
+5. **CSP (Content Security Policy)**: Cabeceras estrictas configuradas en `public/index.html` para prevenir ejecución de scripts no autorizados.
 
 ---
 
-## 🛠️ Tecnologías y Despliegue
+## 🛠️ Tecnologías
 
-- **Frontend:** React 18, Chakra UI, Framer Motion, ApexCharts (Desplegado en **Vercel**).
-- **Backend:** Node.js, Express (Desplegado en **Vercel Serverless**).
-- **Base de Datos:** **MongoDB Atlas** (Cloud Dedicado).
-- **Autenticación:** Clerk (Seguridad de identidad).
+| Capa              | Tecnología                                     |
+| :---------------- | :--------------------------------------------- |
+| **Frontend**      | React 18, Chakra UI, Framer Motion, ApexCharts |
+| **Backend**       | Node.js, Express                               |
+| **Base de Datos** | MongoDB Atlas                                  |
+| **Autenticación** | Clerk                                          |
+| **Email**         | Resend API                                     |
+| **Despliegue**    | Vercel (Frontend) · Railway (Backend)          |
+| **Generación QR** | api.qrserver.com                               |
+| **Importación**   | SheetJS (xlsx)                                 |
 
 ---
 
-## 🚀 Configuración de Variables de Entorno
+## 🚀 Variables de Entorno
 
-Para que el sistema funcione correctamente, se deben configurar las siguientes variables en Vercel:
-
-**Frontend:**
+**Frontend (`.env`):**
 
 ```env
-REACT_APP_API_URL=https://tu-backend.vercel.app  # Sin barra al final
+REACT_APP_API_URL=https://tu-backend.up.railway.app  # Sin barra al final
 REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_...
 ```
 
-**Backend:**
+**Backend (`.env`):**
 
 ```env
 MONGODB_URI=mongodb+srv://.../evento?retryWrites=true&w=majority
 PORT=5001
+RESEND_API_KEY=re_...
 ```
 
 ---
 
-## 👥 Equipo de Desarrollo (UTGZ)
+## 👥 Equipo de Desarrollo
 
 - **Alfredo Castillo Gerónimo**
 - **Luis Sosa Vega**
@@ -75,5 +118,5 @@ PORT=5001
 ---
 
 <p align="center">
-  <b>Sistema Fortificado v1.0.5</b> | 2026 | Universidad Tecnológica de Gutiérrez Zamora
+  <b>Sistema Fortificado v1.1</b> | 2026 | Hecho por estudiantes de la Universidad Tecnológica de Gutiérrez Zamora
 </p>
