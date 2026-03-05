@@ -26,7 +26,7 @@ Plataforma de gestión integral para el evento gastronómico "Sabores de la Fran
 | **🗂️ Gestión de Participantes**      | Tabla de todos los asistentes con búsqueda, filtros y acciones individuales.                                                     | Admin, Moderador  |
 | **🏪 Gestión de Estands**            | CRUD completo de estands: alta, edición en línea, y eliminación con diálogo de confirmación.                                     | Admin, Moderador  |
 | **📊 Analíticas de Impacto**         | Dashboard de 4 gráficas interactivas: visitas únicas vs totales, picos horarios por stand, picos generales y satisfacción media. | Admin, Moderador  |
-| **❔ Encuestas**                      | Recolección de calificaciones de los visitantes por stand.                                                                       | Admin, Escaneador |
+| **❔ Encuestas**                     | Recolección de calificaciones de los visitantes por stand.                                                                       | Admin, Escaneador |
 | **📷 Escáner QR Dual**               | Registro de visitas mediante cámara en vivo o subida de imagen.                                                                  | Admin, Escaneador |
 | **🚨 Panel de Alertas**              | Monitoreo de intentos de acceso maliciosos e incidentes de seguridad.                                                            | Admin             |
 | **👥 Gestión de Administradores**    | Control de usuarios con acceso al dashboard.                                                                                     | Admin             |
@@ -77,16 +77,16 @@ Plataforma de gestión integral para el evento gastronómico "Sabores de la Fran
 
 ## 🛠️ Tecnologías
 
-| Capa              | Tecnología                                     |
-| :---------------- | :--------------------------------------------- |
-| **Frontend**      | React 18, Chakra UI, Framer Motion, ApexCharts |
-| **Backend**       | Node.js, Express                               |
-| **Base de Datos** | MongoDB Atlas                                  |
-| **Autenticación** | Clerk                                          |
-| **Email**         | Resend API                                     |
-| **Despliegue**    | Vercel (Frontend) · Railway (Backend)          |
-| **Generación QR** | api.qrserver.com                               |
-| **Importación**   | SheetJS (xlsx)                                 |
+| Capa              | Tecnología                                       |
+| :---------------- | :----------------------------------------------- |
+| **Frontend**      | React 18, Chakra UI, Framer Motion, ApexCharts   |
+| **Backend**       | Node.js, Express                                 |
+| **Base de Datos** | MongoDB Atlas                                    |
+| **Autenticación** | Clerk                                            |
+| **Email**         | Resend API                                       |
+| **Despliegue**    | Vercel (Frontend + Backend, proyectos separados) |
+| **Generación QR** | api.qrserver.com                                 |
+| **Importación**   | SheetJS (xlsx)                                   |
 
 ---
 
@@ -95,7 +95,7 @@ Plataforma de gestión integral para el evento gastronómico "Sabores de la Fran
 **Frontend (`.env`):**
 
 ```env
-REACT_APP_API_URL=https://tu-backend.up.railway.app  # Sin barra al final
+REACT_APP_API_URL=https://tu-backend.up.vercel.app
 REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_...
 ```
 
