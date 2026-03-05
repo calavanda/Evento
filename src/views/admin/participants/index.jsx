@@ -365,9 +365,6 @@ export default function ParticipantRegister() {
                     placeholder="Municipio" 
                   />
                 </FormControl>
-              </SimpleGrid>
-
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="20px" w="100%">
                 <FormControl isRequired>
                   <FormLabel color={textColor} fontWeight="bold">Género</FormLabel>
                   <InputGroup>
@@ -386,22 +383,24 @@ export default function ParticipantRegister() {
                     </Select>
                   </InputGroup>
                 </FormControl>
-                <FormControl isRequired>
-                  <FormLabel color={textColor} fontWeight="bold">Correo Electrónico</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement children={<Icon as={MdEmail} color={brandColor} />} />
-                    <Input 
-                      name="correo" 
-                      type="email" 
-                      variant="auth"
-                      bg={inputBg}
-                      value={formData.correo} 
-                      onChange={handleChange} 
-                      placeholder="usuario@correo.com" 
-                    />
-                  </InputGroup>
-                </FormControl>
               </SimpleGrid>
+
+              <FormControl isRequired>
+                <FormLabel color={textColor} fontWeight="bold">Correo Electrónico</FormLabel>
+                <InputGroup>
+                  <InputLeftElement children={<Icon as={MdEmail} color={brandColor} />} />
+                  <Input 
+                    name="correo" 
+                    type="email" 
+                    variant="auth"
+                    bg={inputBg}
+                    value={formData.correo} 
+                    onChange={handleChange} 
+                    placeholder="usuario@correo.com" 
+                  />
+                  </InputGroup>
+              </FormControl>
+
 
               <Button 
                 type="submit" 
