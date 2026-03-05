@@ -21,7 +21,7 @@ import { getApiUrl } from 'utils/api';
 
 export default function SurveySatisfaction() {
   const [formData, setFormData] = useState({
-    estand: '',
+    stand: '',
     p1: '5',
     p2: '5',
     p3: '5',
@@ -53,9 +53,9 @@ export default function SurveySatisfaction() {
       }
       const data = await response.json();
       setStands(data);
-      if (data.length > 0) setFormData(prev => ({ ...prev, estand: data[0]._id }));
+      if (data.length > 0) setFormData(prev => ({ ...prev, stand: data[0]._id }));
     } catch (error) {
-      console.error('Error al obtener los estands', error);
+      console.error('Error al obtener los stands', error);
     }
   };
 
@@ -63,7 +63,7 @@ export default function SurveySatisfaction() {
     { id: 'p1', text: '¿Qué tan satisfecho está con la organización del evento?' },
     { id: 'p2', text: '¿Cómo calificaría la calidad de los platillos evaluados?' },
     { id: 'p3', text: '¿Qué tan fácil fue realizar el registro y escaneo?' },
-    { id: 'p4', text: '¿La atención en los estands fue adecuada?' },
+    { id: 'p4', text: '¿La atención en los stands fue adecuada?' },
     { id: 'p5', text: '¿Recomendaría este evento a otras personas?' },
   ];
 
@@ -73,8 +73,8 @@ export default function SurveySatisfaction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.estand) {
-      toast({ title: 'Error', description: 'Selecciona un estand', status: 'error' });
+    if (!formData.stand) {
+      toast({ title: 'Error', description: 'Selecciona un stand', status: 'error' });
       return;
     }
     setLoading(true);
@@ -84,7 +84,7 @@ export default function SurveySatisfaction() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          estand: formData.estand,
+          stand: formData.stand,
           p1: parseInt(formData.p1),
           p2: parseInt(formData.p2),
           p3: parseInt(formData.p3),
@@ -122,7 +122,7 @@ export default function SurveySatisfaction() {
           Tu Opinión nos Importa
         </Text>
         <Text color={textColorSecondary} fontSize="md" textAlign="center" maxW="600px">
-          Ayúdenos a mejorar evaluando su experiencia en el estand y la calidad del evento general.
+          Ayúdenos a mejorar evaluando su experiencia en el stand y la calidad del evento general.
         </Text>
       </Flex>
 
@@ -133,15 +133,15 @@ export default function SurveySatisfaction() {
               
               <Box>
                 <FormLabel fontWeight="800" color={textColor} display="flex" alignItems="center" fontSize="lg">
-                    <Icon as={MdStorefront} mr="10px" color={brandColor} /> Estand Visitado
+                    <Icon as={MdStorefront} mr="10px" color={brandColor} /> Stand Visitado
                 </FormLabel>
                 <Select 
                     variant="auth" 
                     bg={inputBg}
                     h="60px"
                     borderRadius="15px"
-                    value={formData.estand} 
-                    onChange={(e) => setFormData({...formData, estand: e.target.value})}
+                    value={formData.stand} 
+                    onChange={(e) => setFormData({...formData, stand: e.target.value})}
                 >
                   {stands.map(s => (
                     <option key={s._id} value={s._id} style={{color: 'black'}}>{s.nombre} - {s.responsable}</option>

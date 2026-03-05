@@ -81,7 +81,7 @@ export default function StandManagement() {
       const data = await response.json();
       setStandList(data);
     } catch (error) {
-      console.error('Error al obtener los estands', error);
+      console.error('Error al obtener los stands', error);
     }
   }, []);
 
@@ -123,10 +123,10 @@ export default function StandManagement() {
         method: 'DELETE',
       });
 
-      if (!response.ok) throw new Error('Error al eliminar estand');
+      if (!response.ok) throw new Error('Error al eliminar stand');
 
       toast({
-        title: 'Estand eliminado',
+        title: 'Stand eliminado',
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -135,7 +135,7 @@ export default function StandManagement() {
     } catch (error) {
       toast({
         title: 'Error',
-        description: 'No se pudo eliminar el estand.',
+        description: 'No se pudo eliminar el stand.',
         status: 'error',
       });
     }
@@ -157,11 +157,11 @@ export default function StandManagement() {
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) throw new Error(`Error al ${editingId ? 'actualizar' : 'registrar'} estand`);
+      if (!response.ok) throw new Error(`Error al ${editingId ? 'actualizar' : 'registrar'} stand`);
 
       toast({
-        title: editingId ? '¡Estand Actualizado!' : '¡Estand Registrado!',
-        description: editingId ? 'Los cambios han sido guardados.' : 'El nuevo estand ha sido dado de alta correctamente.',
+        title: editingId ? '¡Stand Actualizado!' : '¡Stand Registrado!',
+        description: editingId ? 'Los cambios han sido guardados.' : 'El nuevo stand ha sido dado de alta correctamente.',
         status: 'success',
         duration: 3000,
         isClosable: true,
@@ -183,11 +183,11 @@ export default function StandManagement() {
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing="20px">
-        {/* Registro/Edición de Estand */}
+        {/* Registro/Edición de Stand */}
         <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
           <VStack align="start" spacing="5px" mb="30px">
             <Text color={textColor} fontSize="24px" fontWeight="700">
-              {editingId ? 'Editar Estand' : 'Alta de Estand'}
+              {editingId ? 'Editar Stand' : 'Alta de Stand'}
             </Text>
             <Text color={textColorSecondary} fontSize="md">
               {editingId ? 'Modifique los datos del equipo seleccionado.' : 'Registre las mesas o puestos que participarán en la evaluación.'}
@@ -197,7 +197,7 @@ export default function StandManagement() {
           <form onSubmit={handleSubmit}>
             <VStack spacing="20px">
               <FormControl isRequired>
-                <FormLabel fontWeight="700" color={textColor}>Nombre del Estand</FormLabel>
+                <FormLabel fontWeight="700" color={textColor}>Nombre del Stand</FormLabel>
                 <InputGroup>
                   <InputLeftElement children={<Icon as={MdStorefront} color={brandColor} />} />
                   <Input 
@@ -282,18 +282,18 @@ export default function StandManagement() {
                   isLoading={loading}
                   leftIcon={<Icon as={editingId ? MdUpdate : MdAddCircle} />}
                 >
-                  {editingId ? 'Actualizar Estand' : 'Registrar Estand'}
+                  {editingId ? 'Actualizar Stand' : 'Registrar Stand'}
                 </Button>
               </Flex>
             </VStack>
           </form>
         </Card>
 
-        {/* Tabla de estands */}
+        {/* Tabla de stands */}
         <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)" overflowX="auto">
           <Flex direction="column" mb="30px">
             <Text color={textColor} fontSize="22px" fontWeight="700">
-              Estands Activos
+              Stands Activos
             </Text>
             <Text color={textColorSecondary} fontSize="sm">
               Lista de todos los equipos participantes registrados.
@@ -347,7 +347,7 @@ export default function StandManagement() {
                 </Tr>
               ))}
               {standList.length === 0 && (
-                <Tr><Td colSpan={4} textAlign="center">No hay estands registrados aún.</Td></Tr>
+                <Tr><Td colSpan={4} textAlign="center">No hay stands registrados aún.</Td></Tr>
               )}
             </Tbody>
           </Table>
@@ -363,11 +363,11 @@ export default function StandManagement() {
         <AlertDialogOverlay>
           <AlertDialogContent borderRadius="20px" bg={cardBg}>
             <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Eliminar Estand
+              Eliminar Stand
             </AlertDialogHeader>
 
             <AlertDialogBody>
-              ¿Está seguro de que desea eliminar el estand <strong>{standToDelete?.nombre}</strong>? Esta acción no se puede deshacer.
+              ¿Está seguro de que desea eliminar el stand <strong>{standToDelete?.nombre}</strong>? Esta acción no se puede deshacer.
             </AlertDialogBody>
 
             <AlertDialogFooter>

@@ -195,7 +195,7 @@ export default function Analytics() {
               me="15px"
             />
             <VStack align="start" spacing="0">
-                <Text color={textColor} fontSize="lg" fontWeight="700">Participación por Estand</Text>
+                <Text color={textColor} fontSize="lg" fontWeight="700">Participación por Stand</Text>
                 <Text color={textColorSecondary} fontSize="sm">Únicos vs Totales</Text>
             </VStack>
           </Flex>
@@ -223,7 +223,7 @@ export default function Analytics() {
                 me="15px"
                 />
                 <VStack align="start" spacing="0">
-                    <Text color={textColor} fontSize="lg" fontWeight="700">Picos de Visitas por Estand</Text>
+                    <Text color={textColor} fontSize="lg" fontWeight="700">Picos de Visitas por Stand</Text>
                     <Text color={textColorSecondary} fontSize="sm">Comparativa por hora</Text>
                 </VStack>
             </Flex>
@@ -303,9 +303,9 @@ export default function Analytics() {
         </Card>
       </SimpleGrid>
 
-      {/* Detalle Individual por Estand */}
+      {/* Detalle Individual por Stand */}
       <Text color={textColor} fontSize="24px" fontWeight="700" mt="50px" mb="20px">
-        Detalle de Picos por Estand
+        Detalle de Picos por Stand
       </Text>
       <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing="20px" pb="50px">
         {standUniqueNames.map((name, index) => {

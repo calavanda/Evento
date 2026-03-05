@@ -130,7 +130,7 @@ export default function UserReports() {
               }
             />
           }
-          name='Estands'
+          name='Stands'
           value={stats?.totalStands || 0}
         />
         <MiniStatistics
@@ -181,10 +181,10 @@ export default function UserReports() {
         <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
           <VStack align="start" mb="30px" spacing="5px">
             <Text color={textColor} fontSize="22px" fontWeight="700">
-              Ranking de Estands
+              Ranking de Stands
             </Text>
             <Text color={textColorSecondary} fontSize="sm">
-              Estands con mayor número de visitas registradas.
+              Stands con mayor número de visitas registradas.
             </Text>
           </VStack>
           <Box overflowX="auto">
@@ -192,7 +192,7 @@ export default function UserReports() {
                 <Thead>
                 <Tr>
                     <Th color="secondaryGray.400" fontSize="xs">Posición</Th>
-                    <Th color="secondaryGray.400" fontSize="xs">Nombre del Estand</Th>
+                    <Th color="secondaryGray.400" fontSize="xs">Nombre del Stand</Th>
                     <Th isNumeric color="secondaryGray.400" fontSize="xs">Total Visitas</Th>
                 </Tr>
                 </Thead>

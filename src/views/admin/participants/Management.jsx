@@ -256,7 +256,7 @@ export default function ParticipantManagement() {
       custom: function({ series, seriesIndex, dataPointIndex, w }) {
         const item = historyData[dataPointIndex];
         return '<div class="chart-tooltip">' +
-          '<span>' + item.estand.nombre + '</span><br>' +
+          '<span>' + item.stand.nombre + '</span><br>' +
           '<span>' + new Date(item.escaneadoEn).toLocaleTimeString() + '</span>' +
           '</div>';
       }
@@ -565,7 +565,7 @@ export default function ParticipantManagement() {
                   </Flex>
                   <Chart
                     options={historyChartOptions}
-                    series={[{ name: 'Estand', data: historyData.map((_, i) => i + 1) }]}
+                    series={[{ name: 'Stand', data: historyData.map((_, i) => i + 1) }]}
                     type="line"
                     height="250px"
                   />
@@ -580,7 +580,7 @@ export default function ParticipantManagement() {
                           <Badge colorScheme="brand" boxSize="24px" display="flex" alignItems="center" justifyContent="center" borderRadius="full">
                             {index + 1}
                           </Badge>
-                          <Text fontWeight="700">{visit.estand.nombre}</Text>
+                          <Text fontWeight="700">{visit.stand.nombre}</Text>
                         </HStack>
                         <Text color={textColorSecondary} fontSize="sm">
                           {new Date(visit.escaneadoEn).toLocaleTimeString()}

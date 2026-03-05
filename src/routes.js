@@ -11,6 +11,7 @@ import {
   MdAdminPanelSettings,
   MdSecurity,
   MdQuestionMark,
+  MdEmail,
 } from 'react-icons/md';
 
 // Admin Imports
@@ -68,7 +69,7 @@ const routes = [
     name: 'Envío de QR por Email',
     layout: '/admin',
     path: '/email-sender',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+    icon: <Icon as={MdEmail} width="20px" height="20px" color="inherit" />,
     component: <EmailSender />,
     roles: ['admin', 'moderador'],
   },
@@ -81,7 +82,7 @@ const routes = [
     roles: ['admin', 'moderador', 'escaneador', 'public'],
   },
   {
-    name: 'Gestión de Estands',
+    name: 'Gestión de Stands',
     layout: '/admin',
     path: '/stands',
     icon: <Icon as={MdTableChart} width="20px" height="20px" color="inherit" />,

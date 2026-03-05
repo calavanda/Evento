@@ -123,7 +123,7 @@ export default function LandingPage() {
               <Text as={"span"}>al Evento de Gastronomía</Text>
             </Heading>
             <Text color={"secondaryGray.600"} fontSize="lg" maxW="500px">
-              Una plataforma integral para el registro de participantes, evaluación de estands 
+              Una plataforma integral para el registro de participantes, evaluación de stands 
               y analíticas en tiempo real para el festival Francophonie.
             </Text>
             <Stack
@@ -185,7 +185,7 @@ export default function LandingPage() {
             />
             <Feature
               icon={<Icon as={MdStorefront} w={10} h={10} />}
-              title={"Estands Digitales"}
+              title={"Stands Digitales"}
               text={"Gestión de mesas y responsables con seguimiento de visitas en tiempo real."}
             />
             <Feature

@@ -87,14 +87,14 @@ export default function VisitScanner() {
       setStands(data);
       if (data.length > 0) setSelectedStand(data[0]._id);
     } catch (error) {
-      console.error('Error al obtener los estands', error);
+      console.error('Error al obtener los stands', error);
     }
   };
 
   // ── Escaneo con cámara ──
   const startScanner = async () => {
     if (!selectedStand) {
-      toast({ title: 'Selecciona un estand primero', status: 'warning' });
+      toast({ title: 'Selecciona un stand primero', status: 'warning' });
       return;
     }
     setScanResult(null);
@@ -160,7 +160,7 @@ export default function VisitScanner() {
     if (!file) return;
 
     if (!selectedStand) {
-      toast({ title: 'Selecciona un estand primero', status: 'warning' });
+      toast({ title: 'Selecciona un stand primero', status: 'warning' });
       return;
     }
 
@@ -208,7 +208,7 @@ export default function VisitScanner() {
       const response = await fetch(`${API_URL}/api/visits/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ codigoQR: qrCode, estandId: selectedStand }),
+        body: JSON.stringify({ codigoQR: qrCode, standId: selectedStand }),
       });
       
       const data = await response.json();
@@ -241,10 +241,10 @@ export default function VisitScanner() {
             <Text color={textColorSecondary} fontSize="md">Escanee o suba una imagen del código QR del participante.</Text>
           </VStack>
 
-          {/* Selector de estand */}
+          {/* Selector de stand */}
           <FormControl mb="20px">
             <FormLabel fontWeight="bold" display="flex" alignItems="center">
-              <Icon as={MdStorefront} mr="10px" color={brandColor} /> Tu Estand Actual
+              <Icon as={MdStorefront} mr="10px" color={brandColor} /> Tu Stand Actual
             </FormLabel>
             <Select 
               variant="auth" bg={inputBg}
@@ -430,7 +430,7 @@ export default function VisitScanner() {
                       <HStack spacing="10px">
                         <Icon as={MdWarning} color="orange.600" boxSize="5" />
                         <Text color="orange.800" fontWeight="800" fontSize="sm">
-                          ADVERTENCIA: Este participante ya ha visitado {scanResult.data.participant.conteoVisitas} estands.
+                          ADVERTENCIA: Este participante ya ha visitado {scanResult.data.participant.conteoVisitas} stands.
                         </Text>
                       </HStack>
                     </Box>
