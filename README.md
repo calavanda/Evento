@@ -22,7 +22,7 @@ Plataforma de gestión integral para el evento gastronómico "Sabores de la Fran
 | **🏠 Dashboard Principal**           | Vista general con métricas clave del evento en tiempo real.                                                                      | Admin, Moderador  |
 | **👤 Registro de Participantes**     | Alta individual con generación automática de QR y vista previa del gafete imprimible.                                            | Admin, Moderador  |
 | **📥 Importación desde Excel**       | Carga masiva de participantes desde un archivo `.xlsx` / `.xls` con mapeo flexible de columnas.                                  | Admin, Moderador  |
-| **📧 Envío Masivo de QR por Correo** | Selección de participantes y envío personalizado de su código QR por email (vía Resend API).                                     | Admin             |
+| **📧 Envío Masivo de QR por Correo** | Selección de participantes y envío personalizado de su código QR por email (vía Nodemailer + Gmail SMTP).                      | Admin             |
 | **🗂️ Gestión de Participantes**      | Tabla de todos los asistentes con búsqueda, filtros y acciones individuales.                                                     | Admin, Moderador  |
 | **🏪 Gestión de Estands**            | CRUD completo de estands: alta, edición en línea, y eliminación con diálogo de confirmación.                                     | Admin, Moderador  |
 | **📊 Analíticas de Impacto**         | Dashboard de 4 gráficas interactivas: visitas únicas vs totales, picos horarios por stand, picos generales y satisfacción media. | Admin, Moderador  |
