@@ -398,7 +398,7 @@ export default function ParticipantRegister() {
                     onChange={handleChange} 
                     placeholder="usuario@correo.com" 
                   />
-                  </InputGroup>
+                </InputGroup>
               </FormControl>
 
 
