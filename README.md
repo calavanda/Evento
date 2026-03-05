@@ -75,5 +75,5 @@ PORT=5001
 ---
 
 <p align="center">
-  <b>Sistema Fortificado v4.0.0</b> | 2026 | Universidad Tecnológica de Gutiérrez Zamora
+  <b>Sistema Fortificado v1.0.5</b> | 2026 | Universidad Tecnológica de Gutiérrez Zamora
 </p>
