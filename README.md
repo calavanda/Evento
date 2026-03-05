@@ -46,7 +46,7 @@ Plataforma de gestión integral para el evento gastronómico "Sabores de la Fran
 - Vista dedicada para la selección individual o masiva de participantes.
 - Composición de correos con **asunto y mensaje personalizado** mediante modal.
 - El código QR de cada participante se **incrusta automáticamente** en el cuerpo del email.
-- Powered by **Resend API**.
+- Powered por **Nodemailer** con **Gmail SMTP** (App Password de Google).
 - Los participantes sin correo registrado se muestran deshabilitados automáticamente.
 
 ### 🎨 Gafete Imprimible
@@ -83,7 +83,7 @@ Plataforma de gestión integral para el evento gastronómico "Sabores de la Fran
 | **Backend**       | Node.js, Express                                 |
 | **Base de Datos** | MongoDB Atlas                                    |
 | **Autenticación** | Clerk                                            |
-| **Email**         | Resend API                                       |
+| **Email**         | Nodemailer + Gmail SMTP (App Password)           |
 | **Despliegue**    | Vercel (Frontend + Backend, proyectos separados) |
 | **Generación QR** | api.qrserver.com                                 |
 | **Importación**   | SheetJS (xlsx)                                   |
@@ -104,7 +104,8 @@ REACT_APP_CLERK_PUBLISHABLE_KEY=pk_test_...
 ```env
 MONGODB_URI=mongodb+srv://.../evento?retryWrites=true&w=majority
 PORT=5001
-RESEND_API_KEY=re_...
+EMAIL_USER=tu-correo@gmail.com
+EMAIL_APP_PASSWORD=xxxx xxxx xxxx xxxx
 ```
 
 ---
