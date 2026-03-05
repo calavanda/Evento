@@ -32,8 +32,9 @@ import {
   VStack,
   HStack,
 } from '@chakra-ui/react';
-import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline, MdRefresh, MdPrint } from 'react-icons/md';
+import { MdEdit, MdDelete, MdPersonSearch, MdHistory, MdTimeline, MdRefresh, MdPrint, MdUpload } from 'react-icons/md';
 import Chart from 'react-apexcharts';
+import * as XLSX from 'xlsx';
 import { getApiUrl } from 'utils/api';
 const logoFrancophonie = '/logo_francophonie.png';
 const utgzLogo = '/utgz.png';
@@ -62,6 +63,9 @@ export default function ParticipantManagement() {
   const [historyData, setHistoryData] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
+  const [isImporting, setIsImporting] = useState(false);
+
+  const fileInputRef = React.useRef(null);
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = 'secondaryGray.600';
   const cardBg = useColorModeValue('white', 'navy.800');
@@ -139,6 +143,71 @@ export default function ParticipantManagement() {
     if (window.ApexCharts) {
         window.ApexCharts.exec(id, 'resetZoom');
     }
+  };
+
+  const handleImportClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsImporting(true);
+    const reader = new FileReader();
+
+    reader.onload = async (evt) => {
+      try {
+        const data = evt.target.result;
+        const workbook = XLSX.read(data, { type: 'binary' });
+        const firstSheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[firstSheetName];
+        
+        // Parse rows starting from the header
+        const rows = XLSX.utils.sheet_to_json(worksheet, { defval: "" });
+
+        // Map Excel columns to our database model
+        const participants = rows.map((row) => ({
+          nombre: row.nombre || row.Nombre || row.name || row.Name || '',
+          apellidoPaterno: row.apellidoPaterno || row.ApellidoPaterno || row.paterno || row.Paterno || '',
+          apellidoMaterno: row.apellidoMaterno || row.ApellidoMaterno || row.materno || row.Materno || '',
+          correo: row.correo || row.Correo || row.email || row.Email || '',
+          municipio: row.municipio || row.Municipio || row.ciudad || row.Ciudad || '',
+          genero: row.genero || row.Genero || row.gender || row.Gender === 'Femenino' ? 'F' : 'M',
+        })).filter(p => p.nombre && p.apellidoPaterno && p.correo); // Basic validation
+
+        if (participants.length === 0) {
+          toast({ title: 'No se encontraron datos válidos en el archivo.', status: 'warning' });
+          setIsImporting(false);
+          return;
+        }
+
+        const API_URL = getApiUrl();
+        const response = await fetch(`${API_URL}/api/participants/bulk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(participants),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          toast({ title: result.mensaje || 'Importación exitosa', status: 'success' });
+          fetchParticipants();
+        } else {
+          toast({ title: 'Error en importación', description: 'Por favor, revise el formato del archivo.', status: 'error' });
+        }
+      } catch (error) {
+        toast({ title: 'Error al procesar el archivo', status: 'error' });
+      } finally {
+        setIsImporting(false);
+        // Reset file input
+        if (fileInputRef.current) fileInputRef.current.value = "";
+      }
+    };
+
+    reader.readAsBinaryString(file);
   };
 
   const handleHistory = async (user) => {
@@ -316,15 +385,35 @@ export default function ParticipantManagement() {
               Listado completo de participantes registrados en el evento.
             </Text>
           </Box>
-          <Flex align="center" bg={inputBg} p="10px" borderRadius="15px" w={{ base: '100%', md: '300px' }}>
-            <Icon as={MdPersonSearch} color={brandColor} mr="10px" />
-            <Input 
-                variant="unstyled" 
-                placeholder="Buscar por nombre o correo..." 
-                fontSize="sm"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+          <Flex align="center" gap="10px" direction={{ base: 'column', md: 'row' }}>
+            <Flex align="center" bg={inputBg} p="10px" borderRadius="15px" w={{ base: '100%', md: '300px' }}>
+              <Icon as={MdPersonSearch} color={brandColor} mr="10px" />
+              <Input 
+                  variant="unstyled" 
+                  placeholder="Buscar por nombre o correo..." 
+                  fontSize="sm"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </Flex>
+            <input 
+              type="file" 
+              accept=".xlsx, .xls, .csv" 
+              style={{ display: 'none' }} 
+              ref={fileInputRef}
+              onChange={handleFileUpload}
             />
+            <Button
+              colorScheme="brand"
+              borderRadius="15px"
+              leftIcon={<MdUpload />}
+              onClick={handleImportClick}
+              isLoading={isImporting}
+              loadingText="Importando..."
+              w={{ base: '100%', md: 'auto' }}
+            >
+              Importar Excel
+            </Button>
           </Flex>
         </Flex>
 

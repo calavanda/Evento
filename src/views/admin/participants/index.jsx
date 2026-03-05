@@ -22,8 +22,7 @@ import {
 
 import { 
   MdPerson, 
-  MdEmail, 
-  MdLocationCity, 
+  MdEmail,
   MdWc, 
   MdPrint,
   MdQrCode,

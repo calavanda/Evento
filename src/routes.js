@@ -17,6 +17,7 @@ import {
 import MainDashboard from 'views/admin/default';
 import ParticipantRegister from 'views/admin/participants';
 import ParticipantManagement from 'views/admin/participants/Management';
+import EmailSender from 'views/admin/participants/EmailSender';
 import StandManagement from 'views/admin/stands';
 import VisitScanner from 'views/admin/scanner';
 import SurveySatisfaction from 'views/admin/surveys';
@@ -61,6 +62,14 @@ const routes = [
     path: '/user-management',
     icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
     component: <ParticipantManagement />,
+    roles: ['admin', 'moderador'],
+  },
+  {
+    name: 'Envío de QR por Email',
+    layout: '/admin',
+    path: '/email-sender',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+    component: <EmailSender />,
     roles: ['admin', 'moderador'],
   },
   {
