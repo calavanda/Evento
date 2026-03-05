@@ -303,10 +303,10 @@ export default function StandManagement() {
           <Table variant="simple" color="gray.500">
             <Thead>
               <Tr>
-                <Th color="secondaryGray.400" fontSize="xs">Nombre / Tema</Th>
-                <Th color="secondaryGray.400" fontSize="xs">Responsable</Th>
-                <Th color="secondaryGray.400" fontSize="xs">Ubicación</Th>
-                <Th color="secondaryGray.400" fontSize="xs">Acciones</Th>
+                <Th color="secondaryGray.600" fontSize="xs">Nombre / Tema</Th>
+                <Th color="secondaryGray.600" fontSize="xs">Responsable</Th>
+                <Th color="secondaryGray.600" fontSize="xs">Ubicación</Th>
+                <Th color="secondaryGray.600" fontSize="xs">Acciones</Th>
               </Tr>
             </Thead>
             <Tbody>

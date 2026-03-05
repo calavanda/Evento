@@ -424,11 +424,11 @@ export default function ParticipantManagement() {
             <Table variant="simple" color="gray.500">
               <Thead>
                 <Tr>
-                  <Th color="secondaryGray.400" fontSize="xs">Nombre Completo</Th>
-                  <Th color="secondaryGray.400" fontSize="xs">Correo Electrónico</Th>
-                  <Th color="secondaryGray.400" fontSize="xs">Ubicación</Th>
-                  <Th color="secondaryGray.400" fontSize="xs">Género</Th>
-                  <Th color="secondaryGray.400" fontSize="xs" textAlign="center">Acciones</Th>
+                  <Th color="secondaryGray.600" fontSize="xs">Nombre Completo</Th>
+                  <Th color="secondaryGray.600" fontSize="xs">Correo Electrónico</Th>
+                  <Th color="secondaryGray.600" fontSize="xs">Ubicación</Th>
+                  <Th color="secondaryGray.600" fontSize="xs">Género</Th>
+                  <Th color="secondaryGray.600" fontSize="xs" textAlign="center">Acciones</Th>
                 </Tr>
               </Thead>
               <Tbody>

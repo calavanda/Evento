@@ -170,10 +170,10 @@ export default function EmailSender() {
                       onChange={handleSelectAll}
                     />
                   </Th>
-                  <Th color="secondaryGray.400" fontSize="xs">Nombre/s</Th>
-                  <Th color="secondaryGray.400" fontSize="xs">Apellidos</Th>
-                  <Th color="secondaryGray.400" fontSize="xs">Correo Electrónico</Th>
-                  <Th color="secondaryGray.400" fontSize="xs" textAlign="center">Estado QR</Th>
+                  <Th color="secondaryGray.600" fontSize="xs">Nombre/s</Th>
+                  <Th color="secondaryGray.600" fontSize="xs">Apellidos</Th>
+                  <Th color="secondaryGray.600" fontSize="xs">Correo Electrónico</Th>
+                  <Th color="secondaryGray.600" fontSize="xs" textAlign="center">Estado QR</Th>
                 </Tr>
               </Thead>
               <Tbody>
