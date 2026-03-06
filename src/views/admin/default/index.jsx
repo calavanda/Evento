@@ -14,7 +14,6 @@ import {
   Card,
   Spinner,
   VStack,
-  VStack,
   Badge,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
