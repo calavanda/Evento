@@ -179,7 +179,7 @@ export default function Dashboard(props) {
                 p={{ base: '20px', md: '30px' }}
                 pe="20px"
                 minH="100vh"
-                pt="50px"
+                pt="20px"
               >
                 <Routes>
                   {getRoutes(filteredRoutes)}

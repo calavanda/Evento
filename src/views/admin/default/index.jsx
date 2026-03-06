@@ -96,28 +96,26 @@ export default function UserReports() {
   if (loading) return <Flex justify="center" align="center" h="100vh"><Spinner size="xl" color="brand.500" /></Flex>;
 
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+    <Box pt={{ base: "110px", md: "60px", xl: "60px" }}>
       <MotionFlex 
         direction="column" 
-        mb="30px"
+        mb="20px"
         initial={{ opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.6 }}
       >
-        
-      </MotionFlex>
-
-      <SimpleGrid
-        columns={{ base: 1, md: 2, lg: 3, "2xl": 5 }}
-        gap='20px'
-        mb='20px'>
-
         <Text color={textColor} fontSize="34px" fontWeight="800" lineHeight="100%" letterSpacing="tight">
           Panel Principal
         </Text>
         <Text color={textColorSecondary} fontSize="md" mt="10px">
           Resumen general de actividad y participación en el evento.
         </Text>
+      </MotionFlex>
+
+      <SimpleGrid
+        columns={{ base: 1, md: 2, lg: 3, "2xl": 5 }}
+        gap='20px'
+        mb='20px'>
 
         <MiniStatistics
           startContent={
