@@ -14,13 +14,11 @@ import {
 } from "@chakra-ui/react";
 import { MdLogin, MdEvent, MdAnalytics, MdStorefront } from "react-icons/md";
 import { Link as RouterLink } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
 const MotionStack = motion(Stack);
-const MotionText = motion(Text);
-const MotionHeading = motion(Heading);
 
 const Feature = ({ title, text, icon, index }) => {
   return (
