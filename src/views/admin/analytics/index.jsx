@@ -280,7 +280,7 @@ export default function Analytics() {
   };
 
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+    <Box pt={{ base: '110px', md: '80px', xl: '80px' }}>
       <Flex direction={{ base: "column", md: "row" }} justify="space-between" align={{ base: "start", md: "center" }} mb="30px">
         <Box>
             <Text color={textColor} fontSize="34px" fontWeight="700" lineHeight="100%">

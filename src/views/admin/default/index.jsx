@@ -96,7 +96,7 @@ export default function UserReports() {
   if (loading) return <Flex justify="center" align="center" h="100vh"><Spinner size="xl" color="brand.500" /></Flex>;
 
   return (
-    <Box pt={{ base: "110px", md: "60px", xl: "60px" }}>
+    <Box pt={{ base: "110px", md: "80px", xl: "80px" }}>
       <MotionFlex 
         direction="column" 
         mb="20px"
