@@ -10,16 +10,36 @@ import {
   Icon,
   VStack,
   IconButton,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Checkbox,
+  CheckboxGroup,
+  Input,
+  FormControl,
+  FormLabel,
+  Stack,
 } from '@chakra-ui/react';
 import Chart from 'react-apexcharts';
 import { MdStar, MdTimeline, MdPeople, MdRefresh } from 'react-icons/md';
-import { Button } from '@chakra-ui/react';
 import IconBox from 'components/icons/IconBox';
 import { getApiUrl } from 'utils/api';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 export default function Analytics() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
+  const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [exportModules, setExportModules] = useState(['stands', 'picos', 'picos-detal-total', 'satisfaccion']);
 
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = 'secondaryGray.600';
@@ -29,14 +49,19 @@ export default function Analytics() {
 
   useEffect(() => {
     fetchAnalytics();
-  }, []);
+  }, [startDate, endDate]);
 
   const fetchAnalytics = async () => {
+    setLoading(true);
     try {
       const API_URL = getApiUrl();
+      const params = new URLSearchParams({
+        startDate: `${startDate}T00:00:00Z`,
+        endDate: `${endDate}T23:59:59Z`
+      });
       const [analyticsRes, visitorStatsRes] = await Promise.all([
-        fetch(`${API_URL}/api/reports/stand-analytics`),
-        fetch(`${API_URL}/api/reports/visitor-stats`)
+        fetch(`${API_URL}/api/reports/stand-analytics?${params}`),
+        fetch(`${API_URL}/api/reports/visitor-stats?${params}`)
       ]);
       
       if (!analyticsRes.ok || !visitorStatsRes.ok) throw new Error("Servidor no responde");
@@ -105,7 +130,7 @@ export default function Analytics() {
     },
     xaxis: {
       type: 'category',
-      categories: Array.from({ length: 24 }, (_, i) => `${i}:00`),
+      categories: [], // Will be set dynamically
       labels: { style: { colors: '#A3AED0', fontWeight: '500' } },
       axisBorder: { show: false },
       axisTicks: { show: false }
@@ -122,34 +147,117 @@ export default function Analytics() {
     legend: { show: true, position: 'top', labels: { colors: '#A3AED0' } }
   };
 
+  const isSameDay = startDate === endDate;
+  const currentHour = new Date().getHours();
+  
+  // Dynamic categories for Peak Charts
+  let categories = [];
+  if (isSameDay) {
+    // Sliding 24h window: last 23 hours + current hour
+    for (let i = 23; i >= 0; i--) {
+        let h = (currentHour - i + 24) % 24;
+        categories.push(`${h}:00`);
+    }
+  } else {
+    // Multi-day: show simply 0-23 or we could expand to date-hour, 
+    // but for now keeping 0-23 to compare "peak hours" across days
+    categories = Array.from({ length: 24 }, (_, i) => `${i}:00`);
+  }
+
   const standUniqueNames = [...new Set((data?.peakVisits || []).map(v => v.standName).filter(n => typeof n === 'string'))];
   
-  const totalPeakData = Array(24).fill(0);
+  const totalPeakData = Array(categories.length).fill(0);
+  
+  // Helper to map hour to category index
+  const getCategoryIndex = (h) => {
+    if (isSameDay) {
+        const index = categories.indexOf(`${h}:00`);
+        return index;
+    }
+    return h;
+  };
+
   data?.peakVisits?.forEach(v => {
-    if (v.hour !== undefined && v.hour !== null) {
-        totalPeakData[v.hour] += v.count;
+    const h = Number(v.hour);
+    const idx = getCategoryIndex(h);
+    if (idx !== -1) {
+        totalPeakData[idx] += v.count;
     }
   });
 
-  console.log('Stand Unique Names:', standUniqueNames);
-  console.log('Peak Visits Data:', data?.peakVisits);
-
   const standSeries = standUniqueNames.length > 0 ? standUniqueNames.map(name => {
-    const standData = Array(24).fill(0);
+    const standData = Array(categories.length).fill(0);
     const standVisits = (data?.peakVisits || []).filter(v => v.standName === name);
     standVisits.forEach(v => {
       const h = Number(v.hour);
-      if (!isNaN(h) && h >= 0 && h < 24) {
-          standData[h] = v.count;
+      const idx = getCategoryIndex(h);
+      if (idx !== -1) {
+          standData[idx] = v.count;
       }
     });
     return { name, data: standData };
-  }) : [{ name: 'Sin datos', data: Array(24).fill(0) }];
+  }) : [{ name: 'Sin datos', data: Array(categories.length).fill(0) }];
 
   const resetZoom = (id) => {
     if (window.ApexCharts) {
         window.ApexCharts.exec(id, 'resetZoom');
     }
+  };
+
+  const exportToPDF = async () => {
+    onClose();
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const pageWidth = doc.internal.pageSize.getWidth();
+    let currentY = 10;
+
+    // Header
+    doc.setFontSize(20);
+    doc.setTextColor(67, 24, 255);
+    doc.text('Reporte de Analíticas - Francophonie', pageWidth / 2, currentY, { align: 'center' });
+    currentY += 10;
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+    doc.text(`Rango: ${startDate} al ${endDate}`, pageWidth / 2, currentY, { align: 'center' });
+    currentY += 15;
+
+    const sections = [
+      { id: 'chart-visits', title: 'Participación por Stand' },
+      { id: 'chart-peaks', title: 'Picos de Visitas' },
+      { id: 'chart-general', title: 'Picos Generales' },
+      { id: 'chart-satisfaction', title: 'Satisfacción Media' }
+    ];
+
+    for (const section of sections) {
+        const isSelected = (section.id === 'chart-visits' && exportModules.includes('stands')) ||
+                           (section.id === 'chart-peaks' && exportModules.includes('picos')) ||
+                           (section.id === 'chart-general' && exportModules.includes('picos-detal-total')) ||
+                           (section.id === 'chart-satisfaction' && exportModules.includes('satisfaccion'));
+        
+        if (!isSelected) continue;
+
+        const el = document.getElementById(section.id);
+        if (el) {
+            const canvas = await html2canvas(el, { scale: 2 });
+            const imgData = canvas.toDataURL('image/png');
+            const imgProps = doc.getImageProperties(imgData);
+            const pdfWidth = pageWidth - 20;
+            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+            if (currentY + pdfHeight > 280) {
+                doc.addPage();
+                currentY = 10;
+            }
+
+            doc.setFontSize(14);
+            doc.setTextColor(0);
+            doc.text(section.title, 10, currentY);
+            currentY += 5;
+            doc.addImage(imgData, 'PNG', 10, currentY, pdfWidth, pdfHeight);
+            currentY += pdfHeight + 15;
+        }
+    }
+
+    doc.save(`Reporte_Analytics_${startDate}.pdf`);
   };
 
   const surveyChartOptions = {
@@ -174,13 +282,34 @@ export default function Analytics() {
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <Flex direction="column" mb="30px">
-        <Text color={textColor} fontSize="34px" fontWeight="700" lineHeight="100%">
-          Gráficas de Información
-        </Text>
-        <Text color={textColorSecondary} fontSize="md" mt="10px">
-          Visualice el rendimiento y la satisfacción en tiempo real.
-        </Text>
+      <Flex direction={{ base: "column", md: "row" }} justify="space-between" align={{ base: "start", md: "center" }} mb="30px">
+        <Box>
+            <Text color={textColor} fontSize="34px" fontWeight="700" lineHeight="100%">
+            Gráficas de Información
+            </Text>
+            <Text color={textColorSecondary} fontSize="md" mt="10px">
+            Visualice el rendimiento y la satisfacción en tiempo real.
+            </Text>
+        </Box>
+        <Stack direction={{ base: "column", sm: "row" }} spacing="10px" mt={{ base: "20px", md: "0" }}>
+            <FormControl>
+                <FormLabel fontSize="xs" mb="1">Desde</FormLabel>
+                <Input size="sm" type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} borderRadius="10px" />
+            </FormControl>
+            <FormControl>
+                <FormLabel fontSize="xs" mb="1">Hasta</FormLabel>
+                <Input size="sm" type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} borderRadius="10px" />
+            </FormControl>
+            <Button 
+                alignSelf="flex-end"
+                leftIcon={<MdTimeline />} 
+                colorScheme="brand" 
+                variant="brand" 
+                onClick={onOpen}
+            >
+                Exportar PDF
+            </Button>
+        </Stack>
       </Flex>
       
       <SimpleGrid columns={{ base: 1, xl: 2 }} spacing="20px">
@@ -199,16 +328,18 @@ export default function Analytics() {
                 <Text color={textColorSecondary} fontSize="sm">Únicos vs Totales</Text>
             </VStack>
           </Flex>
-          <Chart
-            options={visitChartOptions}
-            series={[
-                { name: 'Visitas Totales', data: data?.visitorStats.map(s => s.totalVisits) || [] },
-                { name: 'Visitantes Únicos', data: data?.visitorStats.map(s => s.uniqueVisitorsCount) || [] }
-            ]}
-            type="bar"
-            width="100%"
-            height="350px"
-          />
+          <Box id="chart-visits">
+            <Chart
+                options={visitChartOptions}
+                series={[
+                    { name: 'Visitas Totales', data: data?.visitorStats.map(s => s.totalVisits) || [] },
+                    { name: 'Visitantes Únicos', data: data?.visitorStats.map(s => s.uniqueVisitorsCount) || [] }
+                ]}
+                type="bar"
+                width="100%"
+                height="350px"
+            />
+          </Box>
         </Card>
 
         {/* Peak Visits Chart Card (All in one) */}
@@ -237,13 +368,15 @@ export default function Analytics() {
                 Reiniciar
             </Button>
           </Flex>
-          <Chart
-            options={{...peakChartOptions, chart: { ...peakChartOptions.chart, id: 'peak-chart-total' }}}
-            series={standSeries}
-            type="area"
-            width="100%"
-            height="350px"
-          />
+          <Box id="chart-peaks">
+            <Chart
+                options={{...peakChartOptions, chart: { ...peakChartOptions.chart, id: 'peak-chart-total' }, xaxis: { ...peakChartOptions.xaxis, categories }}}
+                series={standSeries}
+                type="area"
+                width="100%"
+                height="350px"
+            />
+          </Box>
         </Card>
 
         {/* Total Peak Chart Card */}
@@ -272,13 +405,15 @@ export default function Analytics() {
                 Reiniciar
             </Button>
           </Flex>
-          <Chart
-            options={{...peakChartOptions, chart: { ...peakChartOptions.chart, id: 'peak-chart-general' }, colors: ['#4318FF']}}
-            series={[{ name: 'Visitas Totales', data: totalPeakData }]}
-            type="area"
-            width="100%"
-            height="350px"
-          />
+          <Box id="chart-general">
+            <Chart
+                options={{...peakChartOptions, chart: { ...peakChartOptions.chart, id: 'peak-chart-general' }, colors: ['#4318FF'], xaxis: { ...peakChartOptions.xaxis, categories }}}
+                series={[{ name: 'Visitas Totales', data: totalPeakData }]}
+                type="area"
+                width="100%"
+                height="350px"
+            />
+          </Box>
         </Card>
 
         {/* Satisfaction Chart Card */}
@@ -293,59 +428,48 @@ export default function Analytics() {
             />
             <Text color={textColor} fontSize="lg" fontWeight="700">Satisfacción Media</Text>
           </Flex>
-          <Chart
-            options={surveyChartOptions}
-            series={[{ name: 'Promedio', data: data?.surveyStats.map(s => s.avgRating) || [] }]}
-            type="bar"
-            width="100%"
-            height="350px"
-          />
+          <Box id="chart-satisfaction">
+            <Chart
+                options={surveyChartOptions}
+                series={[{ name: 'Promedio', data: data?.surveyStats.map(s => s.avgRating) || [] }]}
+                type="bar"
+                width="100%"
+                height="350px"
+            />
+          </Box>
         </Card>
       </SimpleGrid>
 
-      {/* Detalle Individual por Stand */}
-      <Text color={textColor} fontSize="24px" fontWeight="700" mt="50px" mb="20px">
-        Detalle de Picos por Stand
-      </Text>
-      <SimpleGrid columns={{ base: 1, md: 2, xl: 3 }} spacing="20px" pb="50px">
-        {standUniqueNames.map((name, index) => {
-          const standData = Array(24).fill(0);
-          data?.peakVisits?.filter(v => v.standName === name).forEach(v => {
-            standData[v.hour] = v.count;
-          });
-          
-          const chartId = `peak-chart-${name.replace(/\s+/g, '-').toLowerCase()}`;
-          const colors = ['#4318FF', '#6AD2FF', '#01B574', '#FFB547', '#E31A1A', '#A1E31A'];
-          const color = colors[index % colors.length];
-
-          return (
-            <Card key={index} p="20px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
-              <Flex justify="space-between" align="center" mb="15px">
-                <Text color={textColor} fontSize="md" fontWeight="700">{name}</Text>
-                <IconButton
-                  size="xs"
-                  icon={<MdRefresh />}
-                  onClick={() => resetZoom(chartId)}
-                  variant="ghost"
-                  aria-label="Reset zoom"
-                />
-              </Flex>
-              <Chart
-                options={{
-                    ...peakChartOptions, 
-                    chart: { ...peakChartOptions.chart, id: chartId, toolbar: { show: false } }, 
-                    colors: [color],
-                    xaxis: { ...peakChartOptions.xaxis, labels: { show: false } },
-                    yaxis: { labels: { show: true, style: { colors: '#A3AED0' } } }
-                }}
-                series={[{ name: 'Visitas', data: standData }]}
-                type="area"
-                height="150px"
-              />
-            </Card>
-          );
-        })}
-      </SimpleGrid>
+      {/* Modal para Exportar PDF */}
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
+        <ModalOverlay backdropFilter="blur(5px)" />
+        <ModalContent borderRadius="20px">
+          <ModalHeader>Exportar Reporte a PDF</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text mb="4">Selecciona los módulos que deseas incluir en el reporte:</Text>
+            <CheckboxGroup colorScheme="brand" value={exportModules} onChange={setExportModules}>
+              <Stack direction="column">
+                <Checkbox value="stands">Participación por Stand</Checkbox>
+                <Checkbox value="picos">Picos de Visitas por Stand</Checkbox>
+                <Checkbox value="picos-detal-total">Picos Generales</Checkbox>
+                <Checkbox value="satisfaccion">Satisfacción Media</Checkbox>
+              </Stack>
+            </CheckboxGroup>
+            <Text fontSize="sm" mt="6" color="secondaryGray.600">
+                El PDF se generará capturando los datos mostrados actualmente en el rango de fechas seleccionado.
+            </Text>
+          </ModalBody>
+          <ModalFooter>
+            <Button variant="ghost" mr={3} onClick={onClose}>
+              Cancelar
+            </Button>
+            <Button colorScheme="brand" variant="brand" onClick={exportToPDF}>
+              Generar PDF
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 }
