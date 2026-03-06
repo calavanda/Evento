@@ -159,6 +159,9 @@ export default function LandingPage() {
               fontSize={{ base: "5xl", sm: "6xl", lg: "7xl" }}
               letterSpacing="tight"
             >
+              <Text as={"span"} color={useColorModeValue("navy.900", "white")}>
+                Te damos la 
+              </Text>
               <Text 
                 as={"span"} 
                 bgGradient="linear(to-r, brand.500, cyan.400)" 
@@ -173,8 +176,16 @@ export default function LandingPage() {
               </Text>
             </Heading>
             <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
-              Una plataforma premium diseñada para el registro, gestión de stands y 
-              analíticas avanzadas del festival <b>Les Saveurs de la Francophonie</b>.
+              <b>“Premier foire des Saveurs de la Francophonie”</b>, es la primera feria gastronómica dentro del marco de 
+              actividades de la francofonía, celebrado en el salón Nakú dentro de las instalaciones de la <b>Universidad 
+              Tecnológica de Gutiérrez Zamora</b>, el día <b>20 de marzo de 2026</b>.
+            </Text>
+
+            <br />
+            
+            <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
+              Esta es la plataforma premium diseñada para el registro, gestión de stands y 
+              analíticas avanzadas del festival.
             </Text>
             <Stack
               spacing={{ base: 4, sm: 6 }}
