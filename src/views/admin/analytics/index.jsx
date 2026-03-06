@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   Flex,
@@ -9,7 +9,6 @@ import {
   Spinner,
   Icon,
   VStack,
-  IconButton,
   Button,
   Modal,
   ModalOverlay,
@@ -47,11 +46,7 @@ export default function Analytics() {
   const brandColor = useColorModeValue('brand.500', 'brand.400');
   const boxBg = useColorModeValue('secondaryGray.300', 'whiteAlpha.100');
 
-  useEffect(() => {
-    fetchAnalytics();
-  }, [startDate, endDate]);
-
-  const fetchAnalytics = async () => {
+  const fetchAnalytics = useCallback(async () => {
     setLoading(true);
     try {
       const API_URL = getApiUrl();
@@ -74,7 +69,11 @@ export default function Analytics() {
       console.error('Error fetching analytics', error);
     }
     setLoading(false);
-  };
+  }, [startDate, endDate]);
+
+  useEffect(() => {
+    fetchAnalytics();
+  }, [fetchAnalytics]);
 
   if (loading) return <Flex justify="center" align="center" h="100vh"><Spinner size="xl" color="brand.500" /></Flex>;
 
