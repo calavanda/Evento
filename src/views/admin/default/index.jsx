@@ -14,9 +14,11 @@ import {
   Card,
   Spinner,
   VStack,
+  VStack,
   Badge,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   MdBarChart,
   MdPerson,
@@ -38,6 +40,10 @@ export default function UserReports() {
   const textColorSecondary = "secondaryGray.600";
   const cardBg = useColorModeValue("white", "navy.800");
   const hoverBg = useColorModeValue("secondaryGray.100", "whiteAlpha.50");
+
+  const MotionBox = motion(Box);
+  const MotionFlex = motion(Flex);
+  const MotionTr = motion(Tr);
 
 
   useEffect(() => {
@@ -92,14 +98,20 @@ export default function UserReports() {
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      <Flex direction="column" mb="30px">
-        <Text color={textColor} fontSize="34px" fontWeight="700" lineHeight="100%">
+      <MotionFlex 
+        direction="column" 
+        mb="30px"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Text color={textColor} fontSize="34px" fontWeight="800" lineHeight="100%" letterSpacing="tight">
           Panel Principal
         </Text>
         <Text color={textColorSecondary} fontSize="md" mt="10px">
           Resumen general de actividad y participación en el evento.
         </Text>
-      </Flex>
+      </MotionFlex>
 
       <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3, "2xl": 5 }}
@@ -178,58 +190,80 @@ export default function UserReports() {
       </SimpleGrid>
 
       <SimpleGrid columns={{ base: 1 }} gap='20px' mb='20px'>
-        <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
-          <VStack align="start" mb="30px" spacing="5px">
-            <Text color={textColor} fontSize="22px" fontWeight="700">
-              Ranking de Stands
-            </Text>
-            <Text color={textColorSecondary} fontSize="sm">
-              Stands con mayor número de visitas registradas.
-            </Text>
-          </VStack>
-          <Box overflowX="auto">
-            <Table variant="simple" color="gray.500">
-                <Thead>
-                <Tr>
-                    <Th color="secondaryGray.400" fontSize="xs">Posición</Th>
-                    <Th color="secondaryGray.400" fontSize="xs">Nombre del Stand</Th>
-                    <Th isNumeric color="secondaryGray.400" fontSize="xs">Total Visitas</Th>
-                </Tr>
-                </Thead>
-                <Tbody>
-                {standVisits.map((item, index) => (
-                    <Tr key={index} _hover={{ bg: hoverBg }}>
-                    <Td>
-                        <Flex align="center">
-                            <CircleIcon 
-                                size="30px" 
-                                bg={index < 3 ? "brand.500" : "secondaryGray.300"} 
-                                color={index < 3 ? "white" : "gray.600"} 
-                                fontWeight="bold" 
-                                mr="10px"
-                                fontSize="xs"
-                            >
-                                {index + 1}
-                            </CircleIcon>
-                        </Flex>
-                    </Td>
-                    <Td>
-                        <Text fontWeight="700" color={textColor}>{item.name}</Text>
-                    </Td>
-                    <Td isNumeric>
-                        <Badge colorScheme="brand" variant="subtle" borderRadius="10px" fontSize="sm" px="10px">
-                            {item.count} visitas
-                        </Badge>
-                    </Td>
-                    </Tr>
-                ))}
-                {standVisits.length === 0 && (
-                    <Tr><Td colSpan={3} textAlign="center" py="40px">No hay datos de visitas disponibles.</Td></Tr>
-                )}
-                </Tbody>
-            </Table>
-          </Box>
-        </Card>
+        <MotionBox
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          <Card p="30px" bg={cardBg} borderRadius="20px" boxShadow="0px 18px 40px rgba(112, 144, 176, 0.12)">
+            <VStack align="start" mb="30px" spacing="5px">
+              <Text color={textColor} fontSize="22px" fontWeight="800" letterSpacing="tight">
+                Ranking de Stands
+              </Text>
+              <Text color={textColorSecondary} fontSize="sm">
+                Stands con mayor número de visitas registradas.
+              </Text>
+            </VStack>
+            <Box overflowX="auto">
+              <Table variant="simple" color="gray.500">
+                  <Thead>
+                  <Tr>
+                      <Th color="secondaryGray.400" fontSize="xs">Posición</Th>
+                      <Th color="secondaryGray.400" fontSize="xs">Nombre del Stand</Th>
+                      <Th isNumeric color="secondaryGray.400" fontSize="xs">Total Visitas</Th>
+                  </Tr>
+                  </Thead>
+                  <Tbody>
+                  <AnimatePresence>
+                  {standVisits.map((item, index) => (
+                      <MotionTr 
+                          key={index} 
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.1 }}
+                          _hover={{ bg: hoverBg }}
+                      >
+                      <Td>
+                          <Flex align="center">
+                              <CircleIcon 
+                                  size="30px" 
+                                  bg={index < 3 ? "brand.500" : "secondaryGray.300"} 
+                                  color={index < 3 ? "white" : "gray.600"} 
+                                  fontWeight="bold" 
+                                  mr="10px"
+                                  fontSize="xs"
+                                  boxShadow={index < 3 ? "0px 5px 10px rgba(67, 24, 255, 0.3)" : "none"}
+                              >
+                                  {index + 1}
+                              </CircleIcon>
+                          </Flex>
+                      </Td>
+                      <Td>
+                          <Text fontWeight="700" color={textColor}>{item.name}</Text>
+                      </Td>
+                      <Td isNumeric>
+                          <Badge 
+                            colorScheme={index < 3 ? "brand" : "gray"} 
+                            variant={index < 3 ? "solid" : "subtle"} 
+                            borderRadius="12px" 
+                            fontSize="sm" 
+                            px="12px" 
+                            py="2px"
+                          >
+                              {item.count} visitas
+                          </Badge>
+                      </Td>
+                      </MotionTr>
+                  ))}
+                  </AnimatePresence>
+                  {standVisits.length === 0 && (
+                      <Tr><Td colSpan={3} textAlign="center" py="40px">No hay datos de visitas disponibles.</Td></Tr>
+                  )}
+                  </Tbody>
+              </Table>
+            </Box>
+          </Card>
+        </MotionBox>
       </SimpleGrid>
     </Box>
   );

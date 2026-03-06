@@ -12,6 +12,9 @@ import {
 import Card from "components/card/Card.js";
 // Custom icons
 import React from "react";
+import { motion } from "framer-motion";
+
+const MotionCard = motion(Card);
 
 export default function Default(props) {
   const { startContent, endContent, name, growth, value } = props;
@@ -19,7 +22,18 @@ export default function Default(props) {
   const textColorSecondary = "secondaryGray.600";
 
   return (
-    <Card py='15px'>
+    <MotionCard
+      py='15px'
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      whileHover={{ 
+        y: -5, 
+        transition: { duration: 0.2 },
+        boxShadow: "0px 20px 40px rgba(112, 144, 176, 0.2)"
+      }}
+      cursor="pointer"
+    >
       <Flex
         my='auto'
         h='100%'
@@ -38,6 +52,7 @@ export default function Default(props) {
           </StatLabel>
           <StatNumber
             color={textColor}
+            fontWeight="800"
             fontSize={{
               base: "2xl",
             }}>
@@ -49,7 +64,7 @@ export default function Default(props) {
                 {growth}
               </Text>
               <Text color='secondaryGray.600' fontSize='xs' fontWeight='400'>
-                since last month
+                desde el último mes
               </Text>
             </Flex>
           ) : null}
@@ -58,6 +73,6 @@ export default function Default(props) {
           {endContent}
         </Flex>
       </Flex>
-    </Card>
+    </MotionCard>
   );
 }
