@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { MemoryRouter } from 'react-router-dom';
 import './assets/css/App.css';
 
 import App from './App';
@@ -13,12 +13,10 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-root.render(
-  <BrowserRouter>
+const root = ReactDOM.createRoot(document.getElementById('root'));root.render(
+  <MemoryRouter>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <App />
     </ClerkProvider>
-  </BrowserRouter>
+  </MemoryRouter>
 );
