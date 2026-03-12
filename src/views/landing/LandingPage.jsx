@@ -208,9 +208,7 @@ export default function LandingPage() {
               actividades de la francofonía, celebrado en el salón Nakú dentro de las instalaciones de la <b>Universidad 
               Tecnológica de Gutiérrez Zamora</b>, el día <b>20 de marzo de 2026</b>.
             </Text>
-
             <br />
-            
             <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
               Esta es la plataforma premium diseñada para el registro, gestión de stands y 
               analíticas avanzadas del festival.
@@ -239,7 +237,7 @@ export default function LandingPage() {
               </Button>
               <br />
               <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
-                o también puedes calificar los stands de comida 🥐
+                o
               </Text>
               <br />
               <Button
