@@ -3,7 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import AdminLayout from './layouts/admin';
 import LandingPage from './views/landing/LandingPage';
 import EventSurvey from './views/landing/EventSurvey';
-import StandSurvey from './views/landing/StandSurvey';
+import StandSurvey from './views/surveys';
 import {
   ChakraProvider,
   // extendTheme

@@ -22,7 +22,7 @@ import ParticipantManagement from 'views/admin/participants/Management';
 import EmailSender from 'views/admin/participants/EmailSender';
 import StandManagement from 'views/admin/stands';
 import VisitScanner from 'views/admin/scanner';
-import SurveySatisfaction from 'views/admin/surveys';
+import SurveySatisfaction from 'views/surveys';
 import Analytics from 'views/admin/analytics';
 import AdminManagement from 'views/admin/admins';
 import SecurityAlerts from 'views/admin/alerts';
