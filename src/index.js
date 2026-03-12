@@ -14,9 +14,9 @@ if (!PUBLISHABLE_KEY) {
 }
 
 const root = ReactDOM.createRoot(document.getElementById('root'));root.render(
-  <MemoryRouter>
+  <BrowserRouter>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
       <App />
     </ClerkProvider>
-  </MemoryRouter>
+  </BrowserRouter>
 );
