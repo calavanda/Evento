@@ -281,12 +281,12 @@ export default function LandingPage() {
               }}
               position={"relative"}
               height={{ base: "350px", md: "500px" }}
-              rounded={"3xl"}
-              boxShadow={"dark-lg"}
+              //rounded={"3xl"}
+              //boxShadow={"dark-lg"}
               width={"full"}
               overflow={"hidden"}
-              border="8px solid"
-              borderColor={useColorModeValue("whiteAlpha.800", "whiteAlpha.100")}
+              //border="8px solid"
+              //borderColor={useColorModeValue("whiteAlpha.800", "whiteAlpha.100")}
               backdropFilter="blur(10px)"
             >
               <MotionImage
