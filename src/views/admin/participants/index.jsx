@@ -66,50 +66,59 @@ export default function ParticipantRegister() {
     const reader = new FileReader();
     reader.onload = async (evt) => {
       try {
-        const bstr = evt.target.result;
-        const wb = XLSX.read(bstr, { type: 'binary' });
+        const data = evt.target.result;
+        const wb = XLSX.read(data, { type: 'array' });
         const wsname = wb.SheetNames[0];
         const ws = wb.Sheets[wsname];
-        const data = XLSX.utils.sheet_to_json(ws);
+        const json = XLSX.utils.sheet_to_json(ws);
 
-        if (data.length === 0) {
+        if (json.length === 0) {
           throw new Error("El archivo Excel está vacío.");
         }
 
-        let successCount = 0;
-        let errorCount = 0;
         const API_URL = getApiUrl();
+        
+        const normalize = (str) => 
+          str ? str.toString().toLowerCase().trim().replace(/\s+/g, '').normalize("NFD").replace(/[\u0300-\u036f]/g, "") : '';
 
-        for (const row of data) {
-          // Mapeo flexible de columnas (minúsculas, sin espacios)
-          const guest = {
-            nombre: row.Nombre || row.nombre || '',
-            apellidoPaterno: row['Apellido Paterno'] || row.apellidoPaterno || row.paterno || '',
-            apellidoMaterno: row['Apellido Materno'] || row.apellidoMaterno || row.materno || '',
-            municipio: row.Municipio || row.municipio || '',
-            genero: (row.Genero || row.genero || 'M').charAt(0).toUpperCase(),
-            correo: row.Correo || row.correo || row.Email || row.email || '',
+        const guests = json.map(row => {
+          const rowKeys = Object.keys(row);
+          const findVal = (aliases) => {
+            const key = rowKeys.find(k => aliases.includes(normalize(k)));
+            return key ? row[key] : '';
           };
 
-          if (!guest.nombre || !guest.correo) continue;
+          return {
+            nombre: findVal(['nombre', 'name', 'nombrecompleto', 'first name']),
+            apellidoPaterno: findVal(['apellidopaterno', 'paterno', 'lastname', 'apellido1']),
+            apellidoMaterno: findVal(['apellidomaterno', 'materno', 'apellido2']),
+            municipio: findVal(['municipio', 'ciudad', 'city', 'location', 'procedencia']),
+            genero: (findVal(['genero', 'gender', 'sexo']) || 'M').toString().toUpperCase().startsWith('F') ? 'F' : 'M',
+            correo: findVal(['correo', 'email', 'correoelectronico', 'contacto']),
+          };
+        }).filter(g => g.nombre && g.correo);
 
-          try {
-            const resp = await fetch(`${API_URL}/api/participants`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(guest),
-            });
-            if (resp.ok) successCount++;
-            else errorCount++;
-          } catch (err) {
-            errorCount++;
-          }
+        if (guests.length === 0) {
+          throw new Error("No se encontraron registros válidos para importar.");
         }
 
+        const resp = await fetch(`${API_URL}/api/participants/bulk`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(guests),
+        });
+
+        if (!resp.ok) {
+          const errorData = await resp.json();
+          throw new Error(errorData.error || "Error al importar los datos.");
+        }
+
+        const result = await resp.json();
+
         toast({
-          title: 'Importación Finalizada',
-          description: `Se registraron ${successCount} invitados con éxito. Errores: ${errorCount}`,
-          status: successCount > 0 ? 'success' : 'error',
+          title: 'Importación Exitosa',
+          description: result.mensaje || `Se importaron ${result.count} participantes.`,
+          status: 'success',
           duration: 5000,
           isClosable: true,
         });
@@ -127,7 +136,7 @@ export default function ParticipantRegister() {
         if (fileInputRef.current) fileInputRef.current.value = '';
       }
     };
-    reader.readAsBinaryString(file);
+    reader.readAsArrayBuffer(file);
   };
 
   const handleSubmit = async (e) => {
@@ -346,7 +355,7 @@ export default function ParticipantRegister() {
                     name="apellidoMaterno" 
                     variant="auth"
                     bg={inputBg}
-                    value={formData.lastNameMaternal} 
+                    value={formData.apellidoMaterno} 
                     onChange={handleChange} 
                     placeholder="Materno" 
                   />

@@ -2,6 +2,7 @@ import './assets/css/App.css';
 import { Routes, Route } from 'react-router-dom';
 import AdminLayout from './layouts/admin';
 import LandingPage from './views/landing/LandingPage';
+import EventSurvey from './views/landing/EventSurvey';
 import {
   ChakraProvider,
   // extendTheme
@@ -32,6 +33,7 @@ export default function Main() {
           }
         />
         <Route path="/" element={<LandingPage />} />
+        <Route path="/evaluar-evento" element={<EventSurvey />} />
       </Routes>
     </ChakraProvider>
   );

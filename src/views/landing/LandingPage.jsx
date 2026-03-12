@@ -11,7 +11,10 @@ import {
   Container,
   SimpleGrid,
   Image,
+  useColorMode,
 } from "@chakra-ui/react";
+
+import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { MdLogin, MdEvent, MdAnalytics, MdStorefront } from "react-icons/md";
 import { Link as RouterLink } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -19,6 +22,7 @@ import { motion } from "framer-motion";
 const MotionBox = motion(Box);
 const MotionFlex = motion(Flex);
 const MotionStack = motion(Stack);
+const MotionImage = motion(Image);
 
 const Feature = ({ title, text, icon, index }) => {
   return (
@@ -63,7 +67,8 @@ const Feature = ({ title, text, icon, index }) => {
 };
 
 export default function LandingPage() {
-
+  const { colorMode, toggleColorMode } = useColorMode();
+  const navbarIcon = useColorModeValue('gray.400', 'white');
   
   return (
     <Box 
@@ -119,24 +124,46 @@ export default function LandingPage() {
           justify="space-between"
         >
           <Heading fontSize="2x1" fontWeight="900" letterSpacing="extra-tight" color={useColorModeValue("brand.500", "white")}>
-            FRANCOPHONIE <Box as="span" color="gray.300" fontWeight="300">|</Box> SAVEURS
+            FRANCOPHONIE <Box as="span" color="gray.300" fontWeight="300">|</Box> UTGZ
           </Heading>
-          <Button
-            as={RouterLink}
-            to="/admin"
-            variant="brand"
-            bgGradient="linear(to-r, brand.500, brand.400)"
-            _hover={{ bgGradient: "linear(to-r, brand.600, brand.500)", transform: "scale(1.05)" }}
-            _active={{ transform: "scale(0.95)" }}
-            borderRadius="18px"
-            px={8}
-            h="52px"
-            leftIcon={<Icon as={MdLogin} />}
-            boxShadow="0px 10px 25px rgba(67, 24, 255, 0.25)"
-            transition="all 0.3s ease"
-          >
-            Panel Administrativo
-          </Button>
+          <Flex align="center">
+            <Button
+              variant="no-hover"
+              bg="transparent"
+              p="0px"
+              minW="unset"
+              minH="unset"
+              h="18px"
+              w="max-content"
+              onClick={toggleColorMode}
+              me="20px"
+              _hover={{ transform: "scale(1.1)" }}
+              _active={{ transform: "scale(0.9)" }}
+            >
+              <Icon
+                h="20px"
+                w="20px"
+                color={navbarIcon}
+                as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
+              />
+            </Button>
+            <Button
+              as={RouterLink}
+              to="/admin"
+              variant="brand"
+              bgGradient="linear(to-r, brand.500, brand.400)"
+              _hover={{ bgGradient: "linear(to-r, brand.600, brand.500)", transform: "scale(1.05)" }}
+              _active={{ transform: "scale(0.95)" }}
+              borderRadius="18px"
+              px={8}
+              h="52px"
+              leftIcon={<Icon as={MdLogin} />}
+              boxShadow="0px 10px 25px rgba(67, 24, 255, 0.25)"
+              transition="all 0.3s ease"
+            >
+              Panel Administrativo
+            </Button>
+          </Flex>
         </MotionFlex>
 
         {/* Sección Hero */}
@@ -162,17 +189,18 @@ export default function LandingPage() {
               <Text as={"span"} color={useColorModeValue("navy.900", "white")}>
                 Te damos la 
               </Text>
+              <br />
+              <Text as={"span"} color={useColorModeValue("navy.900", "white")}>
+                bienvenida al
+              </Text>
+              <br />
               <Text 
                 as={"span"} 
                 bgGradient="linear(to-r, brand.500, cyan.400)" 
                 bgClip="text"
                 display="inline-block"
               >
-                Bienvenida
-              </Text>
-              <br />
-              <Text as={"span"} color={useColorModeValue("navy.900", "white")}>
-                al Evento Gastronómico
+                Evento Gastronómico
               </Text>
             </Heading>
             <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
@@ -193,7 +221,7 @@ export default function LandingPage() {
             >
               <Button
                 as={RouterLink}
-                to="/admin"
+                to="/evaluar-evento"
                 rounded={"20px"}
                 size={"lg"}
                 fontWeight={"800"}
@@ -207,7 +235,7 @@ export default function LandingPage() {
                 boxShadow="0px 15px 30px rgba(67, 24, 255, 0.3)"
                 transition="all 0.3s cubic-bezier(.08,.52,.52,1)"
               >
-                EMPEZAR AHORA
+                ¡Califica el Evento!
               </Button>
             </Stack>
           </MotionStack>
@@ -240,13 +268,23 @@ export default function LandingPage() {
               borderColor={useColorModeValue("whiteAlpha.800", "whiteAlpha.100")}
               backdropFilter="blur(10px)"
             >
-              <Image
+              <MotionImage
                 alt={"Hero Image"}
-                fit={"cover"}
+                fit={"contain"}
                 align={"center"}
                 w={"100%"}
                 h={"100%"}
-                src={require("assets/img/landing_hero.png")}
+                src={require("assets/croissant.png")}
+                animate={{
+                  y: [0, -20, 0],
+                  rotate: [0, 8, -8, 0],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               />
             </MotionBox>
           </MotionFlex>
