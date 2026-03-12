@@ -4,8 +4,8 @@ export const getApiUrl = () => {
     return process.env.REACT_APP_API_URL_LOCAL;
   }
   
-  // Fallback to REACT_APP_API_URL or localhost:5001
-  let apiUrl = (process.env.REACT_APP_API_URL || 'http://localhost:5001').replace(/\/+$/, '');
+  // Fallback to REACT_APP_API_URL or the production Vercel backend
+  let apiUrl = (process.env.REACT_APP_API_URL || 'https://evento-backend-liard.vercel.app').replace(/\/+$/, '');
   
   if (apiUrl.startsWith('http')) {
     return apiUrl;
