@@ -26,6 +26,7 @@ import Analytics from 'views/admin/analytics';
 import AdminManagement from 'views/admin/admins';
 import SecurityAlerts from 'views/admin/alerts';
 import EventSurvey from 'views/landing/EventSurvey';
+import EventFeedback from 'views/admin/eventSurveys';
 
 
 /**
@@ -120,6 +121,14 @@ const routes = [
     path: '/alerts',
     icon: <Icon as={MdSecurity} width="20px" height="20px" color="inherit" />,
     component: <SecurityAlerts />,
+    roles: ['admin'],
+  },
+  {
+    name: 'Resumen del Evento',
+    layout: '/admin',
+    path: '/event-feedback',
+    icon: <Icon as={MdStar} width="20px" height="20px" color="inherit" />,
+    component: <EventFeedback />,
     roles: ['admin'],
   },
 ];

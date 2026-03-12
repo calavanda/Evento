@@ -15,7 +15,11 @@ import {
   useColorModeValue,
   useToast,
 } from "@chakra-ui/react";
-import { MdStar, MdStarBorder, MdArrowBack } from "react-icons/md";
+import { 
+  MdStar, 
+  MdStarBorder, 
+  MdArrowBack,
+} from "react-icons/md";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { getApiUrl } from "utils/api";
@@ -55,13 +59,17 @@ export default function EventSurvey() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ rating, email, comentarios }),
+        body: JSON.stringify({ 
+          rating, 
+          email: email || "Anónimo",
+          comentarios 
+        }),
       });
 
       if (response.ok) {
         toast({
-          title: "¡Gracias!",
-          description: "Tu opinión nos ayuda a mejorar.",
+          title: "¡Gracias por tu opinión!",
+          description: "Tu feedback nos ayuda a mejorar.",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -114,18 +122,22 @@ export default function EventSurvey() {
           <Stack spacing={6}>
             <Box textAlign="center">
               <Heading color={textColor} fontSize="3xl" mb={2}>
-                Califica el Evento
+                Encuesta del Evento
               </Heading>
-              <Text color="secondaryGray.600">
-                Tu opinión es muy importante para nosotros. Dinos qué tal te pareció.
+              <Text color="secondaryGray.600" fontSize="lg">
+                Sabores de Franconia
+              </Text>
+              <Text color="secondaryGray.500" mt={2}>
+                Cuéntanos qué te pareció el evento
               </Text>
             </Box>
 
             <form onSubmit={handleSubmit}>
               <Stack spacing={6}>
+                {/* Calificación */}
                 <FormControl isRequired>
                   <FormLabel textAlign="center" fontSize="lg" fontWeight="bold">
-                    Calificación General
+                    ¿Cómo calificas el evento en general?
                   </FormLabel>
                   <Flex justify="center" gap={2}>
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -134,7 +146,7 @@ export default function EventSurvey() {
                         as={star <= (hoverRating || rating) ? MdStar : MdStarBorder}
                         w={12}
                         h={12}
-                        color={star <= (hoverRating || rating) ? "brand.500" : "gray.300"}
+                        color={star <= (hoverRating || rating) ? "orange.400" : "gray.300"}
                         cursor="pointer"
                         onMouseEnter={() => setHoverRating(star)}
                         onMouseLeave={() => setHoverRating(0)}
@@ -144,6 +156,13 @@ export default function EventSurvey() {
                       />
                     ))}
                   </Flex>
+                  <Text textAlign="center" fontSize="sm" color="secondaryGray.500" mt={2}>
+                    {rating === 1 && "Muy malo"}
+                    {rating === 2 && "Regular"}
+                    {rating === 3 && "Bueno"}
+                    {rating === 4 && "Muy bueno"}
+                    {rating === 5 && "Excelente"}
+                  </Text>
                 </FormControl>
 
                 <FormControl>
@@ -155,12 +174,16 @@ export default function EventSurvey() {
                     onChange={(e) => setEmail(e.target.value)}
                     borderRadius="15px"
                   />
+                  <Text fontSize="xs" mt={1} color="secondaryGray.500">
+                    Si no ingresas un correo, la encuesta será anónima.
+                  </Text>
                 </FormControl>
 
+                {/* Comentarios */}
                 <FormControl>
                   <FormLabel>Comentarios (Opcional)</FormLabel>
                   <Textarea
-                    placeholder="¿Qué fue lo que más te gustó? ¿Qué podríamos mejorar?"
+                    placeholder="¿Qué fue lo que más te gustó? ¿Qué podríamos mejorar para la próxima edición?"
                     value={comentarios}
                     onChange={(e) => setComentarios(e.target.value)}
                     borderRadius="15px"
@@ -174,8 +197,13 @@ export default function EventSurvey() {
                   size="lg"
                   fontSize="md"
                   isLoading={isSubmitting}
+                  loadingText="Enviando..."
                   bgGradient="linear(to-r, brand.500, brand.400)"
-                  _hover={{ bgGradient: "linear(to-r, brand.600, brand.500)", transform: "translateY(-2px)", boxShadow: "0px 10px 20px rgba(67, 24, 255, 0.2)" }}
+                  _hover={{ 
+                    bgGradient: "linear(to-r, brand.600, brand.500)", 
+                    transform: "translateY(-2px)", 
+                    boxShadow: "0px 10px 20px rgba(67, 24, 255, 0.2)" 
+                  }}
                   _active={{ transform: "scale(0.98)" }}
                   borderRadius="15px"
                   h="60px"
