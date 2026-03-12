@@ -237,6 +237,29 @@ export default function LandingPage() {
               >
                 ¡Califica el Evento!
               </Button>
+              <br />
+              <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
+                o también puedes calificar los stands de comida 🥐
+              </Text>
+              <br />
+              <Button
+                as={RouterLink}
+                to="/evaluar-evento"
+                rounded={"20px"}
+                size={"lg"}
+                fontWeight={"800"}
+                px={12}
+                colorScheme={"brand"}
+                bgGradient="linear(to-r, brand.500, brand.400)"
+                _hover={{ bgGradient: "linear(to-r, brand.600, brand.500)", transform: "translateY(-5px)", boxShadow: "0px 20px 40px rgba(67, 24, 255, 0.4)" }}
+                _active={{ transform: "scale(0.98)" }}
+                h="70px"
+                fontSize="xl"
+                boxShadow="0px 15px 30px rgba(67, 24, 255, 0.3)"
+                transition="all 0.3s cubic-bezier(.08,.52,.52,1)"
+              >
+                ¡Califica los stands!
+              </Button>
             </Stack>
           </MotionStack>
           <MotionFlex

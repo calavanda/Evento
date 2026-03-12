@@ -103,7 +103,15 @@ const routes = [
     path: '/survey',
     icon: <Icon as={MdQuestionMark} width="20px" height="20px" color="inherit" />,
     component: <SurveySatisfaction />,
-    roles: ['admin', 'escaneador'],
+    roles: ['admin', 'escaneador', 'public'],
+  },
+   {
+    name: 'Encuesta del Evento',
+    layout: '/admin',
+    path: '/event-survey',
+    icon: <Icon as={MdQuestionMark} width="20px" height="20px" color="inherit" />,
+    component: <EventSurvey />,
+    roles: ['admin', 'moderador', 'escaneador', 'public'],
   },
   {
     name: 'Seguridad',
