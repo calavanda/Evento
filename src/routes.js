@@ -12,6 +12,7 @@ import {
   MdSecurity,
   MdQuestionMark,
   MdEmail,
+  MdStar,
 } from 'react-icons/md';
 
 // Admin Imports
