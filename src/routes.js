@@ -25,6 +25,7 @@ import SurveySatisfaction from 'views/admin/surveys';
 import Analytics from 'views/admin/analytics';
 import AdminManagement from 'views/admin/admins';
 import SecurityAlerts from 'views/admin/alerts';
+import EventSurvey from 'views/landing/EventSurvey';
 
 
 /**
