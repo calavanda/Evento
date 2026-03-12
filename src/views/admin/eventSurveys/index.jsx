@@ -25,7 +25,6 @@ import MiniStatistics from "components/card/MiniStatistics";
 import IconBox from "components/icons/IconBox";
 import { getApiUrl } from "utils/api";
 
-const MotionBox = motion(Box);
 const MotionTr = motion(Tr);
 
 export default function EventFeedback() {
