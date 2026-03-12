@@ -106,7 +106,7 @@ const routes = [
     path: '/survey',
     icon: <Icon as={MdQuestionMark} width="20px" height="20px" color="inherit" />,
     component: <SurveySatisfaction />,
-    roles: ['admin', 'escaneador', 'public'],
+    roles: ['admin', 'moderador', 'escaneador', 'public'],
   },
    {
     name: 'Encuesta del Evento',

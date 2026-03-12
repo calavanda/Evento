@@ -242,7 +242,7 @@ export default function LandingPage() {
               <br />
               <Button
                 as={RouterLink}
-                to="/evaluar-evento"
+                to="/event-survey"
                 rounded={"20px"}
                 size={"lg"}
                 fontWeight={"800"}
