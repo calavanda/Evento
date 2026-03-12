@@ -11,7 +11,6 @@ import {
   Tr,
   Th,
   Td,
-  Card,
   Spinner,
   VStack,
   Badge,
@@ -27,6 +26,7 @@ import {
 } from "react-icons/md";
 import MiniStatistics from "components/card/MiniStatistics";
 import IconBox from "components/icons/IconBox";
+import Card from "components/card/Card";
 import { getApiUrl } from "utils/api";
 
 export default function UserReports() {
