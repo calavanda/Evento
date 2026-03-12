@@ -32,6 +32,15 @@ import IconBox from 'components/icons/IconBox';
 import { getApiUrl } from 'utils/api';
 import jsPDF from 'jspdf';
 
+const standPalette = [
+  '#4318FF', '#39B1FF', // Stand 1 (Dark/Light)
+  '#01B574', '#45EBA5', // Stand 2
+  '#FFB547', '#FFD591', // Stand 3
+  '#E31A1A', '#FF5C5C', // Stand 4
+  '#A1E31A', '#C6F066', // Stand 5
+  '#7551FF', '#A389FF', // Stand 6
+];
+
 export default function Analytics() {
   // Helper to get YYYY-MM-DD in local time
   const getLocalDate = () => {
@@ -94,14 +103,7 @@ export default function Analytics() {
     fetchAnalytics();
   }, [fetchAnalytics]);
 
-  const standPalette = [
-    '#4318FF', '#39B1FF', // Stand 1 (Dark/Light)
-    '#01B574', '#45EBA5', // Stand 2
-    '#FFB547', '#FFD591', // Stand 3
-    '#E31A1A', '#FF5C5C', // Stand 4
-    '#A1E31A', '#C6F066', // Stand 5
-    '#7551FF', '#A389FF', // Stand 6
-  ];
+
 
   // Process participation data for "grouped colors" effect with spacers
   const { participationSeriesData, participationColors } = useMemo(() => {
