@@ -118,7 +118,7 @@ export default function SurveySatisfaction() {
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Flex direction="column" align="center" mb="40px">
         <Icon as={MdFactCheck} w="60px" h="60px" color={brandColor} mb="15px" />
-        <Text color={textColor} fontSize="34px" fontWeight="800" textAlign="center">
+        <Text color={textColor} fontSize={{ base: "2xl", md: "34px" }} fontWeight="800" textAlign="center">
           Tu Opinión nos Importa
         </Text>
         <Text color={textColorSecondary} fontSize="md" textAlign="center" maxW="600px">
@@ -185,8 +185,8 @@ export default function SurveySatisfaction() {
               <Button 
                 type="submit" 
                 variant="brand" 
-                h="65px" 
-                fontSize="xl" 
+                h={{ base: "50px", md: "65px" }} 
+                fontSize={{ base: "lg", md: "xl" }} 
                 fontWeight="800"
                 borderRadius="20px"
                 isLoading={loading}

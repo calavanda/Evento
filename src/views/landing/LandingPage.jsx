@@ -123,7 +123,7 @@ export default function LandingPage() {
           align="center" 
           justify="space-between"
         >
-          <Heading fontSize="2x1" fontWeight="900" letterSpacing="extra-tight" color={useColorModeValue("brand.500", "white")}>
+          <Heading fontSize={{ base: "md", sm: "lg", md: "2xl" }} fontWeight="900" letterSpacing="extra-tight" color={useColorModeValue("brand.500", "white")}>
             FRANCOPHONIE <Box as="span" color="gray.300" fontWeight="300">|</Box> UTGZ
           </Heading>
           <Flex align="center">
@@ -155,8 +155,9 @@ export default function LandingPage() {
               _hover={{ bgGradient: "linear(to-r, brand.600, brand.500)", transform: "scale(1.05)" }}
               _active={{ transform: "scale(0.95)" }}
               borderRadius="18px"
-              px={8}
-              h="52px"
+              px={{ base: 4, md: 8 }}
+              h={{ base: "36px", md: "52px" }}
+              fontSize={{ base: "10px", sm: "xs", md: "md" }}
               leftIcon={<Icon as={MdLogin} />}
               boxShadow="0px 10px 25px rgba(67, 24, 255, 0.25)"
               transition="all 0.3s ease"
@@ -181,10 +182,11 @@ export default function LandingPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <Heading
-              lineHeight={1.1}
+              lineHeight={1.2}
               fontWeight={900}
-              fontSize={{ base: "5xl", sm: "6xl", lg: "7xl" }}
+              fontSize={{ base: "2xl", sm: "4xl", md: "6xl", lg: "7xl" }}
               letterSpacing="tight"
+              textAlign={{ base: "center", md: "left" }}
             >
               <Text as={"span"} color={useColorModeValue("navy.900", "white")}>
                 Te damos la 
@@ -203,19 +205,21 @@ export default function LandingPage() {
                 Evento Gastronómico
               </Text>
             </Heading>
-            <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
+            <Text color={"secondaryGray.600"} fontSize={{ base: "sm", md: "lg", lg: "xl" }} maxW="550px" lineHeight="1.8" textAlign={{ base: "center", md: "left" }}>
               <b>“Premier foire des Saveurs de la Francophonie”</b>, es la primera feria gastronómica dentro del marco de 
               actividades de la francofonía, celebrado en el salón Nakú dentro de las instalaciones de la <b>Universidad 
               Tecnológica de Gutiérrez Zamora</b>, el día <b>20 de marzo de 2026</b>.
             </Text>
             <br />
-            <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
+            <Text color={"secondaryGray.600"} fontSize={{ base: "sm", md: "lg", lg: "xl" }} maxW="550px" lineHeight="1.8" textAlign={{ base: "center", md: "left" }}>
               Esta es la plataforma premium diseñada para el registro, gestión de stands y 
               analíticas avanzadas del festival.
             </Text>
             <Stack
-              spacing={{ base: 4, sm: 6 }}
-              direction={{ base: "column", sm: "row" }}
+              spacing={4}
+              direction={{ base: "column", md: "row" }}
+              w="100%"
+              align="center"
             >
               <Button
                 as={RouterLink}
@@ -224,22 +228,21 @@ export default function LandingPage() {
                 size={"lg"}
                 fontWeight={"800"}
                 px={12}
+                w={{ base: "100%", md: "auto" }}
                 colorScheme={"brand"}
                 bgGradient="linear(to-r, brand.500, brand.400)"
                 _hover={{ bgGradient: "linear(to-r, brand.600, brand.500)", transform: "translateY(-5px)", boxShadow: "0px 20px 40px rgba(67, 24, 255, 0.4)" }}
                 _active={{ transform: "scale(0.98)" }}
-                h="70px"
-                fontSize="xl"
+                h={{ base: "52px", md: "70px" }}
+                fontSize={{ base: "md", md: "xl" }}
                 boxShadow="0px 15px 30px rgba(67, 24, 255, 0.3)"
                 transition="all 0.3s cubic-bezier(.08,.52,.52,1)"
               >
                 ¡Califica el Evento!
               </Button>
-              <br />
-              <Text color={"secondaryGray.600"} fontSize="xl" maxW="550px" lineHeight="1.8">
-                o
-              </Text>
-              <br />
+              <Flex align="center" justify="center">
+                <Text color={"secondaryGray.600"} fontSize="md" fontWeight="600">o</Text>
+              </Flex>
               <Button
                 as={RouterLink}
                 to="/evaluar-stand"
@@ -247,12 +250,13 @@ export default function LandingPage() {
                 size={"lg"}
                 fontWeight={"800"}
                 px={12}
+                w={{ base: "100%", md: "auto" }}
                 colorScheme={"brand"}
                 bgGradient="linear(to-r, brand.500, brand.400)"
                 _hover={{ bgGradient: "linear(to-r, brand.600, brand.500)", transform: "translateY(-5px)", boxShadow: "0px 20px 40px rgba(67, 24, 255, 0.4)" }}
                 _active={{ transform: "scale(0.98)" }}
-                h="70px"
-                fontSize="xl"
+                h={{ base: "52px", md: "70px" }}
+                fontSize={{ base: "md", md: "xl" }}
                 boxShadow="0px 15px 30px rgba(67, 24, 255, 0.3)"
                 transition="all 0.3s cubic-bezier(.08,.52,.52,1)"
               >

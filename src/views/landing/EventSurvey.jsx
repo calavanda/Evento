@@ -112,7 +112,7 @@ export default function EventSurvey() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           bg={formBg}
-          p={8}
+          p={{ base: 5, md: 8 }}
           borderRadius="30px"
           boxShadow={useColorModeValue(
             "0px 20px 40px rgba(0, 0, 0, 0.05)",
@@ -121,7 +121,7 @@ export default function EventSurvey() {
         >
           <Stack spacing={6}>
             <Box textAlign="center">
-              <Heading color={textColor} fontSize="3xl" mb={2}>
+              <Heading color={textColor} fontSize={{ base: "2xl", md: "3xl" }} mb={2}>
                 Encuesta del Evento
               </Heading>
               <Text color="secondaryGray.600" fontSize="lg">
@@ -144,8 +144,8 @@ export default function EventSurvey() {
                       <Icon
                         key={star}
                         as={star <= (hoverRating || rating) ? MdStar : MdStarBorder}
-                        w={12}
-                        h={12}
+                        w={{ base: 10, md: 12 }}
+                        h={{ base: 10, md: 12 }}
                         color={star <= (hoverRating || rating) ? "orange.400" : "gray.300"}
                         cursor="pointer"
                         onMouseEnter={() => setHoverRating(star)}
@@ -206,11 +206,11 @@ export default function EventSurvey() {
                   }}
                   _active={{ transform: "scale(0.98)" }}
                   borderRadius="15px"
-                  h="60px"
+                  h={{ base: "50px", md: "60px" }}
                   w="100%"
                 >
-                  Enviar Encuesta
-                </Button>
+                Enviar Encuesta
+              </Button>
               </Stack>
             </form>
           </Stack>
